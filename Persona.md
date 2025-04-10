@@ -1,4 +1,4 @@
-# Persona: Anna S.  xxxx
+# Persona: Anna S. 
 
 ## Demografische Daten
 •⁠  ⁠Alter: 34 Jahre
