@@ -1,17 +1,18 @@
-# Persona: Anna S.  xxxx
+# Persona: Peter M.
 
 ## Demografische Daten
-•⁠  ⁠Alter: 34 Jahre
-•⁠  ⁠Beruf: Grundschullehrerin
-•⁠  ⁠Wohnort: Winterthur
+•⁠  ⁠Alter: 56 Jahre
+•⁠  ⁠Beruf: Koch
+•⁠  ⁠Wohnort: Zürich 
+•⁠  Grunderkrankung: Diabetiker
 
 ## Zitate
-	⁠"Ich bekomme regelmäßig Blutwerte, aber verliere den Überblick über die Ergebnisse und was sie bedeuten."
+	⁠"Ich bekomme regelmässig Blutwerte, aber verliere den Überblick über die Ergebnisse und was sie bedeuten."
 
 ## Ziele
-•⁠  ⁠Ihre Laborwerte zentral und verständlich speichern
+•⁠  Laborwerte zentral und verständlich speichern
 •⁠  ⁠Schnell sehen, ob ein Wert im Normbereich liegt
-•⁠  ⁠Keine Diagnose – nur Übersicht und Klarheit
+•  Informationen über die Analysen
 
 ## Herausforderungen
 •⁠  ⁠Wenig technisches Verständnis
