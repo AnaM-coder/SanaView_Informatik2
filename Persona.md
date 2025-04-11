@@ -16,14 +16,15 @@
 •  Mehr Klarheit über medizinische Begriffe und Analysewerte bekommen - ohne googeln zu müssen
 
 ## ⚠️Herausforderungen
-•⁠  ⁠Wenig technisches Verständnis
-•⁠  ⁠Findet medizinische Begriffe oft verwirrend
+•⁠  ⁠Fachbegriffe sind oft verwirrend oder zu technisch
+•⁠  ⁠Unsicherheit im Umgang mit neuen Apps und digitalen Angeboten
 
 ## 📱Technisches Verhalten und Nutzung 
-•⁠  ⁠Nutzt das Smartphone täglich für Kalender, Kommunikation und Banking
-•⁠  ⁠Hat bisher Notizen per Hand gemacht
+•⁠  ⁠Nutzt täglich sein Smartphone für persönliche Organisation
+•⁠  ⁠Hat bisher Gesundheitsdaten auf Papier oder in Notiz-App festgehalten
+•⁠ Schätzt einfache, visuelle Darstellung (z.B. Farben, Symbole)
 
 ## 💡Bedürfnisse
-•⁠  ⁠Eine sichere App mit einfacher Oberfläche
-•⁠  ⁠Farbliches Feedback (z. B. Ampelsystem)
-•⁠  ⁠Möglichkeit, Verlauf zu sehen ohne viel tippen zu müssen
+•⁠  ⁠Eine einfach bedienbare App mit klarer Struktur
+•⁠  ⁠Farbliches Feedback z. B. Ampelsystem für Werte
+•  Verlauf über Zeit anzeigen, ohne durch vielen Menüs zu müssen
