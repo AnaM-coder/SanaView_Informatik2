@@ -2,13 +2,19 @@
 
 ## 👤Demografische Daten
 •⁠  ⁠Alter: 56 Jahre
+
 •⁠  ⁠Beruf: Koch
+
 •⁠  ⁠Wohnort: Zürich 
+
 •⁠  Gesundheit: Lebt seit einigen Jahre mit Typ-2 Diabetes
 
 ## 🗣️Zitate
+
 	⁠"Man bekommt so viele Laborwerte - irgendwann verliert man den Überblick- Ich wüsste manchmal gern einfach: Ist das jetzt gut oder nicht?"
-	Peter ist ein erfahrener Koch mit einem vollen Alltag - in der Küche muss alles schnell und effizient laufen, und das überträgt sich auch auf seine Erwartungen an digitale Tools. Er ist kein Technikexperte, nutzt aber täglich sein Smartphone für Alltagsdinge wie Nachrichten, Onlinebanking oder sein Kalender.
+
+	Peter ist ein erfahrener Koch mit einem vollen Alltag - in der Küche muss alles schnell und effizient laufen, und das überträgt sich auch auf seine Erwartungen an digitale Tools. Er ist kein Technikexperte, nutzt aber täglich sein Smartphone für Alltagsdinge wie Nachrichten, Onlinebanking oder sein Kalender
+
 
 ## 🎯Ziele
 •⁠  Laborwerte verständlich und sicher speichern
