@@ -6,4 +6,4 @@ Ana Maria Andrade (andraana@students.zhaw.ch)
 Cristiana Bastos (pereicri@students.zhaw.ch)
 Lou-Salomé Frehner (frehnlou@students.zhaw.ch)
 
-("Diese App wurde von Ana Maria Andrade (andraana@students.zhaw.ch) im Rahmen der Moduls 'BMLD Informatik 2' an der ZHAW entwickelt.")
+Diese App wurde im Rahmen der Moduls 'BMLD Informatik 2' an der ZHAW entwickelt.
