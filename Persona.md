@@ -12,19 +12,26 @@
 
 ## 🎯Ziele
 •⁠  Laborwerte verständlich und sicher speichern
+
 •⁠  ⁠Auf einen Blick erkennen, ob ein Wert im Normbereich liegt
+
 •  Mehr Klarheit über medizinische Begriffe und Analysewerte bekommen - ohne googeln zu müssen
 
 ## ⚠️Herausforderungen
 •⁠  ⁠Fachbegriffe sind oft verwirrend oder zu technisch
+
 •⁠  ⁠Unsicherheit im Umgang mit neuen Apps und digitalen Angeboten
 
 ## 📱Technisches Verhalten und Nutzung 
 •⁠  ⁠Nutzt täglich sein Smartphone für persönliche Organisation
+
 •⁠  ⁠Hat bisher Gesundheitsdaten auf Papier oder in Notiz-App festgehalten
+
 •⁠ Schätzt einfache, visuelle Darstellung (z.B. Farben, Symbole)
 
 ## 💡Bedürfnisse
 •⁠  ⁠Eine einfach bedienbare App mit klarer Struktur
+
 •⁠  ⁠Farbliches Feedback z. B. Ampelsystem für Werte
+
 •  Verlauf über Zeit anzeigen, ohne durch vielen Menüs zu müssen
