@@ -27,7 +27,7 @@
 
 ---
 
-## 📄 Projektbeschreibung als PDF
+## Projektbeschreibung als PDF
 
 Für eine detaillierte Übersicht aller geplanten Funktionen und des Projektkontexts siehe:
 
