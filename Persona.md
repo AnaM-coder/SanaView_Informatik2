@@ -38,6 +38,6 @@
 ## 💡Bedürfnisse
 •⁠  ⁠Eine einfach bedienbare App mit klarer Struktur
 
-•⁠  ⁠Farbliches Feedback z. B. Ampelsystem für Werte
+•⁠  ⁠Farbliches Feedback z.B. Ampelsystem für Werte
 
 •  Verlauf über Zeit anzeigen, ohne durch vielen Menüs zu müssen
