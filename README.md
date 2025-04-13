@@ -3,7 +3,7 @@ Diese App unterstützt Sie dabei, Ihre medizinischen Werte sicher zu speichern u
 
 ## Autor
 Ana Maria Andrade (andraana@students.zhaw.ch)
-Cristiana Bastos (pereicri@students.zhaw.ch)
+Cristiana Pereira Bastos (pereicri@students.zhaw.ch)
 Lou-Salomé Frehner (frehnlou@students.zhaw.ch)
 
 Diese App wurde im Rahmen des Moduls 'BMLD Informatik 2' an der ZHAW entwickelt.
