@@ -4,7 +4,7 @@
 - Nutzerregistrierung und Login
 - Eingabe von Laborwerten (Dropdown, Einheit, Datum)
 - Anzeige der Werte in Tabellenform
-- Ampelsystem (Normal, leicht außerhalb, stark abweichend)
+- Ampelsystem (Normal, leicht ausserhalb, stark abweichend)
 - Verlauf (grafisch, einfach)
 - Info-Seite mit Erklärung zu Werten
 - Profilverwaltung (Name, Geschlecht, Allergien etc.)
