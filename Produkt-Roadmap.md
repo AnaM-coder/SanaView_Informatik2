@@ -24,4 +24,4 @@
 | Gesundheitsprofil verwalten      | Mittel    | Ja  |
 | Export als PDF                   | Mittel    | Nein|
 
-Informatik_ProjektApp 5.pdf
+
