@@ -25,3 +25,12 @@
 | Export als PDF                   | Mittel    | Nein|
 
 
+---
+
+## 📄 Projektbeschreibung als PDF
+
+Für eine detaillierte Übersicht aller geplanten Funktionen und des Projektkontexts siehe:
+
+[📥 Informatik_ProjektApp 5.pdf](./Informatik_ProjektApp%205.pdf)
+
+
