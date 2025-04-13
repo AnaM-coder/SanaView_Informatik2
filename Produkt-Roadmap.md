@@ -23,3 +23,5 @@
 | Info-Seite mit Begriffen         | Mittel    | Ja  |
 | Gesundheitsprofil verwalten      | Mittel    | Ja  |
 | Export als PDF                   | Mittel    | Nein|
+
+Informatik_ProjektApp 5.pdf
