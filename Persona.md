@@ -40,4 +40,4 @@
 
 •⁠  ⁠Farbliches Feedback z.B. ein Ampelsystem für Werte
 
-•  Verlauf über Zeit anzeigen, ohne sich durch vielen Menüs klicken zu müssen
+•  Verlauf über Zeit anzeigen, ohne sich durch viele Menüs klicken zu müssen
