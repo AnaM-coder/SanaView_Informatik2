@@ -9,7 +9,7 @@
 
 •⁠  Gesundheit: Lebt seit einigen Jahren mit Typ-2 Diabetes
 
-## 🗣️Zitate
+## 🗣️Zitate / Motivation
 
 	⁠"Man bekommt so viele Laborwerte - irgendwann verliert man den Überblick- Ich wüsste manchmal gern einfach: Ist das jetzt gut oder nicht?"
 
@@ -21,7 +21,7 @@
 
 •⁠  ⁠Auf einen Blick erkennen, ob ein Wert im Normbereich liegt
 
-•  Mehr Klarheit über medizinische Begriffe und Analysewerte bekommen - ohne googeln zu müssen
+•  Medizinische Begriffe und Analysewerte besser verstehen – ohne sie selbst recherchieren zu müssen.
 
 ## ⚠️Herausforderungen
 •⁠  ⁠Fachbegriffe sind oft verwirrend oder zu technisch
