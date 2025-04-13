@@ -22,6 +22,5 @@ Der Nutzer konnte sich gut orientieren und fand die Eingabemaske übersichtlich.
 - Begriff „TSH“ war nicht selbsterklärend  
 - (i)-Icon sollte bei der Einhgabe "Ethnischer Hintergrund" aufkommen
 
-
 **Neue Ideen?**  
 - Tooltip oder kleines (i)-Icon bei Begriffen    
