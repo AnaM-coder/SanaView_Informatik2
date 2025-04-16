@@ -1,11 +1,15 @@
 # Produkt-Roadmap – SanaView
 
-## MVP (Minimum Viable Product)
+## MVP_1(Minimum Viable Product)
 - Nutzerregistrierung und Login
 - Eingabe von Laborwerten (Dropdown, Einheit, Datum)
 - Anzeige der Werte in Tabellenform
+
+## MVP_2(Minimum Viable Product)
 - Ampelsystem (Normal, leicht ausserhalb, stark abweichend)
 - Verlauf (grafisch, einfach)
+
+## MVP_3(Minimum Viable Product)
 - Info-Seite mit Erklärung zu Werten
 - Profilverwaltung (Name, Geschlecht, Allergien etc.)
 
