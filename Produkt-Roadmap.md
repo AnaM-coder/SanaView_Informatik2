@@ -5,11 +5,11 @@
 - Eingabe von Laborwerten (Dropdown, Einheit, Datum)
 - Anzeige der Werte in Tabellenform
 
-## Version 1.0
+## Version 2.0
 - Ampelsystem (Normal, leicht ausserhalb, stark abweichend)
 - Verlauf (grafisch, einfach)
 
-## Version 2.0
+## Version 3.0
 - Info-Seite mit Erklärung zu Werten
 - Profilverwaltung (Name, Geschlecht, Allergien etc.)
 
