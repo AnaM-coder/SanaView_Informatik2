@@ -123,3 +123,17 @@ class LoginManager:
         """
         Leitet den Benutzer zur Anmeldeseite weiter, wenn er nicht eingeloggt ist.
         """
+        if not st.session_state.get("authentication_status"):
+            st.warning("⚠️ Sie müssen sich anmelden, um fortzufahren.")
+            st.experimental_set_query_params(page=login_page_py_file)
+            st.stop()
+
+    def logout(self):
+        """
+        Loggt den Benutzer aus, indem die Session-Daten gelöscht werden.
+        """
+        if "username" in st.session_state:
+            del st.session_state["username"]
+        if "authentication_status" in st.session_state:
+            del st.session_state["authentication_status"]
+        st.experimental_rerun()
