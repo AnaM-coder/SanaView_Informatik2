@@ -19,5 +19,5 @@ def show_profil_verwaltung():
     medikamente = st.text_area("Medikamente")
     allergien = st.text_area("Allergien / Besonderheiten")
 
-    if st.button(" Profil speichern"):
-        st.success(" Profil erfolgreich gespeichert!")
+    if st.button("📝 Profil speichern"):
+        st.success("✅ Profil erfolgreich gespeichert!")
