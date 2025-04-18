@@ -1,4 +1,8 @@
 import streamlit as st
+import pandas as pd
+import os
+from utils.data_manager import DataManager
+from utils.login_manager import LoginManager
 
 def show_profil_verwaltung():
     st.title("🧾 Profilverwaltung")
