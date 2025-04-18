@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import os
 from utils.data_manager import DataManager
 from utils.login_manager import LoginManager
 
@@ -19,20 +20,30 @@ if "authentication_status" not in st.session_state or not st.session_state["auth
 # Benutzername auslesen
 username = st.session_state.get("username", "Unbekannt")
 
-# Titel & Begrüssung
+# Logout oben rechts
+logout_col = st.columns([10, 1])[1]
+with logout_col:
+    if st.button("Logout"):
+        login_manager.logout()
+
+# Titelbereich mit Logo
 col1, col2 = st.columns([1, 8])
 with col1:
-    st.image("img/sanaview_logo.png", width=100)  # Pfad ggf. anpassen
+    logo_path = "img/sanaview_logo.png"
+    if os.path.exists(logo_path):
+        st.image(logo_path, width=100)
+    else:
+        st.warning("⚠️ Logo konnte nicht geladen werden.")
 with col2:
     st.markdown("### 🧬 Willkommen bei SanaView")
     st.markdown("Diese App hilft Ihnen dabei, Ihre Werte sicher zu speichern – ohne Diagnose, aber mit Überblick.")
 
 # Angemeldet als...
-st.markdown("""
-<div style="border: 2px solid #00cc99; border-radius: 8px; padding: 8px; margin-top: 20px; background-color: #eafff5;">
-<b>✅ Angemeldet als:</b> <span style='color: green; font-weight: bold;'>{}</span>
+st.markdown(f"""
+<div style="border: 2px solid #00cc99; border-radius: 8px; padding: 12px; margin: 25px 0; background-color: #eafff5;">
+<b>✅ Angemeldet als:</b> <span style='color: green; font-weight: bold;'>{username}</span>
 </div>
-""".format(username), unsafe_allow_html=True)
+""", unsafe_allow_html=True)
 
 # Autoreninfo
 st.markdown("### Autoren")
@@ -44,6 +55,11 @@ Diese App wurde im Rahmen des Moduls *Informatik 2* an der **ZHAW** entwickelt v
 - Cristiana Bastos (pereicri@students.zhaw.ch)
 """)
 
-# Logout-Button
-if st.button("Logout"):
-    login_manager.logout()
+# (Optional) Seiten-Navigation über Sidebar – falls du später Seiten aufteilst
+# page = st.sidebar.radio("📁 Navigation", ["Start", "Laborwerte", "Profil", "Verlauf", "Info-Seite"])
+# if page == "Laborwerte":
+#     import laborwerte_page
+# elif page == "Profil":
+#     import profil_page
+# elif page == "Info-Seite":
+#     import info_page
