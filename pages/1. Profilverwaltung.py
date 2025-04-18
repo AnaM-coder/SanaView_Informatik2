@@ -1,13 +1,17 @@
 import streamlit as st
 
+st.set_page_config(page_title="Profilverwaltung", layout="centered")
+
 st.title("🧾 Profilverwaltung")
 st.subheader("Persönliche Angaben")
 
 col1, col2 = st.columns(2)
+
 with col1:
     name = st.text_input("Name")
-    geschlecht = st.radio("Geschlecht", ["Weiblich", "Männlich"])
+    geschlecht = st.radio("Geschlecht", ["Weiblich", "Männlich", "Divers"])
     schwanger = st.radio("Schwanger", ["Ja", "Nein", "Weiss nicht"])
+
 with col2:
     vorname = st.text_input("Vorname")
     geburtsdatum = st.date_input("Geburtsdatum")
@@ -24,4 +28,4 @@ with col1:
     if st.button("💾 Profil speichern"):
         st.success("✅ Profil erfolgreich gespeichert!")
 with col2:
-    st.markdown("⬅️ [Zurück zur Startseite](../Start.py)")
+    st.info("↩️ Zurück zur Startseite oben im Menü")
