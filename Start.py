@@ -15,7 +15,7 @@ login_manager.login_register()
 if not st.session_state.get("authentication_status", False):
     st.stop()
 
-# === Kopfbereich: Logo links, Logout rechts ===
+# === Kopfbereich: Logo links
 col_logo, col_logout = st.columns([6, 1])
 
 with col_logo:
