@@ -16,9 +16,13 @@ if not username:
 # === DataManager initialisieren ===
 data_manager = DataManager()
 
-# === Benutzerdaten laden → automatisch benannt: laborwerte_df.csv
+# === Benutzerdaten laden → Dateiname basierend auf Benutzername ===
+session_key = "laborwerte"
+file_name = f"{username}_daten.csv"  # Dynamischer Dateiname basierend auf Benutzername
+
 data_manager.load_user_data(
     session_state_key=session_key,
+    file_name=file_name,  # Übergabe des dynamischen Dateinamens
     initial_value=pd.DataFrame(columns=["Datum", "Laborwert", "Wert", "Einheit", "Referenz", "Ampel"])
 )
 
