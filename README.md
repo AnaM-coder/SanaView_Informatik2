@@ -11,9 +11,7 @@ pereicri@students.zhaw.ch
 Lou-Salomé Frehner 
 frehnlou@students.zhaw.ch
 
-Link zur App: [SanaView](https://sanaviewinformatik2-knfvx28clhajahajbm5u74.streamlit.app/)
-
-
+**[Zur App: SanaView][SanaView](https://sanaviewinformatik2-knfvx28clhajahajbm5u74.streamlit.app/
 
 
 Diese App wurde im Rahmen des Moduls 'BMLD Informatik 2' an der ZHAW entwickelt.
