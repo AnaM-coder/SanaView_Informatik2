@@ -20,7 +20,7 @@ if not username:
     st.stop()
 
 # === Logout-Button in der Hauptansicht ===
-st.button("🚪 Logout", on_click=logout)
+st.button("Logout", on_click=logout)
 
 # === DataManager initialisieren ===
 data_manager = DataManager()
