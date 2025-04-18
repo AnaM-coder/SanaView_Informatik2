@@ -7,17 +7,18 @@ from utils.login_manager import LoginManager
 # Seitenkonfiguration
 st.set_page_config(page_title="SanaView", layout="wide")
 
-# Initialisiere DataManager & Login
+# Initialisiere Login-Manager
 data_manager = DataManager(fs_protocol='webdav', fs_root_folder="SanaView2")
 login_manager = LoginManager(data_manager)
+
+# Zeigt Login/Register-Seite an, wenn nicht eingeloggt
 login_manager.login_register()
 
-# Login-Schutz
-if "authentication_status" not in st.session_state or not st.session_state["authentication_status"]:
-    st.warning("🔒 Sie sind nicht eingeloggt. Bitte melden Sie sich an.")
+# 🚫 STOP falls nicht eingeloggt → danach kommt Sidebar etc.
+if not st.session_state.get("authentication_status", False):
     st.stop()
 
-# ✅ Sidebar nur anzeigen, wenn eingeloggt
+# ✅ Jetzt eingeloggt → Sidebar anzeigen
 st.sidebar.markdown("### Navigation")
 st.sidebar.write("🏠 Start")
 st.sidebar.write("👤 Profilverwaltung")
