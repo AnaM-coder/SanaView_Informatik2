@@ -1,20 +1,19 @@
 import streamlit as st
 import pandas as pd
+from datetime import date
 from utils.data_manager import DataManager
 from utils.login_manager import LoginManager
-from datetime import date
 
-# === Login prüfen ===
+# === Login absichern ===
 LoginManager().go_to_login("Start.py")
 username = st.session_state.get("username")
 if not username:
     st.stop()
 
-# === Session Key & Datei ===
+# === DataManager & SessionState
 session_key = "profil_daten"
 data_manager = DataManager()
 
-# === Benutzerspezifisch laden ===
 data_manager.load_user_data(
     session_state_key=session_key,
     file_name="profil.csv",
@@ -24,20 +23,19 @@ data_manager.load_user_data(
     ])
 )
 
-# === Layout ===
-st.title("👤 Profilverwaltung")
+# === UI: Formular
+st.title("Profilverwaltung")
 st.subheader("Persönliche Angaben")
 
 col1, col2 = st.columns(2)
 with col1:
-    name = st.text_input("Name")
+    name = st.text_input("Name*", help="Pflichtfeld")
     geburtsdatum = st.date_input("Geburtsdatum", value=date(2000, 1, 1))
-
 with col2:
-    vorname = st.text_input("Vorname")
-    geschlecht = st.radio("Geschlecht", ["Weiblich", "Männlich"], key="geschlecht_radio")
+    vorname = st.text_input("Vorname*", help="Pflichtfeld")
+    geschlecht = st.radio("Geschlecht*", ["Weiblich", "Männlich"], horizontal=True)
 
-schwanger = st.radio("Schwanger", ["Ja", "Nein", "Weiss nicht"], key="schwanger_radio")
+schwanger = st.radio("Schwanger*", ["Ja", "Nein", "Weiss nicht"], horizontal=True)
 
 herkunft = st.text_input("Herkunft / ethnischer Hintergrund")
 
@@ -46,10 +44,10 @@ vorerkrankung = st.text_area("Vorerkrankung")
 medikamente = st.text_area("Medikamente")
 allergien = st.text_area("Allergien / Besonderheiten")
 
-# === Speichern ===
+# === Validierung & Speichern
 if st.button("Profil speichern"):
     if not name or not vorname or not geschlecht or not schwanger:
-        st.error("❌ Bitte füllen Sie alle Pflichtfelder aus: Name, Vorname, Geschlecht und Schwanger.")
+        st.error("❌ Bitte füllen Sie alle mit * markierten Pflichtfelder aus.")
     else:
         eintrag = {
             "Name": name,
@@ -64,8 +62,8 @@ if st.button("Profil speichern"):
         }
 
         data_manager.append_record(session_state_key=session_key, record_dict=eintrag)
-        st.success(" Profil erfolgreich gespeichert!")
+        st.success("Profil erfolgreich gespeichert!")
 
-# === Zurück zur Startseite ===
+# === Navigation
 if st.button("Zurück zur Startseite"):
     st.switch_page("Start.py")
