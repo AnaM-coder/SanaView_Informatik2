@@ -19,20 +19,22 @@ if not st.session_state.get("authentication_status", False):
 # ✅ Eingeloggt → Seite anzeigen
 username = st.session_state.get("username", "Unbekannt")
 
-# === LOGO ZENTRIERT ===
-st.markdown("<div style='text-align: center;'>", unsafe_allow_html=True)
-if os.path.exists("img/sanaview_logo.png"):
-    st.image("img/sanaview_logo.png", width=150)
-else:
-    st.warning("⚠️ Logo nicht gefunden.")
-st.markdown("</div>", unsafe_allow_html=True)
+# === LOGO OBEN LINKS ===
+col_logo, col_space = st.columns([1, 5])
+with col_logo:
+    if os.path.exists("img/sanaview_logo.png"):
+        st.image("img/sanaview_logo.png", width=180)  # größer & links
+    else:
+        st.warning("⚠️ Logo nicht gefunden.")
 
-# === Titel & Text ===
+# === Titel & Text zentriert ===
+st.markdown("<div style='text-align: center;'>", unsafe_allow_html=True)
 st.markdown("## 🧬 Willkommen bei SanaView")
 st.markdown("""
-Diese App hilft Ihnen dabei, Ihre Werte sicher zu speichern – 
+Diese App hilft Ihnen dabei, Ihre Werte sicher zu speichern –  
 ohne Diagnose, dennoch mit Überblick.
 """)
+st.markdown("</div>", unsafe_allow_html=True)
 
 # === Eingeloggt-Box ===
 st.markdown(f"""
@@ -42,7 +44,7 @@ st.markdown(f"""
 </div>
 """, unsafe_allow_html=True)
 
-# === Autoren ===
+# === Autorenbereich ===
 st.markdown("### Autoren")
 st.write("""
 Diese App wurde im Rahmen des Moduls *Informatik 2* an der **ZHAW** entwickelt von:
