@@ -12,7 +12,7 @@ if os.path.exists(csv_path):
 else:
     labor_tabelle = pd.DataFrame(columns=["Laborwert", "Wert", "Einheit", "Datum", "Referenz", "Ampel"])
 
-st.title("🧪 Laborwerte – Eingabe")
+st.title(" Laborwerte – Eingabe")
 
 # === Laboroptionen ===
 laboroptionen = {
