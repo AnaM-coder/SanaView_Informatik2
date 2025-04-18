@@ -1,42 +1,63 @@
 import streamlit as st
-import pandas as pd
-from datetime import datetime
+import datetime
 
-def show_labor():
-    st.title("🧪 Laborwerte erfassen")
+def show_laborwerte():
+    st.title(" Laborwerte – Eingabe")
 
-    st.markdown("Bitte wählen Sie den Laborwert-Typ und geben Sie Ihre Messung ein:")
+    # Liste möglicher Laborwerte
+    laboroptionen = {
+        "CRP": {"einheit": "mg/L", "ref_min": 0, "ref_max": 5},
+        "TSH": {"einheit": "mIU/L", "ref_min": 0.4, "ref_max": 4.0},
+        "Glucose": {"einheit": "mg/dL", "ref_min": 70, "ref_max": 99}
+    }
 
-    # Beispiel: Liste von Laborwerten
-    laboroptionen = ["Blutzucker", "Cholesterin", "HbA1c", "Leukozyten"]
-    labortyp = st.selectbox("Laborwert-Typ", laboroptionen)
+    # Dropdown Auswahl
+    st.subheader("Auswahl des Laborwerts")
+    ausgewählt = st.selectbox("Laborwert auswählen", list(laboroptionen.keys()))
 
+    # Automatisch Einheit + Referenzbereich einfüllen
+    einheit = laboroptionen[ausgewählt]["einheit"]
+    ref_min = laboroptionen[ausgewählt]["ref_min"]
+    ref_max = laboroptionen[ausgewählt]["ref_max"]
+
+    # Eingabefelder
     col1, col2 = st.columns(2)
     with col1:
-        datum = st.date_input("Datum", value=datetime.today())
+        wert = st.number_input("Wert", min_value=0.0, step=0.1)
+        datum = st.date_input("Datum", value=datetime.date.today())
     with col2:
-        wert = st.number_input("Wert", min_value=0.0, format="%.2f")
+        st.text_input("Einheit", value=einheit, disabled=True)
+        st.text_input("Referenzbereich", value=f"{ref_min} - {ref_max} {einheit}", disabled=True)
 
-    kommentar = st.text_area("Kommentar")
-
-    # Initialisiere DataFrame in Session (einmalig)
+    # Session-Tabelle vorbereiten
     if "labor_tabelle" not in st.session_state:
-        st.session_state.labor_tabelle = pd.DataFrame(columns=["Datum", "Typ", "Wert", "Kommentar"])
+        st.session_state.labor_tabelle = []
 
-    # Speichern
-    if st.button("➕ Wert hinzufügen"):
-        neue_zeile = {
-            "Datum": datum.strftime("%Y-%m-%d"),
-            "Typ": labortyp,
+    # Speichern-Button
+    if st.button(" Speichern"):
+        # Ampelfarbe bestimmen
+        if wert < ref_min:
+            ampel = "🟡 (zu niedrig)"
+        elif wert > ref_max:
+            ampel = "🔴 (zu hoch)"
+        else:
+            ampel = "🟢 (normal)"
+
+        st.session_state.labor_tabelle.append({
+            "Laborwert": ausgewählt,
             "Wert": wert,
-            "Kommentar": kommentar
-        }
-        st.session_state.labor_tabelle = pd.concat(
-            [st.session_state.labor_tabelle, pd.DataFrame([neue_zeile])],
-            ignore_index=True
-        )
-        st.success("✅ Wert erfolgreich hinzugefügt.")
+            "Einheit": einheit,
+            "Datum": datum,
+            "Referenz": f"{ref_min}–{ref_max}",
+            "Ampel": ampel
+        })
+        st.success("✅ Eintrag erfolgreich gespeichert!")
 
-    st.markdown("---")
-    st.subheader("🗂️ Ihre bisherigen Einträge")
-    st.dataframe(st.session_state.labor_tabelle, use_container_width=True)
+    # Tabelle anzeigen
+    if st.session_state.labor_tabelle:
+        st.markdown("---")
+        st.subheader("📁 Ihre bisherigen Einträge")
+        st.dataframe(st.session_state.labor_tabelle, use_container_width=True)
+
+# Direkt aufrufen
+show_laborwerte()
