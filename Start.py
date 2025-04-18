@@ -16,8 +16,6 @@ if not st.session_state.get("authentication_status", False):
     st.stop()
 
 # === Kopfbereich: nur linke Spalte (Logout + Logo)
-
-
 with col1:
     if st.button("Logout"):
         login_manager.logout()
