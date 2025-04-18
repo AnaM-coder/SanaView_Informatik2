@@ -26,16 +26,19 @@ with col2:
     if st.button("Logout"):
         login_manager.logout()
 
-# ==== Begrüßung ====
-st.markdown("## 🧬 Willkommen bei SanaView")
+# ==== Begrüßung in der Mitte ====
+st.markdown("<div style='text-align: center;'>", unsafe_allow_html=True)
+st.markdown("## 🧬 Willkommen bei SanaView", unsafe_allow_html=True)
 st.markdown(
-    "Ihre Werte sicher gespeichert – ohne Diagnose, dennoch mit Überblick."
+    "Ihre Werte sicher gespeichert – ohne Diagnose, dennoch mit Überblick.",
+    unsafe_allow_html=True
 )
+st.markdown("</div>", unsafe_allow_html=True)
 
 # ==== Eingeloggt-Info ====
 username = st.session_state.get("username", "Unbekannt")
 st.markdown(f"""
-<div style="background-color: #e6f2ff; padding: 12px; border-radius: 10px; margin-top: 25px; margin-bottom: 30px;">
+<div style="background-color: #e6f2ff; padding: 12px; border-radius: 10px; margin-top: 25px; margin-bottom: 30px; text-align: center;">
     👋 <strong>Eingeloggt als:</strong> {username}
 </div>
 """, unsafe_allow_html=True)
