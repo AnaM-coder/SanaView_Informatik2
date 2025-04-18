@@ -23,7 +23,7 @@ username = st.session_state.get("username", "Unbekannt")
 col_logo, col_space = st.columns([1, 5])
 with col_logo:
     if os.path.exists("img/sanaview_logo.png"):
-        st.image("img/sanaview_logo.png", width=280)  # ✅ Noch größer gemacht
+        st.image("img/sanaview_logo.png", width=500)  
     else:
         st.warning("⚠️ Logo nicht gefunden.")
 
@@ -32,7 +32,7 @@ st.markdown("""
 <div style='text-align: center; margin-top: -20px;'>
     <h1 style='font-size: 36px;'>🧬 Willkommen bei SanaView</h1>
     <p style='font-size: 18px; color: gray; margin-top: -10px;'>
-        Ihre Werte sicher gespeichert – ohne Diagnose, aber mit Überblick.
+        Ihre Werte sicher gespeichert – ohne Diagnose, dennoch mit Überblick.
     </p>
 </div>
 """, unsafe_allow_html=True)
