@@ -67,13 +67,7 @@ if st.button("💾 Speichern"):
         "Ampel": ampel
     }
 
-    # DataFrame aktualisieren
-    st.session_state[session_key] = pd.concat(
-        [st.session_state[session_key], pd.DataFrame([neuer_eintrag])],
-        ignore_index=True
-    )
-
-    # Speichern über DataManager
+    # Nur DataManager verwenden → der aktualisiert SessionState & speichert
     data_manager.append_record(session_state_key=session_key, record_dict=neuer_eintrag)
 
     st.success("✅ Laborwert erfolgreich gespeichert!")
