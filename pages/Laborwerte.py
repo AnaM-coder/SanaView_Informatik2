@@ -16,8 +16,18 @@ if not username:
 # === Initialisiere DataManager
 data_manager = DataManager()
 
+# === SessionKey für Laborwerte definieren
+session_key = "laborwerte_df"
+
+# === Benutzerdaten laden (Datei wird im Ordner user_data_<username> gespeichert)
+data_manager.load_user_data(
+    session_state_key=session_key,
+    file_name="laborwerte_df.csv",
+    initial_value=pd.DataFrame(columns=["Datum", "Laborwert", "Wert", "Einheit", "Referenz", "Ampel"])
+)
+
 # === Titel
-st.title("🧪 Laborwerte – Eingabe")
+st.title(" Laborwerte – Eingabe")
 
 # === Optionen
 laboroptionen = {
@@ -42,15 +52,8 @@ with col2:
     st.text_input("Einheit", value=einheit, disabled=True)
     st.text_input("Referenz", value=f"{ref_min}–{ref_max} {einheit}", disabled=True)
 
-# SessionKey für Laborwerte definieren
-session_key = "laborwerte_df"
-
-# SessionState initialisieren (falls nötig)
-if session_key not in st.session_state:
-    st.session_state[session_key] = pd.DataFrame(columns=["Datum", "Laborwert", "Wert", "Einheit", "Referenz", "Ampel"])
-
 # Speichern
-if st.button("💾 Speichern"):
+if st.button(" Speichern"):
     if wert < ref_min:
         ampel = "🟡 (zu niedrig)"
     elif wert > ref_max:
@@ -67,13 +70,11 @@ if st.button("💾 Speichern"):
         "Ampel": ampel
     }
 
-    # Nur DataManager verwenden → der aktualisiert SessionState & speichert
     data_manager.append_record(session_state_key=session_key, record_dict=neuer_eintrag)
-
     st.success("✅ Laborwert erfolgreich gespeichert!")
 
 # Tabelle anzeigen
 if not st.session_state[session_key].empty:
     st.markdown("---")
-    st.subheader("📋 Ihre gespeicherten Laborwerte")
+    st.subheader(" Ihre gespeicherten Laborwerte")
     st.dataframe(st.session_state[session_key], use_container_width=True)
