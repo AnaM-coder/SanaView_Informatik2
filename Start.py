@@ -20,7 +20,7 @@ col_logo, col_logout = st.columns([6, 1])
 
 with col_logo:
     if os.path.exists("img/sanaview_logo.png"):
-        st.image("img/sanaview_logo.png", width=500)
+        st.image("img/sanaview_logo.png", width=140)
     else:
         st.warning("⚠️ Logo nicht gefunden.")
 
