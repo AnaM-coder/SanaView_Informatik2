@@ -1,75 +1,63 @@
 import streamlit as st
-import pandas as pd
 import datetime
-from utils.data_manager import DataManager
-from utils.login_manager import LoginManager
 
-# Login & DataManager initialisieren
-data_manager = DataManager(fs_protocol='webdav', fs_root_folder="SanaView2")
-login_manager = LoginManager(data_manager)
-login_manager.login_register()
+def show_laborwerte():
+    st.title(" Laborwerte – Eingabe")
 
-# Authentifizierung prüfen
-if not st.session_state.get("authentication_status", False):
-    st.stop()
+    # Liste möglicher Laborwerte
+    laboroptionen = {
+        "CRP": {"einheit": "mg/L", "ref_min": 0, "ref_max": 5},
+        "TSH": {"einheit": "mIU/L", "ref_min": 0.4, "ref_max": 4.0},
+        "Glucose": {"einheit": "mg/dL", "ref_min": 70, "ref_max": 99}
+    }
 
-username = st.session_state.get("username", "Unbekannt")
-filename = f"{username}_laborwerte.csv"
+    # Dropdown Auswahl
+    st.subheader("Auswahl des Laborwerts")
+    ausgewählt = st.selectbox("Laborwert auswählen", list(laboroptionen.keys()))
 
-# Standardstruktur
-initial_df = pd.DataFrame(columns=["Datum", "Laborwert", "Wert", "Einheit", "Referenz", "Ampel"])
+    # Automatisch Einheit + Referenzbereich einfüllen
+    einheit = laboroptionen[ausgewählt]["einheit"]
+    ref_min = laboroptionen[ausgewählt]["ref_min"]
+    ref_max = laboroptionen[ausgewählt]["ref_max"]
 
-# Daten laden
-try:
-    df = data_manager.load_user_file(filename, as_df=True, parse_dates=["Datum"])
-except FileNotFoundError:
-    df = initial_df.copy()
+    # Eingabefelder
+    col1, col2 = st.columns(2)
+    with col1:
+        wert = st.number_input("Wert", min_value=0.0, step=0.1)
+        datum = st.date_input("Datum", value=datetime.date.today())
+    with col2:
+        st.text_input("Einheit", value=einheit, disabled=True)
+        st.text_input("Referenzbereich", value=f"{ref_min} - {ref_max} {einheit}", disabled=True)
 
-# UI: Eingabe
-st.title("🧪 Laborwerte – Eingabe")
+    # Session-Tabelle vorbereiten
+    if "labor_tabelle" not in st.session_state:
+        st.session_state.labor_tabelle = []
 
-laboroptionen = {
-    "CRP": {"einheit": "mg/L", "ref_min": 0, "ref_max": 5},
-    "TSH": {"einheit": "mIU/L", "ref_min": 0.4, "ref_max": 4.0},
-    "Glucose": {"einheit": "mg/dL", "ref_min": 70, "ref_max": 99}
-}
+    # Speichern-Button
+    if st.button(" Speichern"):
+        # Ampelfarbe bestimmen
+        if wert < ref_min:
+            ampel = "🟡 (zu niedrig)"
+        elif wert > ref_max:
+            ampel = "🔴 (zu hoch)"
+        else:
+            ampel = "🟢 (normal)"
 
-ausgewählt = st.selectbox("Laborwert auswählen", list(laboroptionen.keys()))
-einheit = laboroptionen[ausgewählt]["einheit"]
-ref_min = laboroptionen[ausgewählt]["ref_min"]
-ref_max = laboroptionen[ausgewählt]["ref_max"]
+        st.session_state.labor_tabelle.append({
+            "Laborwert": ausgewählt,
+            "Wert": wert,
+            "Einheit": einheit,
+            "Datum": datum,
+            "Referenz": f"{ref_min}–{ref_max}",
+            "Ampel": ampel
+        })
+        st.success("✅ Eintrag erfolgreich gespeichert!")
 
-col1, col2 = st.columns(2)
-with col1:
-    wert = st.number_input("Wert", min_value=0.0, step=0.1)
-    datum = st.date_input("Datum", value=datetime.date.today())
-with col2:
-    st.text_input("Einheit", value=einheit, disabled=True)
-    st.text_input("Referenzbereich", value=f"{ref_min} – {ref_max} {einheit}", disabled=True)
+    # Tabelle anzeigen
+    if st.session_state.labor_tabelle:
+        st.markdown("---")
+        st.subheader(" Ihre bisherigen Einträge")
+        st.dataframe(st.session_state.labor_tabelle, use_container_width=True)
 
-# Speichern
-if st.button("💾 Speichern"):
-    if wert < ref_min:
-        ampel = "🟡 (zu niedrig)"
-    elif wert > ref_max:
-        ampel = "🔴 (zu hoch)"
-    else:
-        ampel = "🟢 (normal)"
-
-    neuer_eintrag = pd.DataFrame([{
-        "Datum": datum,
-        "Laborwert": ausgewählt,
-        "Wert": wert,
-        "Einheit": einheit,
-        "Referenz": f"{ref_min}–{ref_max}",
-        "Ampel": ampel
-    }])
-
-    df = pd.concat([df, neuer_eintrag], ignore_index=True)
-    data_manager.save_user_file(filename, df)
-    st.success("✅ Laborwert erfolgreich gespeichert!")
-
-# Anzeige
-st.markdown("---")
-st.subheader("🧾 Ihre bisherigen Einträge")
-st.dataframe(df.sort_values("Datum", ascending=False), use_container_width=True)
+# Direkt aufrufen
+show_laborwerte()
