@@ -15,25 +15,27 @@ login_manager.login_register()
 if not st.session_state.get("authentication_status", False):
     st.stop()
 
-# ==== Kopfbereich: Logo + Logout nebeneinander ====
-col1, col2 = st.columns([8, 1])
-with col1:
-    if os.path.exists("img/sanaview_logo.png"):
-        st.image("img/sanaview_logo.png", width=160)
-    else:
-        st.warning("⚠️ Logo nicht gefunden.")
-with col2:
-    if st.button("Logout"):
-        login_manager.logout()
+# ==== Kopfbereich: Logo und Logout in einer Zeile ====
+st.markdown("""
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0;">
+    <div>
+        <img src="img/sanaview_logo.png" alt="SanaView Logo" style="width: 160px;">
+    </div>
+    <div>
+        <form action="" method="post">
+            <button style="background-color: #f44336; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;" onclick="logout()">Logout</button>
+        </form>
+    </div>
+</div>
+""", unsafe_allow_html=True)
 
 # ==== Begrüßung in der Mitte ====
-st.markdown("<div style='text-align: center;'>", unsafe_allow_html=True)
-st.markdown("## 🧬 Willkommen bei SanaView", unsafe_allow_html=True)
-st.markdown(
-    "Ihre Werte sicher gespeichert – ohne Diagnose, dennoch mit Überblick.",
-    unsafe_allow_html=True
-)
-st.markdown("</div>", unsafe_allow_html=True)
+st.markdown("""
+<div style="text-align: center; margin-top: 50px;">
+    <h1>🧬 Willkommen bei SanaView</h1>
+    <p>Ihre Werte sicher gespeichert – ohne Diagnose, dennoch mit Überblick.</p>
+</div>
+""", unsafe_allow_html=True)
 
 # ==== Eingeloggt-Info ====
 username = st.session_state.get("username", "Unbekannt")
