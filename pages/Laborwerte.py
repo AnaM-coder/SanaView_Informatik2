@@ -17,7 +17,6 @@ if not username:
 data_manager = DataManager()
 
 # === Benutzerdaten laden → Dateiname basierend auf Benutzername ===
-session_key = "laborwerte"
 file_name = f"{username}_daten.csv"  # Dynamischer Dateiname basierend auf Benutzername
 
 data_manager.load_user_data(
