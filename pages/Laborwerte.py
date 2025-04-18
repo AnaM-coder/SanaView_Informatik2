@@ -10,7 +10,6 @@ LoginManager().go_to_login('Start.py')
 # === Logout-Funktion ===
 def logout():
     st.session_state.clear()  # Löscht alle Session-Daten
-    st.experimental_rerun()  # Seite neu laden
 
 # === Nutzername prüfen ===
 username = st.session_state.get("username")
