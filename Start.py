@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import os
+import base64
 from utils.data_manager import DataManager
 from utils.login_manager import LoginManager
 
@@ -19,29 +20,26 @@ if not st.session_state.get("authentication_status", False):
 # ✅ Eingeloggt → Seite anzeigen
 username = st.session_state.get("username", "Unbekannt")
 
-# === GROSSES LOGO OBEN LINKS PER CSS ===
-st.markdown("""
-    <style>
-        .logo-container {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-        }
-        .logo-container img {
-            height: 120px; /* 👈 Hier kannst du die Größe ändern */
-        }
-    </style>
-    <div class="logo-container">
-        <img src="img/sanaview_logo.png" alt="SanaView Logo">
-    </div>
-""", unsafe_allow_html=True)
+# === LOGO OBEN LINKS – stabil mit base64 ===
+logo_path = "img/sanaview_logo.png"
+if os.path.exists(logo_path):
+    with open(logo_path, "rb") as image_file:
+        encoded_logo = base64.b64encode(image_file.read()).decode()
 
-# === Titel & Untertitel ZENTRIERT ===
+    st.markdown(f"""
+        <div style="position: absolute; top: 20px; left: 20px;">
+            <img src="data:image/png;base64,{encoded_logo}" alt="SanaView Logo" style="height: 160px;" />
+        </div>
+    """, unsafe_allow_html=True)
+else:
+    st.warning("⚠️ Logo konnte nicht geladen werden.")
+
+# === Titel & Untertitel zentriert ===
 st.markdown("""
-<div style='text-align: center; margin-top: 50px;'>
+<div style='text-align: center; margin-top: 60px;'>
     <h1 style='font-size: 36px;'>🧬 Willkommen bei SanaView</h1>
     <p style='font-size: 18px; color: gray; margin-top: -10px;'>
-        Ihre Werte sicher gespeichert – ohne Diagnose, aber mit Überblick.
+        Ihre Werte sicher gespeichert – ohne Diagnose, dennoch mit Überblick.
     </p>
 </div>
 """, unsafe_allow_html=True)
@@ -59,7 +57,7 @@ st.markdown("### Autoren")
 st.write("""
 Diese App wurde im Rahmen des Moduls *Informatik 2* an der **ZHAW** entwickelt von:
 
-- Ana Maria ([andraana@students.zhaw.com](mailto:andraana@students.zhaw.com))  
-- Lou-Salomé Frehner ([frehnlou@students.zhaw.ch](mailto:frehnlou@students.zhaw.ch))  
-- Cristiana Bastos ([pereicri@students.zhaw.ch](mailto:pereicri@students.zhaw.ch))
+- Ana Maria (andraana@students.zhaw.com)  
+- Lou-Salomé Frehner (frehnlou@students.zhaw.ch)  
+- Cristiana Bastos (pereicri@students.zhaw.ch)
 """)
