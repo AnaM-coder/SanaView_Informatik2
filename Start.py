@@ -15,36 +15,40 @@ login_manager.login_register()
 if not st.session_state.get("authentication_status", False):
     st.stop()
 
-# === Links oben: Logout & Logo ===
-col1, col2 = st.columns([1, 10])
+# === Kopfbereich: Logo links
+col_logo, col_logout = st.columns([6, 1])
 
-with col1:
-    if st.button("Logout"):
-        login_manager.logout()
-
+with col_logo:
     if os.path.exists("img/sanaview_logo.png"):
-        st.image("img/sanaview_logo.png", width=120)
+        st.image("img/sanaview_logo.png", width=140)
     else:
         st.warning("⚠️ Logo nicht gefunden.")
+
+with col_logout:
+    st.markdown("<div style='text-align: right;'>", unsafe_allow_html=True)
+    if st.button("Logout"):
+        login_manager.logout()
+    st.markdown("</div>", unsafe_allow_html=True)
 
 # === Titel & Beschreibung zentriert ===
 st.markdown("<h1 style='text-align: center;'>🧬 Willkommen bei SanaView</h1>", unsafe_allow_html=True)
 st.markdown("<p style='text-align: center; font-size:18px; color:gray;'>Ihre Werte sicher gespeichert – ohne Diagnose, dennoch mit Überblick.</p>", unsafe_allow_html=True)
 
-# === Eingeloggt-Hinweis
+# === Eingeloggt-Hinweis ===
 username = st.session_state.get("username", "Unbekannt")
 st.markdown(f"""
-<div style="background-color: #e6f2ff; padding: 12px; border-radius: 10px; margin-top: 25px; margin-bottom: 30px;">
+<div style="background-color: #e6f2ff; padding: 12px; border-radius: 10px;
+            margin-top: 25px; margin-bottom: 30px;">
     👋 <strong>Eingeloggt als:</strong> {username}
 </div>
 """, unsafe_allow_html=True)
 
-# === Autoren-Info
+# === Autoren-Info ===
 st.markdown("### Autoren")
 st.write("""
 Diese App wurde im Rahmen des Moduls *Informatik 2* an der **ZHAW** entwickelt von:
 
-- Ana Maria (andraana@students.zhaw.com) 
-- Lou-Salomé Frehner (frehnlou@students.zhaw.ch)  
-- Cristiana Bastos (pereicri@students.zhaw.ch)
+- Ana Maria ([andraana@students.zhaw.com](mailto:andraana@students.zhaw.com))  
+- Lou-Salomé Frehner ([frehnlou@students.zhaw.ch](mailto:frehnlou@students.zhaw.ch))  
+- Cristiana Bastos ([pereicri@students.zhaw.ch](mailto:pereicri@students.zhaw.ch))
 """)
