@@ -7,11 +7,20 @@ from utils.login_manager import LoginManager
 # === Login-Schutz ===
 LoginManager().go_to_login('Start.py')
 
+# === Logout-Funktion ===
+def logout():
+    st.session_state.clear()  # Löscht alle Session-Daten
+    st.success("✅ Erfolgreich abgemeldet!")
+    st.experimental_rerun()  # Seite neu laden
+
 # === Nutzername prüfen ===
 username = st.session_state.get("username")
 if not username:
     st.error("⚠️ Kein Benutzer eingeloggt! Anmeldung erforderlich.")
     st.stop()
+
+# === Logout-Button in der Hauptansicht ===
+st.button("🚪 Logout", on_click=logout)
 
 # === DataManager initialisieren ===
 data_manager = DataManager()
@@ -27,7 +36,7 @@ data_manager.load_user_data(
 )
 
 # === Titel & Laborwert-Auswahl ===
-st.title("🧪 Laborwerte – Eingabe")
+st.title(" Laborwerte – Eingabe")
 
 laboroptionen = {
     "CRP": {"einheit": "mg/L", "ref_min": 0, "ref_max": 5},
@@ -50,7 +59,7 @@ with col2:
     st.text_input("Referenz", value=f"{ref_min}–{ref_max} {einheit}", disabled=True)
 
 # === Speichern ===
-if st.button("💾 Speichern"):
+if st.button(" Speichern"):
     if wert < ref_min:
         ampel = "🟡 (zu niedrig)"
     elif wert > ref_max:
@@ -72,10 +81,10 @@ if st.button("💾 Speichern"):
         record_dict=neuer_eintrag
     )
 
-    st.success("✅ Laborwert erfolgreich gespeichert!")
+    st.success(" Laborwert erfolgreich gespeichert!")
 
 # === Tabelle anzeigen ===
 if not st.session_state[session_key].empty:
     st.markdown("---")
-    st.subheader("📋 Ihre gespeicherten Laborwerte")
+    st.subheader(" Ihre gespeicherten Laborwerte")
     st.dataframe(st.session_state[session_key], use_container_width=True)
