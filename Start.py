@@ -7,15 +7,6 @@ from utils.login_manager import LoginManager
 # Seitenkonfiguration
 st.set_page_config(page_title="SanaView", layout="wide")
 
-# Sidebar-Navigation (nur optisch – keine Logik, noch!)
-st.sidebar.markdown("### Navigation")
-st.sidebar.write(" Anmeldung / Registrierung")
-st.sidebar.write("🏠 Start")
-st.sidebar.write("👤 Profilverwaltung")
-st.sidebar.write("📊 Laborwerte anschauen, eingeben, verwalten")
-st.sidebar.write("📈 Verlauf")
-st.sidebar.write("ℹ️ Info-Seite")
-
 # Initialisiere DataManager & Login
 data_manager = DataManager(fs_protocol='webdav', fs_root_folder="SanaView2")
 login_manager = LoginManager(data_manager)
@@ -26,7 +17,15 @@ if "authentication_status" not in st.session_state or not st.session_state["auth
     st.warning("🔒 Sie sind nicht eingeloggt. Bitte melden Sie sich an.")
     st.stop()
 
-# Username
+# ✅ Sidebar nur anzeigen, wenn eingeloggt
+st.sidebar.markdown("### Navigation")
+st.sidebar.write("🏠 Start")
+st.sidebar.write("👤 Profilverwaltung")
+st.sidebar.write("📊 Laborwerte anschauen, eingeben, verwalten")
+st.sidebar.write("📈 Verlauf")
+st.sidebar.write("ℹ️ Info-Seite")
+
+# Username auslesen
 username = st.session_state.get("username", "Unbekannt")
 
 # === LOGO ZENTRIERT ===
