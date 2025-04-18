@@ -23,7 +23,7 @@ username = st.session_state.get("username", "Unbekannt")
 col_logo, col_space = st.columns([1, 5])
 with col_logo:
     if os.path.exists("img/sanaview_logo.png"):
-        st.image("img/sanaview_logo.png", width=220)  # 👉 GRÖSSER gemacht
+        st.image("img/sanaview_logo.png", width=280)  # ✅ Noch größer gemacht
     else:
         st.warning("⚠️ Logo nicht gefunden.")
 
