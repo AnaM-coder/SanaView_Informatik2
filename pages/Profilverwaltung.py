@@ -1,29 +1,68 @@
 import streamlit as st
+import pandas as pd
+from utils.data_manager import DataManager
+from utils.login_manager import LoginManager
+from datetime import date
 
-def show_profil_verwaltung():
-    st.title("Profilverwaltung")
-    st.subheader("Persönliche Angaben")
+# === Login prüfen ===
+LoginManager().go_to_login("Start.py")
+username = st.session_state.get("username")
+if not username:
+    st.stop()
 
-    col1, col2 = st.columns(2)
-    with col1:
-        name = st.text_input("Name")
-        geschlecht = st.radio("Geschlecht", ["Weiblich", "Männlich"])
-        schwanger = st.radio("Schwanger", ["Ja", "Nein", "Weiss nicht"])
-    with col2:
-        vorname = st.text_input("Vorname")
-        geburtsdatum = st.date_input("Geburtsdatum")
+# === Session Key & Datei ===
+session_key = "profil_daten"
+data_manager = DataManager()
 
-    herkunft = st.text_input("Herkunft / ethnischer Hintergrund")
+# === Benutzerspezifisch laden ===
+data_manager.load_user_data(
+    session_state_key=session_key,
+    file_name="profil.csv",
+    initial_value=pd.DataFrame(columns=[
+        "Name", "Vorname", "Geburtsdatum", "Geschlecht", "Schwanger",
+        "Herkunft", "Vorerkrankung", "Medikamente", "Allergien"
+    ])
+)
 
-    st.subheader("Gesundheit")
-    vorerkrankung = st.text_area("Vorerkrankungen")
-    medikamente = st.text_area("Medikamente")
-    allergien = st.text_area("Allergien / Besonderheiten")
+# === Layout ===
+st.title("Profilverwaltung")
+st.subheader("Persönliche Angaben")
 
-    col1, col2 = st.columns(2)
-    with col1:
-        if st.button(" Profil speichern"):
-            st.success(" Profil erfolgreich gespeichert!")
-    with col2:
-        if st.button("Zurück zur Startseite"):
-            st.switch_page("Start.py")  # funktioniert nur bei multipage Setupv
+col1, col2 = st.columns(2)
+with col1:
+    name = st.text_input("Name")
+    geburtsdatum = st.date_input("Geburtsdatum", value=date(2000, 1, 1))
+
+with col2:
+    vorname = st.text_input("Vorname")
+    geschlecht = st.radio("Geschlecht", ["Weiblich", "Männlich"])
+
+schwanger = st.radio("Schwanger", ["Ja", "Nein", "Weiss nicht"])
+
+herkunft = st.text_input("Herkunft / ethnischer Hintergrund")
+
+st.subheader("Gesundheit")
+vorerkrankung = st.text_area("Vorerkrankung")
+medikamente = st.text_area("Medikamente")
+allergien = st.text_area("Allergien / Besonderheiten")
+
+# === Speichern ===
+if st.button("Profil speichern"):
+    eintrag = {
+        "Name": name,
+        "Vorname": vorname,
+        "Geburtsdatum": geburtsdatum.strftime("%d.%m.%Y"),
+        "Geschlecht": geschlecht,
+        "Schwanger": schwanger,
+        "Herkunft": herkunft,
+        "Vorerkrankung": vorerkrankung,
+        "Medikamente": medikamente,
+        "Allergien": allergien
+    }
+
+    data_manager.append_record(session_state_key=session_key, record_dict=eintrag)
+    st.success(" Profil gespeichert!")
+
+# === Zurück zur Startseite ===
+if st.button("Zurück zur Startseite"):
+    st.switch_page("Start.py")
