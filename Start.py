@@ -16,8 +16,7 @@ if not st.session_state.get("authentication_status", False):
     st.stop()
 
 # === Sidebar Navigation ===
-st.sidebar.title("Navigation")
-seite = st.sidebar.radio("Seite auswählen", ["Start", "Profilverwaltung", "Laborwerte"])
+seite = st.sidebar.radio("Navigation", ["Start", "Profilverwaltung", "Laborwerte"])
 
 # === Logout oben rechts ===
 logout_col = st.columns([10, 1])[1]
@@ -52,3 +51,11 @@ if seite == "Start":
     - Lou-Salomé Frehner ([frehnlou@students.zhaw.ch](mailto:frehnlou@students.zhaw.ch))  
     - Cristiana Bastos ([pereicri@students.zhaw.ch](mailto:pereicri@students.zhaw.ch))
     """)
+
+elif seite == "Profilverwaltung":
+    from pages.Profilverwaltung import show_profil_verwaltung
+    show_profil_verwaltung()
+
+elif seite == "Laborwerte":
+    from pages.Laborwerte import show_labor
+    show_labor()
