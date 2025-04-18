@@ -18,16 +18,16 @@ if not st.session_state.get("authentication_status", False):
 
 username = st.session_state.get("username", "Unbekannt")
 
-# === LOGO & TITEL in einer Linie ===
+# === LOGO & TITEL nebeneinander, Text leicht nach unten versetzt ===
 logo_path = "img/sanaview_logo.png"
 if os.path.exists(logo_path):
     with open(logo_path, "rb") as image_file:
         encoded_logo = base64.b64encode(image_file.read()).decode()
 
     st.markdown(f"""
-    <div style="display: flex; align-items: center; gap: 25px; margin-top: 30px; margin-bottom: 30px;">
+    <div style="display: flex; align-items: flex-start; gap: 40px; margin-top: 30px; margin-bottom: 30px;">
         <img src="data:image/png;base64,{encoded_logo}" alt="SanaView Logo" style="height: 80px;" />
-        <div>
+        <div style="padding-top: 20px;">
             <h1 style="margin: 0;">🧬 Willkommen bei SanaView</h1>
             <p style="margin: 0; font-size: 16px; color: gray;">
                 Ihre Werte sicher gespeichert – ohne Diagnose, aber mit Überblick.
@@ -51,7 +51,6 @@ st.write("""
 Diese App wurde im Rahmen des Moduls *Informatik 2* an der **ZHAW** entwickelt von:
 
 - Ana Maria (andraana@students.zhaw.com)
-- Lou-Salomé Frehner (frehnlou@students.zhaw.ch)
+- Lou-Salomé Frehner (frehnlou@students.zhaw.ch)  
 - Cristiana Bastos (pereicri@students.zhaw.ch)
 """)
-
