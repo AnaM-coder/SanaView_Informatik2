@@ -11,7 +11,8 @@ login_manager.go_to_login("Start.py")
 
 # === Logout-Button ===
 if st.button("Logout"):
-    login_manager.logout()
+    LoginManager().logout()
+
 
 # === Nutzername aus Session holen ===
 username = st.session_state.get("username")
