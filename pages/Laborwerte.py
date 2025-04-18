@@ -1,20 +1,20 @@
 import streamlit as st
-import pandas as pd
 import datetime
-import os
+import pandas as pd
+from utils.data_manager import DataManager
+from utils.login_manager import LoginManager
 
-# === CSV-Dateipfad ===
-csv_path = "laborwerte.csv"
+# Login-Schutz
+LoginManager().go_to_login('Start.py')
 
-# === Bestehende Tabelle laden oder neu erstellen ===
-if os.path.exists(csv_path):
-    try:
-        labor_tabelle = pd.read_csv(csv_path)
-    except Exception as e:
-        st.error(f"Fehler beim Laden der CSV-Datei: {e}")
-        labor_tabelle = pd.DataFrame(columns=["Laborwert", "Wert", "Einheit", "Datum", "Referenz", "Ampel"])
-else:
-    labor_tabelle = pd.DataFrame(columns=["Laborwert", "Wert", "Einheit", "Datum", "Referenz", "Ampel"])
+# Nutzername prüfen
+username = st.session_state.get("username")
+if not username:
+    st.error("⚠️ Kein Benutzer eingeloggt! Anmeldung erforderlich.")
+    st.stop()
+
+# === Initialisiere DataManager
+data_manager = DataManager()
 
 # === Titel
 st.title("🧪 Laborwerte – Eingabe")
@@ -42,6 +42,13 @@ with col2:
     st.text_input("Einheit", value=einheit, disabled=True)
     st.text_input("Referenz", value=f"{ref_min}–{ref_max} {einheit}", disabled=True)
 
+# SessionKey für Laborwerte definieren
+session_key = "laborwerte_df"
+
+# SessionState initialisieren (falls nötig)
+if session_key not in st.session_state:
+    st.session_state[session_key] = pd.DataFrame(columns=["Datum", "Laborwert", "Wert", "Einheit", "Referenz", "Ampel"])
+
 # Speichern
 if st.button("💾 Speichern"):
     if wert < ref_min:
@@ -52,24 +59,27 @@ if st.button("💾 Speichern"):
         ampel = "🟢 (normal)"
 
     neuer_eintrag = {
+        "Datum": datum.strftime("%d.%m.%Y"),
         "Laborwert": ausgewählt,
         "Wert": wert,
         "Einheit": einheit,
-        "Datum": datum.strftime("%d.%m.%Y"),
         "Referenz": f"{ref_min}–{ref_max}",
         "Ampel": ampel
     }
 
-    labor_tabelle = pd.concat([labor_tabelle, pd.DataFrame([neuer_eintrag])], ignore_index=True)
+    # DataFrame aktualisieren
+    st.session_state[session_key] = pd.concat(
+        [st.session_state[session_key], pd.DataFrame([neuer_eintrag])],
+        ignore_index=True
+    )
 
-    try:
-        labor_tabelle.to_csv(csv_path, index=False)
-        st.success("✅ Dauerhaft gespeichert in 'laborwerte.csv'")
-    except Exception as e:
-        st.error(f"Fehler beim Speichern der CSV: {e}")
+    # Speichern über DataManager
+    data_manager.append_record(session_state_key=session_key, record_dict=neuer_eintrag)
 
-# Anzeige
-if not labor_tabelle.empty:
+    st.success("✅ Laborwert erfolgreich gespeichert!")
+
+# Tabelle anzeigen
+if not st.session_state[session_key].empty:
     st.markdown("---")
-    st.subheader("📋 Gespeicherte Laborwerte")
-    st.dataframe(labor_tabelle, use_container_width=True)
+    st.subheader("📋 Ihre gespeicherten Laborwerte")
+    st.dataframe(st.session_state[session_key], use_container_width=True)
