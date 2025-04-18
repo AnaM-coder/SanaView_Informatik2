@@ -15,9 +15,6 @@ login_manager.login_register()
 if not st.session_state.get("authentication_status", False):
     st.stop()
 
-# === Sidebar Navigation ===
-seite = st.sidebar.radio("Navigation", ["Start", "Laborwerte"])
-
 # === Logout oben rechts ===
 logout_col = st.columns([10, 1])[1]
 with logout_col:
