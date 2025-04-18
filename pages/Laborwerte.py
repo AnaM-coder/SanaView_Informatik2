@@ -56,7 +56,7 @@ def show_laborwerte():
     # Tabelle anzeigen
     if st.session_state.labor_tabelle:
         st.markdown("---")
-        st.subheader("📁 Ihre bisherigen Einträge")
+        st.subheader(" Ihre bisherigen Einträge")
         st.dataframe(st.session_state.labor_tabelle, use_container_width=True)
 
 # Direkt aufrufen
