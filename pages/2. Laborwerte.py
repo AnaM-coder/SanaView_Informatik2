@@ -2,13 +2,20 @@ import streamlit as st
 
 def show_labor():
     st.title("📊 Laborwerte")
-    st.write("Hier können Sie Ihre Blutzuckerwerte eintragen oder anschauen.")
+    st.subheader("Blutzuckerwert eingeben")
 
-    # Beispiel-Dataframe
-    data = {
-        "Datum": ["2025-04-18"],
-        "Wert (mg/dL)": [120],
-        "Kommentar": ["Morgens nüchtern"]
-    }
+    datum = st.date_input("Datum")
+    wert = st.number_input("Wert (mg/dL)", min_value=0)
+    kommentar = st.text_input("Kommentar")
 
-    st.dataframe(data)
+    if "labor_tabelle" not in st.session_state:
+        st.session_state.labor_tabelle = []
+
+    if st.button("➕ Wert speichern"):
+        st.session_state.labor_tabelle.append({"Datum": datum, "Wert": wert, "Kommentar": kommentar})
+        st.success("✅ Wert erfolgreich gespeichert!")
+
+    if st.session_state.labor_tabelle:
+        st.markdown("---")
+        st.subheader("📁 Ihre bisherigen Einträge")
+        st.dataframe(st.session_state.labor_tabelle)
