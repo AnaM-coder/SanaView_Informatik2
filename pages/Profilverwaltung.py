@@ -25,7 +25,7 @@ data_manager.load_user_data(
 )
 
 # === Layout ===
-st.title("Profilverwaltung")
+st.title("👤 Profilverwaltung")
 st.subheader("Persönliche Angaben")
 
 col1, col2 = st.columns(2)
@@ -35,9 +35,9 @@ with col1:
 
 with col2:
     vorname = st.text_input("Vorname")
-    geschlecht = st.radio("Geschlecht", ["Weiblich", "Männlich"])
+    geschlecht = st.radio("Geschlecht", ["Weiblich", "Männlich"], key="geschlecht_radio")
 
-schwanger = st.radio("Schwanger", ["Ja", "Nein", "Weiss nicht"])
+schwanger = st.radio("Schwanger", ["Ja", "Nein", "Weiss nicht"], key="schwanger_radio")
 
 herkunft = st.text_input("Herkunft / ethnischer Hintergrund")
 
@@ -48,20 +48,23 @@ allergien = st.text_area("Allergien / Besonderheiten")
 
 # === Speichern ===
 if st.button("Profil speichern"):
-    eintrag = {
-        "Name": name,
-        "Vorname": vorname,
-        "Geburtsdatum": geburtsdatum.strftime("%d.%m.%Y"),
-        "Geschlecht": geschlecht,
-        "Schwanger": schwanger,
-        "Herkunft": herkunft,
-        "Vorerkrankung": vorerkrankung,
-        "Medikamente": medikamente,
-        "Allergien": allergien
-    }
+    if not name or not vorname or not geschlecht or not schwanger:
+        st.error("❌ Bitte füllen Sie alle Pflichtfelder aus: Name, Vorname, Geschlecht und Schwanger.")
+    else:
+        eintrag = {
+            "Name": name,
+            "Vorname": vorname,
+            "Geburtsdatum": geburtsdatum.strftime("%d.%m.%Y"),
+            "Geschlecht": geschlecht,
+            "Schwanger": schwanger,
+            "Herkunft": herkunft,
+            "Vorerkrankung": vorerkrankung,
+            "Medikamente": medikamente,
+            "Allergien": allergien
+        }
 
-    data_manager.append_record(session_state_key=session_key, record_dict=eintrag)
-    st.success(" Profil gespeichert!")
+        data_manager.append_record(session_state_key=session_key, record_dict=eintrag)
+        st.success(" Profil erfolgreich gespeichert!")
 
 # === Zurück zur Startseite ===
 if st.button("Zurück zur Startseite"):
