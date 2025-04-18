@@ -10,6 +10,7 @@ LoginManager().go_to_login('Start.py')
 # === Logout-Funktion ===
 def logout():
     st.session_state.clear()  # Löscht alle Session-Daten
+    st.experimental_set_query_params()  # Setzt die URL-Parameter zurück
     st.success("✅ Erfolgreich abgemeldet!")
     st.experimental_rerun()  # Seite neu laden
 
@@ -20,7 +21,8 @@ if not username:
     st.stop()
 
 # === Logout-Button in der Hauptansicht ===
-st.button("Logout", on_click=logout)
+if st.button("🚪 Logout"):
+    logout()
 
 # === DataManager initialisieren ===
 data_manager = DataManager()
