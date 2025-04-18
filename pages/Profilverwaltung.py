@@ -21,7 +21,7 @@ allergien = st.text_area("Allergien / Besonderheiten")
 
 col1, col2 = st.columns(2)
 with col1:
-    if st.button(" Profil speichern"):
+    if st.button("💾 Profil speichern"):
         st.success("✅ Profil erfolgreich gespeichert!")
 with col2:
-    st.markdown(" Wechsle zur Startseite über das Seitenmenü links oben.")
+    st.markdown("⬅️ [Zurück zur Startseite](../Start.py)")
