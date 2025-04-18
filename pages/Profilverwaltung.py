@@ -4,11 +4,14 @@ import os
 from utils.data_manager import DataManager
 from utils.login_manager import LoginManager
 
-# === Login-Check (optional) ===
+# Login prüfen
+data_manager = DataManager(fs_protocol='webdav', fs_root_folder="SanaView2")
+login_manager = LoginManager(data_manager)
+login_manager.login_register()
+
 if not st.session_state.get("authentication_status", False):
     st.stop()
 
-# === Profil-Verwaltung Seite ===
 st.title("🧾 Profilverwaltung")
 st.subheader("Persönliche Angaben")
 
@@ -30,5 +33,8 @@ allergien = st.text_area("Allergien / Besonderheiten")
 
 col1, col2 = st.columns(2)
 with col1:
-    if st.button(" Profil speichern"):
-        st.success(" Profil erfolgreich gespeichert!")
+    if st.button("✅ Profil speichern"):
+        st.success("✅ Profil erfolgreich gespeichert!")
+with col2:
+    if st.button(" Zurück zur Startseite"):
+        st.switch_page("Start.py")
