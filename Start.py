@@ -52,11 +52,3 @@ if seite == "Start":
     - Lou-Salomé Frehner ([frehnlou@students.zhaw.ch](mailto:frehnlou@students.zhaw.ch))  
     - Cristiana Bastos ([pereicri@students.zhaw.ch](mailto:pereicri@students.zhaw.ch))
     """)
-
-elif seite == "Profilverwaltung":
-    from pages.Profilverwaltung import show_profil_verwaltung
-    show_profil_verwaltung()
-
-elif seite == "Laborwerte":
-    from pages.Laborwerte import show_labor
-    show_labor()
