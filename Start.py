@@ -22,9 +22,7 @@ st.markdown("""
         <img src="img/sanaview_logo.png" alt="SanaView Logo" style="width: 160px;">
     </div>
     <div>
-        <form action="" method="post">
-            <button style="background-color: #f44336; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;" onclick="logout()">Logout</button>
-        </form>
+        <button style="background-color: #e0e0e0; color: black; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;" onclick="logout()">Logout</button>
     </div>
 </div>
 """, unsafe_allow_html=True)
