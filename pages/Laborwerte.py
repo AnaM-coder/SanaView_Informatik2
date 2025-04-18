@@ -9,11 +9,6 @@ data_manager = DataManager()
 login_manager = LoginManager(data_manager)
 login_manager.go_to_login("Start.py")
 
-# === Logout-Button ===
-if st.button("Logout"):
-    LoginManager().logout()
-
-
 # === Nutzername aus Session holen ===
 username = st.session_state.get("username")
 if not username:
