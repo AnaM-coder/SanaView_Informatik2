@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import os
+import base64
 from utils.data_manager import DataManager
 from utils.login_manager import LoginManager
 
@@ -17,50 +18,47 @@ if "authentication_status" not in st.session_state or not st.session_state["auth
     st.warning("🔒 Sie sind nicht eingeloggt. Bitte melden Sie sich an.")
     st.stop()
 
+# Benutzername auslesen
 username = st.session_state.get("username", "Unbekannt")
 
-# Logout rechts oben
-st.markdown(
-    """
-    <div style="text-align: right;">
-        <form action="?">
-            <button style="background-color: #f0f0f5; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer;" type="submit">Logout</button>
-        </form>
-    </div>
-    """,
-    unsafe_allow_html=True
-)
+# === Logout oben rechts ===
+col1, col2 = st.columns([10, 1])
+with col2:
+    if st.button("Logout"):
+        login_manager.logout()
 
-# Logo zentriert
+# === Logo + Titel (zentriert) ===
 logo_path = "img/sanaview_logo.png"
 if os.path.exists(logo_path):
-    st.markdown(f"""
-    <div style="text-align: center;">
-        <img src="data:image/png;base64,{base64.b64encode(open(logo_path, "rb").read()).decode()}" width="120"/>
-    </div>
-    """, unsafe_allow_html=True)
+    with open(logo_path, "rb") as image_file:
+        encoded_logo = base64.b64encode(image_file.read()).decode()
 
-# Begrüßung zentriert
-st.markdown("""
-<div style="text-align: center;">
-    <h1>🧬 Willkommen bei SanaView</h1>
-    <p>Diese App hilft Ihnen dabei, Ihre Werte sicher zu speichern – ohne Diagnose, aber mit Überblick.</p>
-</div>
-""", unsafe_allow_html=True)
+    st.markdown(
+        f"""
+        <div style='text-align: center; margin-top: -30px; margin-bottom: 30px;'>
+            <img src="data:image/png;base64,{encoded_logo}" alt="SanaView Logo" style="width: 120px; height: auto;" />
+            <h1 style='margin-top: 10px;'>🧬 Willkommen bei SanaView</h1>
+            <p style='font-size: 18px;'>Diese App hilft Ihnen dabei, Ihre Werte sicher zu speichern – ohne Diagnose, aber mit Überblick.</p>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+else:
+    st.warning("⚠️ Logo konnte nicht geladen werden.")
 
-# Eingeloggt-Box im Stil von Screenshot 2
+# === Eingeloggt-Box im blauen Stil ===
 st.markdown(f"""
-<div style="background-color: #e6f2ff; padding: 12px; border-radius: 8px; margin: 20px 0;">
+<div style="background-color: #e6f2ff; padding: 12px; border-radius: 8px; margin-top: 10px; margin-bottom: 30px;">
     👋 <strong>Eingeloggt als:</strong> {username}
 </div>
 """, unsafe_allow_html=True)
 
-# Autoreninfo
-st.markdown("### Autoren")
+# === Autorenbereich ===
+st.markdown("### 👩‍💻 Autoren")
 st.write("""
 Diese App wurde im Rahmen des Moduls *Informatik 2* an der **ZHAW** entwickelt von:
 
-- Ana Maria (andraana@students.zhaw.com)  
-- Lou-Salomé Frehner (frehnlou@students.zhaw.ch)  
-- Cristiana Bastos (pereicri@students.zhaw.ch)
+- Ana Maria ([andraana@students.zhaw.com](mailto:andraana@students.zhaw.com))  
+- Lou-Salomé Frehner ([frehnlou@students.zhaw.ch](mailto:frehnlou@students.zhaw.ch))  
+- Cristiana Bastos ([pereicri@students.zhaw.ch](mailto:pereicri@students.zhaw.ch))
 """)
