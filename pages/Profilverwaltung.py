@@ -30,12 +30,12 @@ st.subheader("Persönliche Angaben")
 col1, col2 = st.columns(2)
 with col1:
     name = st.text_input("Name*", help="Pflichtfeld")
-    geburtsdatum = st.date_input("Geburtsdatum", value=date(2000, 1, 1))
+    geburtsdatum = st.date_input("Geburtsdatum*", value=date(2000, 1, 1), help="Pflichtfeld")
 with col2:
     vorname = st.text_input("Vorname*", help="Pflichtfeld")
-    geschlecht = st.radio("Geschlecht*", ["Weiblich", "Männlich"], horizontal=True)
+    geschlecht = st.radio("Geschlecht*", ["Weiblich", "Männlich"], horizontal=True, help="Pflichtfeld")
 
-schwanger = st.radio("Schwanger*", ["Ja", "Nein", "Weiss nicht"], horizontal=True)
+schwanger = st.radio("Schwanger*", ["Ja", "Nein", "Weiss nicht"], horizontal=True, help="Pflichtfeld")
 
 herkunft = st.text_input("Herkunft / ethnischer Hintergrund")
 
@@ -62,7 +62,7 @@ if st.button("Profil speichern"):
         }
 
         data_manager.append_record(session_state_key=session_key, record_dict=eintrag)
-        st.success("Profil erfolgreich gespeichert!")
+        st.success(" Profil erfolgreich gespeichert!")
 
 # === Navigation
 if st.button("Zurück zur Startseite"):
