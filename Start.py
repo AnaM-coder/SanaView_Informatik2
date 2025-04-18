@@ -9,7 +9,7 @@ st.set_page_config(page_title="SanaView", layout="wide")
 
 # Sidebar-Navigation (nur optisch – keine Logik, noch!)
 st.sidebar.markdown("### Navigation")
-st.sidebar.write("🧪 Anmeldung / Registrierung")
+st.sidebar.write(" Anmeldung / Registrierung")
 st.sidebar.write("🏠 Start")
 st.sidebar.write("👤 Profilverwaltung")
 st.sidebar.write("📊 Laborwerte anschauen, eingeben, verwalten")
@@ -17,7 +17,7 @@ st.sidebar.write("📈 Verlauf")
 st.sidebar.write("ℹ️ Info-Seite")
 
 # Initialisiere DataManager & Login
-data_manager = DataManager(fs_protocol='webdav', fs_root_folder="BMLD_CPBLSF_App")
+data_manager = DataManager(fs_protocol='webdav', fs_root_folder="SanaView2")
 login_manager = LoginManager(data_manager)
 login_manager.login_register()
 
@@ -52,7 +52,7 @@ st.markdown(f"""
 """, unsafe_allow_html=True)
 
 # === Autorenbereich ===
-st.markdown("### 👩‍💻 Autoren")
+st.markdown("### Autoren")
 st.write("""
 Diese App wurde im Rahmen des Moduls *Informatik 2* an der **ZHAW** entwickelt von:
 
