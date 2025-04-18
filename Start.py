@@ -20,7 +20,6 @@ col1
 with col1:
     if st.button("Logout"):
         login_manager.logout()
-
     if os.path.exists("img/sanaview_logo.png"):
         st.image("img/sanaview_logo.png", width=140)
     else:
