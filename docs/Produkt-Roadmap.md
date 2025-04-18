@@ -1,8 +1,8 @@
 # Produkt-Roadmap – SanaView
 
 ## MVP_1(Minimum Viable Product) Version 1.0
-- Nutzerregistrierung und Login
-- Eingabe von Laborwerten (Dropdown, Einheit, Datum)
+- Nutzerregistrierung und Login, Cloud-Speicherung
+- Eingabe von Laborwerten (Dropdown, Einheit, Datum, Ampelfarbe)
 - Anzeige der Werte in Tabellenform
 
 ## Version 2.0
@@ -15,7 +15,7 @@
 
 ## Weitere geplante Funktionen
 - Teilen von Werten per PDF/Export
-- Cloud-Speicherung
+
 
 ## Priorisierung
 | Funktion                         | Priorität | MVP |
