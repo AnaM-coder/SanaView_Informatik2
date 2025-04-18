@@ -15,17 +15,14 @@ login_manager.login_register()
 if not st.session_state.get("authentication_status", False):
     st.stop()
 
-# === Kopfbereich: nur linke Spalte (Logout + Logo)
-col1, _ = st.columns([1, 10])
+# === Logout & Logo untereinander
+if st.button("Logout"):
+    login_manager.logout()
 
-with col1:
-    if st.button("Logout"):
-        login_manager.logout()
-
-    if os.path.exists("img/sanaview_logo.png"):
-        st.image("img/sanaview_logo.png", width=120)
-    else:
-        st.warning("⚠️ Logo nicht gefunden.")
+if os.path.exists("img/sanaview_logo.png"):
+    st.image("img/sanaview_logo.png", width=140)
+else:
+    st.warning("⚠️ Logo nicht gefunden.")
 
 # === Titel & Beschreibung zentriert
 st.markdown("<h1 style='text-align: center;'>🧬 Willkommen bei SanaView</h1>", unsafe_allow_html=True)
