@@ -20,7 +20,7 @@ with col1:
         st.warning("⚠️ Logo nicht gefunden.")
 
 # === Willkommens-Titel zentriert ===
-st.markdown("<h1 style='text-align: center;'>👋 Willkommen bei SanaView</h1>", unsafe_allow_html=True)
+st.markdown("<h1 style='text-align: center;'> Willkommen bei SanaView</h1>", unsafe_allow_html=True)
 
 # === Kurze Einleitung ===
 st.markdown("**Mit SanaView können Sie:**")
