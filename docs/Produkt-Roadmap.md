@@ -25,8 +25,8 @@
 | Funktion                         | Priorität | MVP |
 |----------------------------------|-----------|-----|
 | Registrierung & Login            | Hoch      | Ja  |
-| Laborwert-Eingabe                | Hoch      | Ja  |
-| Verlaufgrafik & Tabelle          | Mittel    | Nein|
+| Laborwert-Eingabe & Tabelle      | Hoch      | Ja  |
+| Verlaufgrafik                    | Mittel    | Nein|
 | Ampelfarben                      | Mittel    | Nein|
 | Info-Seite mit Begriffen         | Mittel    | Nein|
 | Gesundheitsprofil verwalten      | Mittel    | Nein|
