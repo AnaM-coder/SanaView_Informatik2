@@ -25,6 +25,16 @@ else:
 st.markdown("<h1 style='text-align: center;'>🧬 Willkommen bei SanaView</h1>", unsafe_allow_html=True)
 st.markdown("<p style='text-align: center; font-size:18px; color:gray;'>Ihre Werte sicher gespeichert – ohne Diagnose, dennoch mit Überblick.</p>", unsafe_allow_html=True)
 
+# === Beschreibung zur App hinzufügen ===
+st.markdown("""
+<div style='margin: 30px 0; font-size: 17px; line-height: 1.6;'>
+    Diese App unterstützt Sie dabei, Ihre medizinischen Werte sicher zu speichern 
+    und den Verlauf über einen längeren Zeitraum im Blick zu behalten – etwa im Rahmen einer Behandlung. 
+    Ergänzend erhalten Sie hilfreiche Informationen zu verschiedenen Analysewerten – 
+    <strong>ohne dabei medizinische Diagnosen zu ersetzen</strong>.
+</div>
+""", unsafe_allow_html=True)
+
 # === Eingeloggt-Hinweis ===
 username = st.session_state.get("username", "Unbekannt")
 st.markdown(f"""
