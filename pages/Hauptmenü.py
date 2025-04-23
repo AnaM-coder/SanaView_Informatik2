@@ -1,28 +1,29 @@
 import streamlit as st
+import datetime
+import pandas as pd
+from utils.data_manager import DataManager
+from utils.login_manager import LoginManager
 
-# Seitenlayout
-st.set_page_config(page_title="SanaView – Hauptmenü", layout="wide")
+# === Login-Schutz ===
+LoginManager().go_to_login("Start.py")
 
-# Haupttitel
-st.markdown("##Hauptmenü")
+# === Layout konfigurieren
+st.set_page_config(page_title="SanaView – Übersicht", layout="centered")
 
-# Willkommen mit grünem Highlight
-st.markdown("""
-<div style='background-color: #90ee90; padding: 10px; border-radius: 8px; width: fit-content;'>
-    <h3 style='margin: 0;'>Willkommen</h3>
-</div>
-""", unsafe_allow_html=True)
+# === Willkommenstitel
+st.markdown("<h1 style='text-align: center;'>Willkommen bei SanaView</h1>", unsafe_allow_html=True)
 
-# Einleitung
-st.write("Mit **SanaView App** können Sie:")
+# === Einleitung (nur ein Satz)
+st.markdown("**Mit SanaView können Sie:**")
 
-# Checkliste
-punkte = [
-    "Laborwerte erfassen",
-    "Verlauf grafisch anzeigen",
-    "Ampelfarben",
-    "Referenzwerte individuell anzeigen"
+# === Funktionen
+funktionen = [
+    "Laborwerte erfassen und verwalten",
+    "Verlauf Ihrer Werte grafisch anzeigen",
+    "Ampelfarben zur schnellen Einordnung nutzen",
+    "Individuelle Referenzbereiche anzeigen",
+    "Gesundheitsprofil verwalten"
 ]
 
-for punkt in punkte:
-    st.markdown(f"- [ ] {punkt}")
+for punkt in funktionen:
+    st.markdown(f"- {punkt}")
