@@ -53,9 +53,9 @@ with col2:
 # === Speichern ===
 if st.button("Speichern"):
     if wert < ref_min:
-        ampel = "🟡 (zu niedrig)"
+        ampel = "🟡 (niedrig)"
     elif wert > ref_max:
-        ampel = "🔴 (zu hoch)"
+        ampel = "🔴 (hoch)"
     else:
         ampel = "🟢 (normal)"
 
