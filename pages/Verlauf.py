@@ -8,14 +8,14 @@ from utils.login_manager import LoginManager
 # === Login-Schutz ===
 LoginManager().go_to_login("Start.py")
 
-# === Session & Data ===
+# === Initialisierung
 username = st.session_state.get("username")
 session_key = "laborwerte"
 file_name = f"{username}_daten.csv"
 data_manager = DataManager()
 data_manager.load_user_data(session_state_key=session_key, file_name=file_name)
 
-# === Daten prüfen ===
+# === Daten laden & prüfen
 if session_key not in st.session_state or st.session_state[session_key].empty:
     st.info("Noch keine Laborwerte vorhanden.")
     st.stop()
@@ -23,48 +23,54 @@ if session_key not in st.session_state or st.session_state[session_key].empty:
 df = st.session_state[session_key].copy()
 df["Datum"] = pd.to_datetime(df["Datum"], format="%d.%m.%Y")
 
-# === Titel ===
-st.title("📈 Verlauf Ihrer Laborwerte")
-
-# === Auswahlfeld für Laborwert
+# === Auswahl
+st.title("📈 Verlauf")
 laborwert = st.selectbox("Laborwert auswählen", df["Laborwert"].unique())
-daten = df[df["Laborwert"] == laborwert].copy()
-daten = daten.sort_values("Datum")
+daten = df[df["Laborwert"] == laborwert].sort_values("Datum")
 
-# === Referenzbereich lesen & umwandeln (z.B. "0–5")
+# === Referenzbereich ermitteln
 ref_string = daten["Referenz"].iloc[0]
 ref_clean = re.sub(r"[–—−]", "-", ref_string).replace(" ", "")
 try:
     ref_min, ref_max = map(float, ref_clean.split("-"))
 except:
-    st.warning("Referenzwerte konnten nicht gelesen werden.")
     ref_min, ref_max = None, None
 
-# === Daten nach Farben gruppieren
+# === Daten filtern nach Ampel
 alle = daten.copy()
 grün = daten[daten["Ampel"].str.contains("🟢")]
 gelb = daten[daten["Ampel"].str.contains("🟡")]
 rot = daten[daten["Ampel"].str.contains("🔴")]
 
-# === Diagramm 1: Alle Werte
-st.subheader(f"Alle {laborwert}-Werte")
-if not alle.empty:
+# === Layout mit 2x2 Spalten
+st.markdown("### 📊 Diagramme")
+
+col1, col2 = st.columns(2)
+with col1:
+    st.markdown("**Alle Werte**")
     st.line_chart(alle.set_index("Datum")["Wert"])
 
-# === Diagramm 2: Grün
-if not grün.empty:
-    st.subheader("🟢 Werte im Normalbereich")
-    st.line_chart(grün.set_index("Datum")["Wert"])
+with col2:
+    if not grün.empty:
+        st.markdown("**🟢 Normalbereich**")
+        st.line_chart(grün.set_index("Datum")["Wert"])
+    else:
+        st.info("Keine Werte im Normalbereich.")
 
-# === Diagramm 3: Gelb
-if not gelb.empty:
-    st.subheader("🟡 Werte unter dem Referenzbereich")
-    st.line_chart(gelb.set_index("Datum")["Wert"])
+col3, col4 = st.columns(2)
+with col3:
+    if not gelb.empty:
+        st.markdown("**🟡 Leicht außerhalb**")
+        st.line_chart(gelb.set_index("Datum")["Wert"])
+    else:
+        st.info("Keine leicht abweichenden Werte.")
 
-# === Diagramm 4: Rot
-if not rot.empty:
-    st.subheader("🔴 Werte über dem Referenzbereich")
-    st.line_chart(rot.set_index("Datum")["Wert"])
+with col4:
+    if not rot.empty:
+        st.markdown("**🔴 Stark abweichend**")
+        st.line_chart(rot.set_index("Datum")["Wert"])
+    else:
+        st.info("Keine stark abweichenden Werte.")
 
 # === Legende
 st.markdown("---")
