@@ -30,9 +30,10 @@ data_manager.load_user_data(
 st.title(" Laborwerte – Eingabe")
 
 laboroptionen = {
-    "CRP": {"einheit": "mg/L", "ref_min": 0, "ref_max": 5},
+    "CRP": {"einheit": "mg/L", "ref_min": 0, "ref_max": 10},
     "TSH": {"einheit": "mIU/L", "ref_min": 0.4, "ref_max": 4.0},
     "Glucose": {"einheit": "mg/dL", "ref_min": 70, "ref_max": 99}
+    "HBA1c (Nichtdiabetiker)": {"einheit": "%", "ref_min": 4.0, "ref_max": 6.0},
 }
 
 ausgewählt = st.selectbox("Laborwert", list(laboroptionen.keys()))
