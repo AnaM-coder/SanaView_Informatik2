@@ -22,7 +22,7 @@ else:
     st.warning("⚠️ Logo nicht gefunden.")
 
 # === Titel & Beschreibung zentriert ===
-st.markdown("<h1 style='text-align: center;'>🧬 Willkommen bei SanaView</h1>", unsafe_allow_html=True)
+st.markdown("<h1 style='text-align: center;'>Willkommen bei SanaView</h1>", unsafe_allow_html=True)
 st.markdown("<p style='text-align: center; font-size:18px; color:gray;'>Ihre Werte sicher gespeichert – ohne Diagnose, dennoch mit Überblick.</p>", unsafe_allow_html=True)
 
 # === Beschreibung zur App hinzufügen ===

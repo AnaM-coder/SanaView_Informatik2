@@ -51,7 +51,7 @@ with col2:
     st.text_input("Referenz", value=f"{ref_min}–{ref_max} {einheit}", disabled=True)
 
 # === Speichern ===
-if st.button("💾 Speichern"):
+if st.button("Speichern"):
     if wert < ref_min:
         ampel = "🟡 (zu niedrig)"
     elif wert > ref_max:
