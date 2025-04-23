@@ -22,17 +22,18 @@ file_name = f"{username}_daten.csv"  # Dynamischer Dateiname basierend auf Benut
 
 data_manager.load_user_data(
     session_state_key=session_key,
-    file_name=file_name,  # Übergabe des dynamischen Dateinamens
+    file_name=file_name,
     initial_value=pd.DataFrame(columns=["Datum", "Laborwert", "Wert", "Einheit", "Referenz", "Ampel"])
 )
 
 # === Titel & Laborwert-Auswahl ===
-st.title(" Laborwerte – Eingabe")
+st.title("Laborwerte – Eingabe")
 
 laboroptionen = {
     "CRP": {"einheit": "mg/L", "ref_min": 0, "ref_max": 10},
     "TSH": {"einheit": "mIU/L", "ref_min": 0.4, "ref_max": 4.0},
-    "Glucose": {"einheit": "mg/dL", "ref_min": 70, "ref_max": 99}
+    "Glucose": {"einheit": "mg/dL", "ref_min": 70, "ref_max": 99},
+    "HBA1c": {"einheit": "%", "ref_min": 4.0, "ref_max": 6.0}
 }
 
 ausgewählt = st.selectbox("Laborwert", list(laboroptionen.keys()))
@@ -50,7 +51,7 @@ with col2:
     st.text_input("Referenz", value=f"{ref_min}–{ref_max} {einheit}", disabled=True)
 
 # === Speichern ===
-if st.button(" Speichern"):
+if st.button("💾 Speichern"):
     if wert < ref_min:
         ampel = "🟡 (zu niedrig)"
     elif wert > ref_max:
@@ -72,10 +73,10 @@ if st.button(" Speichern"):
         record_dict=neuer_eintrag
     )
 
-    st.success(" Laborwert erfolgreich gespeichert!")
+    st.success("Laborwert erfolgreich gespeichert!")
 
 # === Tabelle anzeigen ===
 if not st.session_state[session_key].empty:
     st.markdown("---")
-    st.subheader(" Ihre gespeicherten Laborwerte")
+    st.subheader("Ihre gespeicherten Laborwerte")
     st.dataframe(st.session_state[session_key], use_container_width=True)
