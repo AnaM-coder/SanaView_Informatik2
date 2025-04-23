@@ -15,7 +15,7 @@ file_name = f"{username}_daten.csv"
 data_manager = DataManager()
 data_manager.load_user_data(session_state_key=session_key, file_name=file_name)
 
-# === Daten laden & prüfen
+# === Daten prüfen
 if session_key not in st.session_state or st.session_state[session_key].empty:
     st.info("Noch keine Laborwerte vorhanden.")
     st.stop()
@@ -24,11 +24,11 @@ df = st.session_state[session_key].copy()
 df["Datum"] = pd.to_datetime(df["Datum"], format="%d.%m.%Y")
 
 # === Auswahl
-st.title("Verlauf")
+st.title("📈 Verlauf")
 laborwert = st.selectbox("Laborwert auswählen", df["Laborwert"].unique())
 daten = df[df["Laborwert"] == laborwert].sort_values("Datum")
 
-# === Referenzbereich ermitteln
+# === Referenzbereich auslesen
 ref_string = daten["Referenz"].iloc[0]
 ref_clean = re.sub(r"[–—−]", "-", ref_string).replace(" ", "")
 try:
@@ -36,43 +36,38 @@ try:
 except:
     ref_min, ref_max = None, None
 
-# === Daten filtern nach Ampel
+# === Ampelfilter
 alle = daten.copy()
 grün = daten[daten["Ampel"].str.contains("🟢")]
 gelb = daten[daten["Ampel"].str.contains("🟡")]
 rot = daten[daten["Ampel"].str.contains("🔴")]
 
-# === Layout mit 2x2 Spalten
-st.markdown("###Diagramme")
+# === Layout
+st.markdown("### **Alle Werte (Liniendiagramm)**")
+st.line_chart(alle.set_index("Datum")["Wert"])
 
 col1, col2 = st.columns(2)
 with col1:
-    st.markdown("**Alle Werte**")
-    st.line_chart(alle.set_index("Datum")["Wert"])
+    st.markdown("### 🟢 Normalbereich (Histogramm)")
+    if not grün.empty:
+        st.bar_chart(grün["Wert"])
+    else:
+        st.info("Keine grünen Werte vorhanden.")
 
 with col2:
-    if not grün.empty:
-        st.markdown("**🟢 Normalbereich**")
-        st.line_chart(grün.set_index("Datum")["Wert"])
-    else:
-        st.info("Keine Werte im Normalbereich.")
-
-col3, col4 = st.columns(2)
-with col3:
+    st.markdown("### 🟡 Leicht außerhalb (Histogramm)")
     if not gelb.empty:
-        st.markdown("**🟡 Leicht ausserhalb**")
-        st.line_chart(gelb.set_index("Datum")["Wert"])
+        st.bar_chart(gelb["Wert"])
     else:
-        st.info("Keine leicht abweichenden Werte.")
+        st.info("Keine gelben Werte vorhanden.")
 
-with col4:
-    if not rot.empty:
-        st.markdown("**🔴 Stark abweichend**")
-        st.line_chart(rot.set_index("Datum")["Wert"])
-    else:
-        st.info("Keine stark abweichenden Werte.")
+st.markdown("### 🔴 Stark abweichend (Histogramm)")
+if not rot.empty:
+    st.bar_chart(rot["Wert"])
+else:
+    st.info("Keine roten Werte vorhanden.")
 
-# === Legende
+# === Ampelfarben-Legende
 st.markdown("---")
 st.markdown("### 🟢🟡🔴 Ampelfarben-Legende")
 st.markdown("""
