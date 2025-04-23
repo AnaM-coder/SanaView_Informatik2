@@ -38,7 +38,7 @@ st.markdown("### Autoren")
 st.write("""
 Diese App wurde im Rahmen des Moduls *Informatik 2* an der **ZHAW** entwickelt von:
 
-- Ana Maria (andraana@students.zhaw.com)
+- Ana Maria Andrade (andraana@students.zhaw.com)
 - Lou-Salomé Frehner (frehnlou@students.zhaw.ch)  
-- Cristiana Bastos (pereicri@students.zhaw.ch)
+- Cristiana Pereira Bastos (pereicri@students.zhaw.ch)
 """)
