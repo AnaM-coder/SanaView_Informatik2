@@ -24,7 +24,7 @@ df = st.session_state[session_key].copy()
 df["Datum"] = pd.to_datetime(df["Datum"], format="%d.%m.%Y")
 
 # === Auswahl
-st.title("📈 Verlauf")
+st.title("Verlauf")
 laborwert = st.selectbox("Laborwert auswählen", df["Laborwert"].unique())
 daten = df[df["Laborwert"] == laborwert].sort_values("Datum")
 
@@ -43,25 +43,25 @@ gelb = daten[daten["Ampel"].str.contains("🟡")]
 rot = daten[daten["Ampel"].str.contains("🔴")]
 
 # === Layout
-st.markdown("### **Alle Werte (Liniendiagramm)**")
+st.markdown("### **Alle Werte**")
 st.line_chart(alle.set_index("Datum")["Wert"])
 
 col1, col2 = st.columns(2)
 with col1:
-    st.markdown("### 🟢 Normalbereich (Histogramm)")
+    st.markdown("### 🟢 Normalbereich")
     if not grün.empty:
         st.bar_chart(grün["Wert"])
     else:
         st.info("Keine grünen Werte vorhanden.")
 
 with col2:
-    st.markdown("### 🟡 Leicht außerhalb (Histogramm)")
+    st.markdown("### 🟡 Leicht ausserhalb")
     if not gelb.empty:
         st.bar_chart(gelb["Wert"])
     else:
         st.info("Keine gelben Werte vorhanden.")
 
-st.markdown("### 🔴 Stark abweichend (Histogramm)")
+st.markdown("### 🔴 Stark abweichend")
 if not rot.empty:
     st.bar_chart(rot["Wert"])
 else:
