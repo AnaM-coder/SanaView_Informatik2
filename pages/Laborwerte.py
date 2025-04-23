@@ -33,6 +33,7 @@ laboroptionen = {
     "CRP": {"einheit": "mg/L", "ref_min": 0, "ref_max": 10},
     "TSH": {"einheit": "mIU/L", "ref_min": 0.4, "ref_max": 4.0},
     "Glucose": {"einheit": "mg/dL", "ref_min": 70, "ref_max": 99}
+}
 
 ausgewählt = st.selectbox("Laborwert", list(laboroptionen.keys()))
 einheit = laboroptionen[ausgewählt]["einheit"]
