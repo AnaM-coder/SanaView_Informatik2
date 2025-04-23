@@ -1,5 +1,14 @@
 # SanaView_Informatik2
-Diese App unterstützt Sie dabei, Ihre medizinischen Werte sicher zu speichern und den Verlauf über einen längeren Zeitraum im Blick zu behalten – etwa im Rahmen einer Behandlung. Ergänzend erhalten Sie hilfreiche Informationen zu verschiedenen Analysewerten – ohne dabei medizinische Diagnosen zu ersetzen.
+Im heutigen medizinischen Alltag ist es für Patient*innen oft schwierig, ihre medizinischen Daten übersichtlich und sicher zu verwalten. Die App SanaView wurde entwickelt, um insbesondere Laborwerte einfach zu speichern, den Verlauf zu visualisieren und wichtige Erklärungen bereitzustellen – ganz ohne ärztliche Diagnose, aber mit mehr Eigenverantwortung und Übersicht.
+
+Funktionen:
+Die App bietet eine sichere Registrierung mit Passwortschutz und Captcha, eine benutzerfreundliche Verwaltung der persönlichen Gesundheitsdaten und eine einfache Eingabe von Laborwerten. Die Werte werden übersichtlich dargestellt und der Verlauf kann grafisch verfolgt werden. Durch die Verwendung von Ampelfarben ist auf einen Blick ersichtlich, ob ein Wert im Normbereich liegt oder nicht. Eine Info-Seite erklärt die wichtigsten Begriffe und Referenzbereiche, angepasst an verschiedene Personengruppen (z. B. Geschlecht, Schwangerschaft).
+
+Technik:
+Die App wurde im Rahmen des Moduls BMLD Informatik 2 mit [z. B. Streamlit/Python] entwickelt. Datenschutz und Nutzerfreundlichkeit stehen im Fokus.
+
+Zielgruppe:
+Die App richtet sich an Patient*innen mit chronischen Erkrankungen, die ihre Gesundheitsdaten eigenständig verwalten möchten.
 
 ## Autor
 Ana Maria Andrade 
