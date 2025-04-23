@@ -1,6 +1,5 @@
 import streamlit as st
 import pandas as pd
-import matplotlib.pyplot as plt
 from utils.data_manager import DataManager
 from utils.login_manager import LoginManager
 
@@ -10,67 +9,80 @@ LoginManager().go_to_login("Start.py")
 # === DataManager initialisieren ===
 data_manager = DataManager()
 
-# === Session-Key & Datei laden ===
-session_key = "laborwerte"
+# === Daten laden
 username = st.session_state.get("username")
+session_key = "laborwerte"
 file_name = f"{username}_daten.csv"
-data_manager.load_user_data(session_state_key=session_key, file_name=file_name)
+
+data_manager.load_user_data(
+    session_state_key=session_key,
+    file_name=file_name
+)
 
 df = st.session_state[session_key]
 
-# === Seite Titel ===
-st.title("📈 Verlauf")
+st.title("📈 Verlauf Ihrer Laborwerte")
 
-# === Wenn Daten vorhanden sind ===
+# === Auswahl
 if not df.empty:
-    # Vorbereitung der Daten
     df["Datum"] = pd.to_datetime(df["Datum"], format="%d.%m.%Y")
-    df = df.sort_values("Datum", ascending=True)
-
-    # Auswahl des Laborwertes
     ausgewählter_wert = st.selectbox("Laborwert auswählen", df["Laborwert"].unique())
-    daten = df[df["Laborwert"] == ausgewählter_wert].copy()
 
-    # Referenzbereich extrahieren
-    ref_min, ref_max = map(float, daten["Referenz"].iloc[0].split("–"))
+    daten = df[df["Laborwert"] == ausgewählter_wert].sort_values("Datum")
 
-    # Ampelfarben zuweisen
-    def get_ampelfarbe(wert):
-        if wert < ref_min:
-            return "gelb"
-        elif wert > ref_max:
-            return "rot"
-        return "grün"
+    # === Referenzbereiche berechnen
+    import re
+    ref_clean = re.sub(r"[–—−]", "-", daten["Referenz"].iloc[0])
+    ref_min, ref_max = map(float, ref_clean.split("-"))
 
-    daten["Farbe"] = daten["Wert"].apply(get_ampelfarbe)
+    # Farben zuordnen
+    def ampel_farbe(w):
+        if w < ref_min:
+            return "🟡"
+        elif w > ref_max:
+            return "🔴"
+        else:
+            return "🟢"
 
-    # === Diagramm-Funktion ===
-    def zeichne_liniendiagramm(data, title, farbe="gray"):
-        fig, ax = plt.subplots()
-        ax.plot(data["Datum"], data["Wert"], marker="o", color=farbe)
-        ax.set_title(title)
-        ax.set_xlabel("Datum")
-        ax.set_ylabel("Wert")
-        ax.tick_params(axis='x', rotation=45)
-        ax.grid(True)
-        return fig
+    daten["Ampel"] = daten["Wert"].apply(ampel_farbe)
 
-    # === Layout für 4 Diagramme ===
+    # In Gruppen teilen
+    grün = daten[daten["Ampel"] == "🟢"]
+    gelb = daten[daten["Ampel"] == "🟡"]
+    rot = daten[daten["Ampel"] == "🔴"]
+
+    # === 4 Diagramme nebeneinander ===
     col1, col2 = st.columns(2)
     col3, col4 = st.columns(2)
 
-    col1.pyplot(zeichne_liniendiagramm(daten, "Alle Werte", farbe="black"))
-    col2.pyplot(zeichne_liniendiagramm(daten[daten["Farbe"] == "grün"], "Normalbereich (🟢)", farbe="green"))
-    col3.pyplot(zeichne_liniendiagramm(daten[daten["Farbe"] == "gelb"], "Leicht außerhalb (🟡)", farbe="gold"))
-    col4.pyplot(zeichne_liniendiagramm(daten[daten["Farbe"] == "rot"], "Stark abweichend (🔴)", farbe="red"))
+    col1.subheader("Alle Werte")
+    col1.line_chart(daten.set_index("Datum")["Wert"])
 
-    # === Legende ===
+    col2.subheader("🟢 Normalbereich")
+    if not grün.empty:
+        col2.line_chart(grün.set_index("Datum")["Wert"])
+    else:
+        col2.info("Keine Werte im Normalbereich.")
+
+    col3.subheader("🟡 Leicht außerhalb")
+    if not gelb.empty:
+        col3.line_chart(gelb.set_index("Datum")["Wert"])
+    else:
+        col3.info("Keine leicht abweichenden Werte.")
+
+    col4.subheader("🔴 Stark abweichend")
+    if not rot.empty:
+        col4.line_chart(rot.set_index("Datum")["Wert"])
+    else:
+        col4.info("Keine stark abweichenden Werte.")
+
     st.markdown("---")
-    st.markdown("### 🟢🟡🔴 Ampelfarb-Legende")
+    st.markdown("### Ampelfarb-Legende")
     st.markdown("""
     - 🟢 Normalbereich  
     - 🟡 Leicht außerhalb  
     - 🔴 Stark abweichend  
     """)
+
 else:
-    st.info("Noch keine Laborwerte vorhanden. Bitte zuerst Werte eingeben.")
+    st.info("Noch keine Laborwerte vorhanden.")
