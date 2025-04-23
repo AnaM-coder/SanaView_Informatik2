@@ -11,7 +11,7 @@ LoginManager().go_to_login("Start.py")
 
 # === Initialisierung
 username = st.session_state.get("username")
-session_key = "laborwerte"
+session_key = f"user_data_{username}"
 file_name = f"{username}_daten.csv"
 data_manager = DataManager()
 data_manager.load_user_data(session_state_key=session_key, file_name=file_name)
