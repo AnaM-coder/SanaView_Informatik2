@@ -13,12 +13,13 @@
 ## Version 3.0
 - Info-Seite mit Erklärung zu Werten
 - Profilverwaltung (Name, Geschlecht, Allergien etc.)
-- Jede Laborwert in eine Graphik (Verlauf)
+- Alle Laborwerte derselben Analyse in einer Grafik, Histogramme für Normalbereich, leichte und starke Abweichungen
 
 
 ## Weitere geplante Funktionen
 - Teilen von Werten per PDF/Export
 - Logout pro Seite
+- Navigationsbuttons
 
 
 ## Priorisierung
