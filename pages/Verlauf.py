@@ -18,98 +18,59 @@ data_manager.load_user_data(session_state_key=session_key, file_name=file_name)
 
 df = st.session_state[session_key]
 
-# === Seitentitel ===
-st.title("Verlauf Ihrer Laborwerte")
+# === Seite Titel ===
+st.title("📈 Verlauf")
 
-# === Filterauswahl nur wenn Daten vorhanden ===
+# === Wenn Daten vorhanden sind ===
 if not df.empty:
-    col1, col2, col3 = st.columns(3)
-    with col1:
-        ausgewählt = st.selectbox("Laborwert", df["Laborwert"].unique())
-    with col2:
-        sortierung = st.selectbox("Sortierung", ["Neueste zuerst", "Älteste zuerst"])
-    with col3:
-        anzahl = st.selectbox("Anzahl Werte", ["Alle", "Letzte 10", "Letzte 30"])
+    # Vorbereitung der Daten
+    df["Datum"] = pd.to_datetime(df["Datum"], format="%d.%m.%Y")
+    df = df.sort_values("Datum", ascending=True)
 
-    # === Daten filtern & sortieren ===
-    daten = df[df["Laborwert"] == ausgewählt].copy()
-    daten["Datum"] = pd.to_datetime(daten["Datum"], format="%d.%m.%Y")
-    daten = daten.sort_values("Datum", ascending=(sortierung == "Älteste zuerst"))
+    # Auswahl des Laborwertes
+    ausgewählter_wert = st.selectbox("Laborwert auswählen", df["Laborwert"].unique())
+    daten = df[df["Laborwert"] == ausgewählter_wert].copy()
 
-    if anzahl == "Letzte 10":
-        daten = daten.tail(10)
-    elif anzahl == "Letzte 30":
-        daten = daten.tail(30)
+    # Referenzbereich extrahieren
+    ref_min, ref_max = map(float, daten["Referenz"].iloc[0].split("–"))
 
-    # === Farben zuweisen basierend auf Ampeltext ===
-    def farbe(ampel):
-        if "normal" in ampel:
-            return "limegreen"
-        elif "niedrig" in ampel:
-            return "gold"
-        elif "hoch" in ampel:
-            return "red"
-        else:
-            return "gray"
+    # Ampelfarben zuweisen
+    def get_ampelfarbe(wert):
+        if wert < ref_min:
+            return "gelb"
+        elif wert > ref_max:
+            return "rot"
+        return "grün"
 
-    daten["Farbe"] = daten["Ampel"].apply(farbe)
+    daten["Farbe"] = daten["Wert"].apply(get_ampelfarbe)
 
-    # === Plots ===
-    def linien_plot(daten):
+    # === Diagramm-Funktion ===
+    def zeichne_liniendiagramm(data, title, farbe="gray"):
         fig, ax = plt.subplots()
-        ax.scatter(daten["Datum"], daten["Wert"], c=daten["Farbe"], s=80)
-        ax.plot(daten["Datum"], daten["Wert"], alpha=0.3)
-        ax.set_title("Zeitlicher Verlauf")
+        ax.plot(data["Datum"], data["Wert"], marker="o", color=farbe)
+        ax.set_title(title)
         ax.set_xlabel("Datum")
         ax.set_ylabel("Wert")
+        ax.tick_params(axis='x', rotation=45)
         ax.grid(True)
-        fig.autofmt_xdate()
         return fig
 
-    def balken_plot(daten):
-        fig, ax = plt.subplots()
-        ax.bar(daten["Datum"].astype(str), daten["Wert"], color=daten["Farbe"])
-        ax.set_title("Balkendiagramm")
-        ax.set_xlabel("Datum")
-        ax.set_ylabel("Wert")
-        fig.autofmt_xdate()
-        return fig
+    # === Layout für 4 Diagramme ===
+    col1, col2 = st.columns(2)
+    col3, col4 = st.columns(2)
 
-    def box_plot(daten):
-        fig, ax = plt.subplots()
-        ax.boxplot(daten["Wert"])
-        ax.set_title("Boxplot")
-        return fig
+    col1.pyplot(zeichne_liniendiagramm(daten, "Alle Werte", farbe="black"))
+    col2.pyplot(zeichne_liniendiagramm(daten[daten["Farbe"] == "grün"], "Normalbereich (🟢)", farbe="green"))
+    col3.pyplot(zeichne_liniendiagramm(daten[daten["Farbe"] == "gelb"], "Leicht außerhalb (🟡)", farbe="gold"))
+    col4.pyplot(zeichne_liniendiagramm(daten[daten["Farbe"] == "rot"], "Stark abweichend (🔴)", farbe="red"))
 
-    def histogramm_plot(daten):
-        fig, ax = plt.subplots()
-        ax.hist(daten["Wert"], bins=10, color="skyblue", edgecolor="black")
-        ax.set_title("Histogramm")
-        return fig
-
-    # === Anzeigen in 2x2 Layout ===
-    colA1, colA2 = st.columns(2)
-    with colA1:
-        st.pyplot(linien_plot(daten))
-    with colA2:
-        st.pyplot(balken_plot(daten))
-
-    colB1, colB2 = st.columns(2)
-    with colB1:
-        st.pyplot(histogramm_plot(daten))
-    with colB2:
-        st.pyplot(box_plot(daten))
-
-    # === Legende
+    # === Legende ===
     st.markdown("---")
-    st.markdown("### Ampelfarben-Legende")
+    st.markdown("### 🟢🟡🔴 Ampelfarb-Legende")
     st.markdown("""
-    <div style='font-size: 18px;'>
-        <span style='color: limegreen;'>🟢 Normalbereich</span><br>
-        <span style='color: gold;'>🟡 Leicht außerhalb</span><br>
-        <span style='color: red;'>🔴 Stark abweichend</span>
-    </div>
-    """, unsafe_allow_html=True)
-
+    - 🟢 Normalbereich  
+    - 🟡 Leicht außerhalb  
+    - 🔴 Stark abweichend  
+    """)
 else:
-    st.info("Noch keine Laborwerte gespeichert. Bitte zuerst Daten erfassen.")
+    st.info("Noch keine Laborwerte vorhanden. Bitte zuerst Werte eingeben.")
