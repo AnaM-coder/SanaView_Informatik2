@@ -37,6 +37,12 @@ try:
 except:
     ref_min, ref_max = None, None
 
+# === Ampelfilter
+alle = daten.copy()
+grün = daten[daten["Ampel"].str.contains("🟢")]
+gelb = daten[daten["Ampel"].str.contains("🟡")]
+rot = daten[daten["Ampel"].str.contains("🔴")]
+
 # === Liniendiagramm: Alle Werte
 st.markdown("### Alle Werte")
 st.line_chart(alle.set_index("Datum")["Wert"])
@@ -54,21 +60,21 @@ def zeige_histogramm(df, farbe, titel):
 col1, col2, col3 = st.columns(3)
 
 with col1:
-    st.markdown("###Normalbereich")
+    st.markdown("### 🟢 Normalbereich")
     if not grün.empty:
         zeige_histogramm(grün, "green", "Normalbereich")
     else:
         st.info("Keine grünen Werte.")
 
 with col2:
-    st.markdown("###Leicht ausserhalb")
+    st.markdown("### 🟡 Leicht ausserhalb")
     if not gelb.empty:
         zeige_histogramm(gelb, "yellow", "Leicht ausserhalb")
     else:
         st.info("Keine gelben Werte.")
 
 with col3:
-    st.markdown("###Stark abweichend")
+    st.markdown("### 🔴 Stark abweichend")
     if not rot.empty:
         zeige_histogramm(rot, "red", "Stark abweichend")
     else:
