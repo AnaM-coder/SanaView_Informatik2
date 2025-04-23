@@ -23,52 +23,54 @@ if session_key not in st.session_state or st.session_state[session_key].empty:
 df = st.session_state[session_key].copy()
 df["Datum"] = pd.to_datetime(df["Datum"], format="%d.%m.%Y")
 
-# === Layout ===
+# === Titel ===
 st.title("📈 Verlauf Ihrer Laborwerte")
 
-# === Laborwert-Auswahl ===
+# === Auswahlfeld für Laborwert
 laborwert = st.selectbox("Laborwert auswählen", df["Laborwert"].unique())
 daten = df[df["Laborwert"] == laborwert].copy()
 daten = daten.sort_values("Datum")
 
-# === Referenzbereich auslesen & bereinigen (z.B. "0–5") ===
-raw_ref = daten["Referenz"].iloc[0]
-ref_clean = re.sub(r"[–—−]", "-", raw_ref).replace(" ", "")
+# === Referenzbereich lesen & umwandeln (z.B. "0–5")
+ref_string = daten["Referenz"].iloc[0]
+ref_clean = re.sub(r"[–—−]", "-", ref_string).replace(" ", "")
 try:
     ref_min, ref_max = map(float, ref_clean.split("-"))
 except:
-    st.warning("Referenzwerte konnten nicht korrekt gelesen werden.")
+    st.warning("Referenzwerte konnten nicht gelesen werden.")
     ref_min, ref_max = None, None
 
-# === Daten nach Ampelfarbe filtern ===
+# === Daten nach Farben gruppieren
+alle = daten.copy()
 grün = daten[daten["Ampel"].str.contains("🟢")]
 gelb = daten[daten["Ampel"].str.contains("🟡")]
 rot = daten[daten["Ampel"].str.contains("🔴")]
 
-# === Diagramm 1 – Alle Werte ===
-st.subheader(f"📊 Verlauf aller {laborwert}-Werte")
-st.line_chart(daten.set_index("Datum")["Wert"])
+# === Diagramm 1: Alle Werte
+st.subheader(f"Alle {laborwert}-Werte")
+if not alle.empty:
+    st.line_chart(alle.set_index("Datum")["Wert"])
 
-# === Diagramm 2 – Nur 🟢 Normalwerte ===
+# === Diagramm 2: Grün
 if not grün.empty:
-    st.subheader("🟢 Nur Werte im Normalbereich")
+    st.subheader("🟢 Werte im Normalbereich")
     st.line_chart(grün.set_index("Datum")["Wert"])
 
-# === Diagramm 3 – Nur 🟡 Zu niedrig ===
+# === Diagramm 3: Gelb
 if not gelb.empty:
-    st.subheader("🟡 Zu niedrige Werte")
+    st.subheader("🟡 Werte unter dem Referenzbereich")
     st.line_chart(gelb.set_index("Datum")["Wert"])
 
-# === Diagramm 4 – Nur 🔴 Zu hoch ===
+# === Diagramm 4: Rot
 if not rot.empty:
-    st.subheader("🔴 Zu hohe Werte")
+    st.subheader("🔴 Werte über dem Referenzbereich")
     st.line_chart(rot.set_index("Datum")["Wert"])
 
-# === Legende ===
+# === Legende
 st.markdown("---")
 st.markdown("### 🟢🟡🔴 Ampelfarben-Legende")
 st.markdown("""
 - 🟢 Wert im Referenzbereich  
-- 🟡 Wert unterhalb des Referenzbereichs  
-- 🔴 Wert oberhalb des Referenzbereichs
+- 🟡 Wert unter dem Referenzbereich  
+- 🔴 Wert über dem Referenzbereich  
 """)
