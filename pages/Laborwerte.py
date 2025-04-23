@@ -30,40 +30,39 @@ data_manager.load_user_data(
 st.title("Laborwerte – Eingabe")
 
 laboroptionen = {
-    "Hämoglobin (Männer)": {"einheit": "g/dl", "ref_min": 13.5, "ref_max": 17.5},
-    "Hämoglobin (Frauen)": {"einheit": "g/dl", "ref_min": 12.0, "ref_max": 16.0},
-    "Hämatokrit (Männer)": {"einheit": "%", "ref_min": 40, "ref_max": 50},
-    "Hämatokrit (Frauen)": {"einheit": "%", "ref_min": 36, "ref_max": 46},
-    "Leukozyten": {"einheit": "/µl", "ref_min": 4000, "ref_max": 10000},
-    "Thrombozyten": {"einheit": "/µl", "ref_min": 150000, "ref_max": 400000},
-    "Natrium": {"einheit": "mmol/l", "ref_min": 135, "ref_max": 145},
-    "Kalium": {"einheit": "mmol/l", "ref_min": 3.5, "ref_max": 5.0},
-    "Chlorid": {"einheit": "mmol/l", "ref_min": 98, "ref_max": 106},
-    "Calcium (ionisiert)": {"einheit": "mmol/l", "ref_min": 1.15, "ref_max": 1.30},
-    "Magnesium": {"einheit": "mmol/l", "ref_min": 0.7, "ref_max": 1.0},
-    "Glukose (nüchtern)": {"einheit": "mg/dl", "ref_min": 70, "ref_max": 100},
-    "Kreatinin": {"einheit": "mg/dl", "ref_min": 0.6, "ref_max": 1.2},
-    "Harnstoff (BUN)": {"einheit": "mg/dl", "ref_min": 7, "ref_max": 20},
-    "Laktat": {"einheit": "mmol/l", "ref_min": 0, "ref_max": 1.5},
-    "Troponin T/I": {"einheit": "ng/ml", "ref_min": 0, "ref_max": 0.04},
-    "CRP": {"einheit": "mg/l", "ref_min": 0, "ref_max": 5},
-    "Procalcitonin": {"einheit": "ng/ml", "ref_min": 0, "ref_max": 0.5},
-    "INR": {"einheit": "-", "ref_min": 0.8, "ref_max": 1.2},
-    "PTT (APTT)": {"einheit": "s", "ref_min": 25, "ref_max": 35},
-    "Fibrinogen": {"einheit": "mg/dl", "ref_min": 200, "ref_max": 400},
-    "pH (arteriell)": {"einheit": "", "ref_min": 7.35, "ref_max": 7.45},
-    "pCO₂": {"einheit": "mmHg", "ref_min": 35, "ref_max": 45},
-    "HCO₃⁻": {"einheit": "mmol/l", "ref_min": 22, "ref_max": 26},
-    "Base Excess": {"einheit": "mmol/l", "ref_min": -2, "ref_max": 2},
-    "Anionenlücke": {"einheit": "mmol/l", "ref_min": 8, "ref_max": 16},
     "Albumin": {"einheit": "g/dl", "ref_min": 3.5, "ref_max": 5.0},
+    "Anionenlücke": {"einheit": "mmol/l", "ref_min": 8, "ref_max": 16},
+    "Base Excess": {"einheit": "mmol/l", "ref_min": -2, "ref_max": 2},
     "Bilirubin (gesamt)": {"einheit": "mg/dl", "ref_min": 0.1, "ref_max": 1.2},
+    "CRP": {"einheit": "mg/l", "ref_min": 0, "ref_max": 5},
+    "Calcium (ionisiert)": {"einheit": "mmol/l", "ref_min": 1.15, "ref_max": 1.30},
+    "Chlorid": {"einheit": "mmol/l", "ref_min": 98, "ref_max": 106},
+    "Fibrinogen": {"einheit": "mg/dl", "ref_min": 200, "ref_max": 400},
+    "Glukose (nüchtern)": {"einheit": "mg/dl", "ref_min": 70, "ref_max": 100},
+    "HBA1c": {"einheit": "%", "ref_min": 4.0, "ref_max": 6.0},
+    "HCO₃⁻": {"einheit": "mmol/l", "ref_min": 22, "ref_max": 26},
+    "Harnstoff (BUN)": {"einheit": "mg/dl", "ref_min": 7, "ref_max": 20},
+    "Hämatokrit (Frauen)": {"einheit": "%", "ref_min": 36, "ref_max": 46},
+    "Hämatokrit (Männer)": {"einheit": "%", "ref_min": 40, "ref_max": 50},
+    "Hämoglobin (Frauen)": {"einheit": "g/dl", "ref_min": 12.0, "ref_max": 16.0},
+    "Hämoglobin (Männer)": {"einheit": "g/dl", "ref_min": 13.5, "ref_max": 17.5},
+    "INR": {"einheit": "-", "ref_min": 0.8, "ref_max": 1.2},
+    "Kalium": {"einheit": "mmol/l", "ref_min": 3.5, "ref_max": 5.0},
+    "Kreatinin": {"einheit": "mg/dl", "ref_min": 0.6, "ref_max": 1.2},
+    "Laktat": {"einheit": "mmol/l", "ref_min": 0, "ref_max": 1.5},
+    "Leukozyten": {"einheit": "/µl", "ref_min": 4000, "ref_max": 10000},
+    "Magnesium": {"einheit": "mmol/l", "ref_min": 0.7, "ref_max": 1.0},
+    "Natrium": {"einheit": "mmol/l", "ref_min": 135, "ref_max": 145},
+    "PTT (APTT)": {"einheit": "s", "ref_min": 25, "ref_max": 35},
+    "Procalcitonin": {"einheit": "ng/ml", "ref_min": 0, "ref_max": 0.5},
     "TSH": {"einheit": "mIU/L", "ref_min": 0.4, "ref_max": 4.0},
-    "Glucose": {"einheit": "mg/dL", "ref_min": 70, "ref_max": 99},
-    "HBA1c": {"einheit": "%", "ref_min": 4.0, "ref_max": 6.0}
+    "Thrombozyten": {"einheit": "/µl", "ref_min": 150000, "ref_max": 400000},
+    "Troponin T/I": {"einheit": "ng/ml", "ref_min": 0, "ref_max": 0.04},
+    "pCO₂": {"einheit": "mmHg", "ref_min": 35, "ref_max": 45},
+    "pH (arteriell)": {"einheit": "", "ref_min": 7.35, "ref_max": 7.45}
 }
 
-ausgewählt = st.selectbox("Laborwert", list(laboroptionen.keys()))
+ausgewählt = st.selectbox("Laborwert", sorted(laboroptionen.keys()))
 einheit = laboroptionen[ausgewählt]["einheit"]
 ref_min = laboroptionen[ausgewählt]["ref_min"]
 ref_max = laboroptionen[ausgewählt]["ref_max"]
