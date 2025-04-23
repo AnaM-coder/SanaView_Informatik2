@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import datetime
 import re
+import matplotlib.pyplot as plt
 from utils.data_manager import DataManager
 from utils.login_manager import LoginManager
 
@@ -42,34 +43,46 @@ grün = daten[daten["Ampel"].str.contains("🟢")]
 gelb = daten[daten["Ampel"].str.contains("🟡")]
 rot = daten[daten["Ampel"].str.contains("🔴")]
 
-# === Layout
-st.markdown("### **Alle Werte**")
+# === Liniendiagramm: Alle Werte
+st.markdown("### Alle Werte")
 st.line_chart(alle.set_index("Datum")["Wert"])
 
-col1, col2 = st.columns(2)
+# === Matplotlib Histogramm Funktion
+def zeige_histogramm(df, farbe, titel):
+    fig, ax = plt.subplots()
+    ax.hist(df["Wert"], bins=10, color=farbe, edgecolor='black')
+    ax.set_title(titel)
+    ax.set_xlabel("Wert")
+    ax.set_ylabel("Anzahl")
+    st.pyplot(fig)
+
+# === Drei Histogramme nebeneinander
+col1, col2, col3 = st.columns(3)
+
 with col1:
     st.markdown("### 🟢 Normalbereich")
     if not grün.empty:
-        st.bar_chart(grün["Wert"])
+        zeige_histogramm(grün, "green", "Normalbereich")
     else:
-        st.info("Keine grünen Werte vorhanden.")
+        st.info("Keine grünen Werte.")
 
 with col2:
     st.markdown("### 🟡 Leicht ausserhalb")
     if not gelb.empty:
-        st.bar_chart(gelb["Wert"])
+        zeige_histogramm(gelb, "yellow", "Leicht ausserhalb")
     else:
-        st.info("Keine gelben Werte vorhanden.")
+        st.info("Keine gelben Werte.")
 
-st.markdown("### 🔴 Stark abweichend")
-if not rot.empty:
-    st.bar_chart(rot["Wert"])
-else:
-    st.info("Keine roten Werte vorhanden.")
+with col3:
+    st.markdown("### 🔴 Stark abweichend")
+    if not rot.empty:
+        zeige_histogramm(rot, "red", "Stark abweichend")
+    else:
+        st.info("Keine roten Werte.")
 
-# === Ampelfarben-Legende
+# === Legende
 st.markdown("---")
-st.markdown("### 🟢🟡🔴 Ampelfarben-Legende")
+st.markdown("### Ampelfarben-Legende")
 st.markdown("""
 - 🟢 Wert im Referenzbereich  
 - 🟡 Wert unter dem Referenzbereich  
