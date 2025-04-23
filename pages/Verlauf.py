@@ -24,7 +24,7 @@ df = st.session_state[session_key].copy()
 df["Datum"] = pd.to_datetime(df["Datum"], format="%d.%m.%Y")
 
 # === Auswahl
-st.title("📈 Verlauf")
+st.title("Verlauf")
 laborwert = st.selectbox("Laborwert auswählen", df["Laborwert"].unique())
 daten = df[df["Laborwert"] == laborwert].sort_values("Datum")
 
@@ -43,7 +43,7 @@ gelb = daten[daten["Ampel"].str.contains("🟡")]
 rot = daten[daten["Ampel"].str.contains("🔴")]
 
 # === Layout mit 2x2 Spalten
-st.markdown("### 📊 Diagramme")
+st.markdown("###Diagramme")
 
 col1, col2 = st.columns(2)
 with col1:
@@ -60,7 +60,7 @@ with col2:
 col3, col4 = st.columns(2)
 with col3:
     if not gelb.empty:
-        st.markdown("**🟡 Leicht außerhalb**")
+        st.markdown("**🟡 Leicht ausserhalb**")
         st.line_chart(gelb.set_index("Datum")["Wert"])
     else:
         st.info("Keine leicht abweichenden Werte.")
