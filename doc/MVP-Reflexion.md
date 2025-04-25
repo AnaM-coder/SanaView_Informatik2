@@ -5,7 +5,8 @@ Das MVP (Version 1.0) konnte grundsätzlich wie geplant umgesetzt werden. Die ze
 Alle für das MVP 1.0 geplanten Features wurden umgesetzt. Funktionen wie die grafische Verlaufsdarstellung oder die Erweiterung des Profils waren bewusst für spätere Versionen vorgesehen und waren daher kein Bestandteil des MVP. Entsprechend gibt es aktuell keine offenen Punkte aus dem MVP-Umfang.
 
 ## Müssen wir die Roadmap anpassen und falls ja, wie?
-Nein, aktuell ist keine Anpassung der Roadmap notwendig. Wir liegen im Zeitplan und können wie geplant mit den nächsten Entwicklungsschritten weitermachen.
+Ja, es gab kleinere Anpassungen an der Roadmap:
+In Version 2.0 wurde das Hauptmenü ergänzt, Version 3.0 um eine Verlaufsübersicht mit einer gemeinsamen Grafik für alle Laborwerte sowie Histogrammen für normale, leicht und stark abweichende Werte erweitert. Neu hinzugefügt wurden bei den geplanten Funktionen „Logout pro Seite“ und „Navigationsbuttons“. Auch die Priorisierungstabelle wurde entsprechend angepasst.
 
 ## Welche Unterstützung brauchen wir, um unsere Ziele zu erreichen?
 - Beim Exportieren der Laborwerte als PDF oder für das Teilen mit Dritten fehlen uns noch Erfahrungswerte – hier wäre technische Unterstützung wichtig.
