@@ -9,8 +9,4 @@ Ja, es gab kleinere Anpassungen an der Roadmap:
 In Version 2.0 wurde das Hauptmenü ergänzt, Version 3.0 um eine Verlaufsübersicht mit einer gemeinsamen Grafik für alle Laborwerte sowie Histogrammen für normale, leicht und stark abweichende Werte erweitert. Neu hinzugefügt wurden bei den geplanten Funktionen „Logout pro Seite“ und „Navigationsbuttons“. Auch die Priorisierungstabelle wurde entsprechend angepasst.
 
 ## Welche Unterstützung brauchen wir, um unsere Ziele zu erreichen?
-- Beim Exportieren der Laborwerte als PDF oder für das Teilen mit Dritten fehlen uns noch Erfahrungswerte – hier wäre technische Unterstützung wichtig.
-- Feedback von Nutzer:innen würde uns helfen, die Anwendung noch benutzerfreundlicher zu machen.
-- Für erweiterte Nutzerprofile (z.B. mehr Angaben zu Person, Allergien) wäre Input zu Datenschutz und Umsetzung hilfreich.
-- Allgemein profitieren wir vom Austausch mit anderen Entwickler:innen, die schon ähnliche Projekte gebaut haben, um typische Fehler zu vermeiden.
-- Für die nächsten Schritte wäre ausserdem Testing-Unterstützung sinnvoll, damit die Anwendung auch mit mehr Nutzern stabil läuft.
+Wir benötigen Unterstützung beim Import von Laborwerten aus PDF oder Fotos mit automatischer Werte-Erkennung, bei der klar sichtbaren Platzierung des Logout-Buttons auf jeder Seite sowie regelmässiges Feedback zu unserer App.
