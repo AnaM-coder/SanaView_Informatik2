@@ -8,7 +8,7 @@
 ## Version 2.0
 - Ampelsystem (Normal, leicht ausserhalb, stark abweichend)
 - Verlauf (grafisch, einfach)
-- Hauptmenü 
+- Startseite & Hauptmenü mit logo
 
 ## Version 3.0
 - Info-Seite mit Erklärung zu Werten
@@ -27,14 +27,15 @@
 |----------------------------------|-----------|-----|
 | Registrierung & Login            | Hoch      | Ja  |
 | Laborwert-Eingabe & Tabelle      | Hoch      | Ja  |
+| Startseite & Hauptmenü mit logo  | Mittel    | Nein|
 | Verlaufgrafik                    | Mittel    | Nein|
 | Ampelfarben                      | Mittel    | Nein|
 | Info-Seite mit Begriffen         | Mittel    | Nein|
 | Gesundheitsprofil verwalten      | Mittel    | Nein|
 | Export als PDF                   | Tief      | Nein|
+| Logout pro Seite                 | Tief      | Nein|
+| Navigationsbuttons               | Tief      | Nein|
 
-
----
 
 ## Projektbeschreibung als PDF
 
