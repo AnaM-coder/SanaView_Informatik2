@@ -1,8 +1,10 @@
 import streamlit as st
 import datetime
 import pandas as pd
+import fitz  # PyMuPDF für PDF-Texterkennung
 from utils.data_manager import DataManager
 from utils.login_manager import LoginManager
+import re
 
 # === Login-Schutz ===
 LoginManager().go_to_login('Start.py')
@@ -16,7 +18,7 @@ if not username:
 # === DataManager initialisieren ===
 data_manager = DataManager()
 
-# === Benutzerdaten laden → Dateiname basierend auf Benutzername ===
+# === Session Key & Datei
 session_key = f"user_data_{username}"
 file_name = f"{username}_daten.csv"
 
@@ -26,9 +28,7 @@ data_manager.load_user_data(
     initial_value=pd.DataFrame(columns=["Datum", "Laborwert", "Wert", "Einheit", "Referenz", "Ampel"])
 )
 
-# === Titel & Laborwert-Auswahl ===
-st.title("Laborwerte – Eingabe")
-
+# === Laboroptionen (wie bei euch vollständig)
 laboroptionen = {
     "Albumin": {"einheit": "g/dl", "ref_min": 3.5, "ref_max": 5.0},
     "Anionenlücke": {"einheit": "mmol/l", "ref_min": 8, "ref_max": 16},
@@ -62,12 +62,13 @@ laboroptionen = {
     "pH (arteriell)": {"einheit": "", "ref_min": 7.35, "ref_max": 7.45}
 }
 
+# === Eingabeformular
+st.title("Laborwerte – Eingabe")
 ausgewählt = st.selectbox("Laborwert", sorted(laboroptionen.keys()))
 einheit = laboroptionen[ausgewählt]["einheit"]
 ref_min = laboroptionen[ausgewählt]["ref_min"]
 ref_max = laboroptionen[ausgewählt]["ref_max"]
 
-# === Eingabeformular ===
 col1, col2 = st.columns(2)
 with col1:
     wert = st.number_input("Wert", min_value=0.0, step=0.1)
@@ -76,7 +77,6 @@ with col2:
     st.text_input("Einheit", value=einheit, disabled=True)
     st.text_input("Referenz", value=f"{ref_min}–{ref_max} {einheit}", disabled=True)
 
-# === Speichern ===
 if st.button("Speichern"):
     if wert < ref_min:
         ampel = "🟡 (niedrig)"
@@ -93,15 +93,43 @@ if st.button("Speichern"):
         "Referenz": f"{ref_min}–{ref_max}",
         "Ampel": ampel
     }
-
-    data_manager.append_record(
-        session_state_key=session_key,
-        record_dict=neuer_eintrag
-    )
-
+    data_manager.append_record(session_state_key=session_key, record_dict=neuer_eintrag)
     st.success("Laborwert erfolgreich gespeichert!")
 
-# === Tabelle anzeigen ===
+# === PDF Upload & Erkennung
+st.markdown("### PDF mit Laborwerten hochladen")
+pdf = st.file_uploader("PDF auswählen", type="pdf")
+
+if pdf:
+    doc = fitz.open(stream=pdf.read(), filetype="pdf")
+    text = "\n".join(page.get_text() for page in doc)
+
+    gefunden = []
+    for key, info in laboroptionen.items():
+        pattern = rf"{re.escape(key)}\s*[:=]?\s*(-?\d+[.,]?\d*)"
+        match = re.search(pattern, text, re.IGNORECASE)
+        if match:
+            try:
+                value = float(match.group(1).replace(",", "."))
+                eintrag = {
+                    "Datum": datetime.date.today().strftime("%d.%m.%Y"),
+                    "Laborwert": key,
+                    "Wert": value,
+                    "Einheit": info["einheit"],
+                    "Referenz": f"{info['ref_min']}–{info['ref_max']}",
+                    "Ampel": "Auto"
+                }
+                data_manager.append_record(session_state_key=session_key, record_dict=eintrag)
+                gefunden.append(key)
+            except:
+                continue
+
+    if gefunden:
+        st.success(f"Folgende Werte wurden erkannt und gespeichert: {', '.join(gefunden)}")
+    else:
+        st.warning("Keine bekannten Laborwerte im PDF erkannt.")
+
+# === Tabelle
 if not st.session_state[session_key].empty:
     st.markdown("---")
     st.subheader("Ihre gespeicherten Laborwerte")
