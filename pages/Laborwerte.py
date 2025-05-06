@@ -28,7 +28,7 @@ data_manager.load_user_data(
     initial_value=pd.DataFrame(columns=["Datum", "Laborwert", "Wert", "Einheit", "Referenz", "Ampel"])
 )
 
-# === Laboroptionen (nicht verändern wie gewünscht)
+# === Laboroptionen
 laboroptionen = {
     "Albumin": {"einheit": "g/dl", "ref_min": 3.5, "ref_max": 5.0},
     "Anionenlücke": {"einheit": "mmol/l", "ref_min": 8, "ref_max": 16},
