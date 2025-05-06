@@ -1,10 +1,10 @@
 import streamlit as st
 import datetime
 import pandas as pd
-import fitz  # PyMuPDF
-import re
+import fitz  # PyMuPDF für PDF-Texterkennung
 from utils.data_manager import DataManager
 from utils.login_manager import LoginManager
+import re
 
 # === Login-Schutz ===
 LoginManager().go_to_login('Start.py')
@@ -15,7 +15,10 @@ if not username:
     st.error("⚠️ Kein Benutzer eingeloggt! Anmeldung erforderlich.")
     st.stop()
 
+# === DataManager initialisieren ===
 data_manager = DataManager()
+
+# === Session Key & Datei
 session_key = f"user_data_{username}"
 file_name = f"{username}_daten.csv"
 
@@ -25,7 +28,7 @@ data_manager.load_user_data(
     initial_value=pd.DataFrame(columns=["Datum", "Laborwert", "Wert", "Einheit", "Referenz", "Ampel"])
 )
 
-# === Laboroptionen 
+# === Laboroptionen (nicht verändern wie gewünscht)
 laboroptionen = {
     "Albumin": {"einheit": "g/dl", "ref_min": 3.5, "ref_max": 5.0},
     "Anionenlücke": {"einheit": "mmol/l", "ref_min": 8, "ref_max": 16},
@@ -59,39 +62,40 @@ laboroptionen = {
     "pH (arteriell)": {"einheit": "", "ref_min": 7.35, "ref_max": 7.45}
 }
 
-# === Eingabeformular
+# === Manuelle Eingabe
 st.title("Laborwerte – Eingabe")
 ausgewählt = st.selectbox("Laborwert", sorted(laboroptionen.keys()))
-info = laboroptionen[ausgewählt]
+einheit = laboroptionen[ausgewählt]["einheit"]
+ref_min = laboroptionen[ausgewählt]["ref_min"]
+ref_max = laboroptionen[ausgewählt]["ref_max"]
 
 col1, col2 = st.columns(2)
 with col1:
     wert = st.number_input("Wert", min_value=0.0, step=0.1)
     datum = st.date_input("Datum", value=datetime.date.today())
 with col2:
-    st.text_input("Einheit", value=info["einheit"], disabled=True)
-    st.text_input("Referenz", value=f"{info['ref_min']}–{info['ref_max']} {info['einheit']}", disabled=True)
+    st.text_input("Einheit", value=einheit, disabled=True)
+    st.text_input("Referenz", value=f"{ref_min}–{ref_max} {einheit}", disabled=True)
 
 if st.button("Speichern"):
-    if wert < info["ref_min"]:
+    ampel = "🟢 (normal)"
+    if wert < ref_min:
         ampel = "🟡 (niedrig)"
-    elif wert > info["ref_max"]:
+    elif wert > ref_max:
         ampel = "🔴 (hoch)"
-    else:
-        ampel = "🟢 (normal)"
 
     neuer_eintrag = {
         "Datum": datum.strftime("%d.%m.%Y"),
         "Laborwert": ausgewählt,
         "Wert": wert,
-        "Einheit": info["einheit"],
-        "Referenz": f"{info['ref_min']}–{info['ref_max']}",
+        "Einheit": einheit,
+        "Referenz": f"{ref_min}–{ref_max}",
         "Ampel": ampel
     }
     data_manager.append_record(session_state_key=session_key, record_dict=neuer_eintrag)
     st.success("Laborwert erfolgreich gespeichert!")
 
-# === PDF Upload
+# === PDF-Upload und automatische Analyse
 st.markdown("### PDF mit Laborwerten hochladen")
 pdf = st.file_uploader("PDF auswählen", type="pdf")
 
@@ -99,12 +103,16 @@ if pdf:
     doc = fitz.open(stream=pdf.read(), filetype="pdf")
     text = "\n".join(page.get_text() for page in doc)
 
-    # Entnahmedatum suchen (z. B. "04.05.2025")
-    date_match = re.search(r"\b(\d{2}\.\d{2}\.\d{4})\b", text)
-    try:
-        entnahmedatum = datetime.datetime.strptime(date_match.group(1), "%d.%m.%Y").strftime("%d.%m.%Y") if date_match else datetime.date.today().strftime("%d.%m.%Y")
-    except:
-        entnahmedatum = datetime.date.today().strftime("%d.%m.%Y")
+    # Versuche Entnahme- oder Befunddatum zu extrahieren
+    extrahiertes_datum = None
+    for zeile in text.split("\n"):
+        if any(x in zeile.lower() for x in ["entnahme", "befund", "datum"]):
+            match = re.search(r"\b(\d{2}\.\d{2}\.\d{4})\b", zeile)
+            if match:
+                extrahiertes_datum = match.group(1)
+                break
+
+    datum = extrahiertes_datum or datetime.date.today().strftime("%d.%m.%Y")
 
     gefunden = []
     for key, info in laboroptionen.items():
@@ -121,7 +129,7 @@ if pdf:
                     ampel = "🟢 (normal)"
 
                 eintrag = {
-                    "Datum": entnahmedatum,
+                    "Datum": datum,
                     "Laborwert": key,
                     "Wert": value,
                     "Einheit": info["einheit"],
@@ -134,11 +142,11 @@ if pdf:
                 continue
 
     if gefunden:
-        st.success(f"Erkannt & gespeichert: {', '.join(gefunden)}")
+        st.success(f"Erkannte und gespeicherte Laborwerte: {', '.join(gefunden)}")
     else:
-        st.warning("Keine Laborwerte erkannt.")
+        st.warning("Keine bekannten Laborwerte im PDF erkannt.")
 
-# === Tabelle
+# === Tabelle anzeigen
 if not st.session_state[session_key].empty:
     st.markdown("---")
     st.subheader("Ihre gespeicherten Laborwerte")
