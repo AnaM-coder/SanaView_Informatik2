@@ -26,49 +26,55 @@ data_manager.load_user_data(
     ])
 )
 
-# === Daten aus Session State laden ===
+# === Initialzustände setzen ===
+if "profil_gespeichert" not in st.session_state:
+    st.session_state.profil_gespeichert = False
+if "bearbeiten_modus" not in st.session_state:
+    st.session_state.bearbeiten_modus = False
+
+# === Profildaten laden ===
 profil_df = st.session_state.get(session_key, pd.DataFrame())
 profil_eintrag = profil_df[(profil_df["Name"] != "") & (profil_df["Vorname"] != "")] if not profil_df.empty else pd.DataFrame()
 
-if not profil_eintrag.empty and "profil_gespeichert" not in st.session_state:
+if not profil_eintrag.empty and not st.session_state.profil_gespeichert:
     st.session_state.profil_daten_anzeige = profil_eintrag.iloc[-1].to_dict()
     st.session_state.profil_gespeichert = True
 
-if "profil_gespeichert" not in st.session_state:
-    st.session_state.profil_gespeichert = False
-
 # === Formular anzeigen ===
-if not st.session_state.profil_gespeichert:
-    st.title("Profilverwaltung")
+if not st.session_state.profil_gespeichert or st.session_state.bearbeiten_modus:
+    st.title("Profil bearbeiten" if st.session_state.bearbeiten_modus else "Profilverwaltung")
     st.subheader("Persönliche Angaben")
+
+    daten = st.session_state.get("profil_daten_anzeige", {})
 
     col1, col2 = st.columns(2)
     with col1:
-        name = st.text_input("Name*", help="Pflichtfeld")
+        name = st.text_input("Name*", value=daten.get("Name", ""), help="Pflichtfeld")
         geburtsdatum = st.date_input(
             "Geburtsdatum*",
-            value=date(2000, 1, 1),
+            value=pd.to_datetime(daten.get("Geburtsdatum", "2000-01-01"), dayfirst=True),
             min_value=date(1940, 1, 1),
             max_value=date.today(),
             help="Pflichtfeld"
         )
     with col2:
-        vorname = st.text_input("Vorname*", help="Pflichtfeld")
-        geschlecht = st.radio("Geschlecht*", ["Weiblich", "Männlich"], horizontal=True, help="Pflichtfeld")
+        vorname = st.text_input("Vorname*", value=daten.get("Vorname", ""), help="Pflichtfeld")
+        geschlecht = st.radio("Geschlecht*", ["Weiblich", "Männlich"], index=["Weiblich", "Männlich"].index(daten.get("Geschlecht", "Weiblich")), horizontal=True, help="Pflichtfeld")
 
-    schwanger = st.radio("Schwanger*", ["Ja", "Nein", "Weiss nicht"], horizontal=True, help="Pflichtfeld")
+    schwanger = st.radio("Schwanger*", ["Ja", "Nein", "Weiss nicht"], index=["Ja", "Nein", "Weiss nicht"].index(daten.get("Schwanger", "Nein")), horizontal=True, help="Pflichtfeld")
 
     herkunft = st.text_input(
         "Herkunft / ethnischer Hintergrund",
+        value=daten.get("Herkunft", ""),
         help="Ihr ethnischer Hintergrund kann die medizinische Bewertung beeinflussen. Die Angaben dienen nur der individuellen Einschätzung und werden vertraulich behandelt."
     )
 
     st.subheader("Gesundheit")
-    vorerkrankung = st.text_area("Vorerkrankung")
-    medikamente = st.text_area("Medikamente")
-    allergien = st.text_area("Allergien / Besonderheiten")
+    vorerkrankung = st.text_area("Vorerkrankung", value=daten.get("Vorerkrankung", ""))
+    medikamente = st.text_area("Medikamente", value=daten.get("Medikamente", ""))
+    allergien = st.text_area("Allergien / Besonderheiten", value=daten.get("Allergien", ""))
 
-    if st.button("Profil speichern"):
+    if st.button("Speichern"):
         if not name or not vorname or not geschlecht or not schwanger:
             st.error("❌ Bitte füllen Sie alle mit * markierten Pflichtfelder aus.")
         else:
@@ -87,11 +93,12 @@ if not st.session_state.profil_gespeichert:
             data_manager.append_record(session_state_key=session_key, record_dict=eintrag)
             st.session_state.profil_daten_anzeige = eintrag
             st.session_state.profil_gespeichert = True
+            st.session_state.bearbeiten_modus = False
             st.experimental_rerun()
 
 # === Profilansicht anzeigen ===
-elif st.session_state.profil_gespeichert:
-    st.title("Ihr Profil")
+else:
+    st.title("🧾 Ihr Profil")
     st.success("✅ Ihr Profil wurde gespeichert.")
 
     daten = st.session_state.profil_daten_anzeige
@@ -107,5 +114,11 @@ elif st.session_state.profil_gespeichert:
         st.markdown(f"**⚠️ Allergien:** {daten['Allergien']}")
 
     st.markdown("---")
-    if st.button("Zurück zur Startseite"):
-        st.switch_page("Start.py")
+    col1, col2 = st.columns([1, 1])
+    with col1:
+        if st.button("Profil bearbeiten"):
+            st.session_state.bearbeiten_modus = True
+            st.experimental_rerun()
+    with col2:
+        if st.button("Zurück zur Startseite"):
+            st.switch_page("Start.py")
