@@ -9,13 +9,15 @@ st.set_page_config(page_title="SanaView", layout="wide")
 # Login initialisieren
 data_manager = DataManager(fs_protocol='webdav', fs_root_folder="SanaView2")
 login_manager = LoginManager(data_manager)
-login_manager.login_register()
+
+# Nur Login anzeigen (kein automatischer Logout)
+login_manager.authenticator.login("Login", location="main")
 
 # Stoppen wenn nicht eingeloggt
 if not st.session_state.get("authentication_status", False):
     st.stop()
 
-# === Logout-Button in der Sidebar anzeigen ===
+# Nur manuell: Logout in der Sidebar
 with st.sidebar:
     login_manager.authenticator.logout("Logout", key="logout_sidebar")
 
