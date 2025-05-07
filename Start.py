@@ -10,37 +10,34 @@ st.set_page_config(page_title="SanaView", layout="wide")
 data_manager = DataManager(fs_protocol="webdav", fs_root_folder="SanaView2")
 login_manager = LoginManager(data_manager=data_manager)
 
-# === Login durchführen ===
+# === Login anzeigen ===
 login_manager.authenticator.login(location="main")
 
-# === Wenn nicht eingeloggt → abbrechen ===
+# === Wenn nicht eingeloggt: abbrechen ===
 if not st.session_state.get("authentication_status"):
     st.stop()
 
-# === Logout anzeigen ===
+# === Logout in der Sidebar ===
 login_manager.authenticator.logout("Logout", "sidebar")
 
 # === Logo links oben ===
-col_logo, _ = st.columns([1, 10])
-with col_logo:
-    if os.path.exists("img/sanaview_logo.png"):
-        st.image("img/sanaview_logo.png", width=250)
-    else:
-        st.warning("⚠️ Logo nicht gefunden.")
+if os.path.exists("img/sanaview_logo.png"):
+    st.image("img/sanaview_logo.png", width=250)
+else:
+    st.warning("⚠️ Logo nicht gefunden.")
 
-# === Begrüßung – LINKS ausgerichtet ===
-st.markdown("## Willkommen bei SanaView")
+# === Begrüßung ganz normal (linksbündig, nicht zentriert) ===
+st.title("Willkommen bei SanaView")
 st.markdown("*Ihre Werte sicher gespeichert – ohne Diagnose, dennoch mit Überblick.*")
 
-# === Beschreibung – ebenfalls linksbündig ===
 st.markdown("""
-Diese App unterstützt Sie dabei, Ihre medizinischen Werte sicher zu speichern 
-und den Verlauf über einen längeren Zeitraum im Blick zu behalten – etwa im Rahmen einer Behandlung. 
-Ergänzend erhalten Sie hilfreiche Informationen zu verschiedenen Analysewerten – 
+Diese App unterstützt Sie dabei, Ihre medizinischen Werte sicher zu speichern  
+und den Verlauf über einen längeren Zeitraum im Blick zu behalten – etwa im Rahmen einer Behandlung.  
+Ergänzend erhalten Sie hilfreiche Informationen zu verschiedenen Analysewerten –  
 **ohne dabei medizinische Diagnosen zu ersetzen**.
 """)
 
-# === Login-Hinweis — bleibt mittig formatiert, zur Betonung ===
+# === Hinweis für eingeloggte Nutzer (zentriert gelassen für Lesbarkeit) ===
 username = st.session_state.get("username", "Unbekannt")
 st.markdown(f"""
 <div style="background-color: #e6f2ff; padding: 12px; border-radius: 10px; margin-top: 25px; margin-bottom: 30px;">
