@@ -18,7 +18,7 @@ col_logo, _ = st.columns([1, 8])
 with col_logo:
     try:
         with open("img/sanaview_logo.png", "rb") as f:
-            st.image(f.read(), width=400)
+            st.image(f.read(), width=250)
     except FileNotFoundError:
         st.warning("⚠️ Logo nicht gefunden.")
 
