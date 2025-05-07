@@ -10,69 +10,103 @@ username = st.session_state.get("username")
 if not username:
     st.stop()
 
+# === Pfad zur gemeinsamen Datei im Switch-Drive (sanaView2) ===
+profil_pfad = r"Z:\sanaView2\profil.csv"
+
 # === DataManager & SessionState
 session_key = "profil_daten"
 data_manager = DataManager()
 
 data_manager.load_user_data(
     session_state_key=session_key,
-    file_name="profil.csv",
+    file_name=profil_pfad,
     initial_value=pd.DataFrame(columns=[
         "Name", "Vorname", "Geburtsdatum", "Geschlecht", "Schwanger",
         "Herkunft", "Vorerkrankung", "Medikamente", "Allergien"
     ])
 )
 
-# === UI: Formular
-st.title("Profilverwaltung")
-st.subheader("Persönliche Angaben")
+# === Profildaten beim Start automatisch laden (wenn vorhanden)
+profil_df = data_manager.get_data(session_state_key=session_key)
+profil_eintrag = profil_df[profil_df["Name"] == username] if username else pd.DataFrame()
 
-col1, col2 = st.columns(2)
-with col1:
-    name = st.text_input("Name*", help="Pflichtfeld")
-    geburtsdatum = st.date_input(
-        "Geburtsdatum*",
-        value=date(2025, 1, 1),
-        min_value=date(1940, 1, 1),
-        max_value=date.today(),
-        help="Pflichtfeld"
+if not profil_eintrag.empty:
+    st.session_state.profil_daten_anzeige = profil_eintrag.iloc[0].to_dict()
+    st.session_state.profil_gespeichert = True
+
+if "profil_gespeichert" not in st.session_state:
+    st.session_state.profil_gespeichert = False
+
+# === Formular anzeigen (wenn noch kein Profil gespeichert wurde)
+if not st.session_state.profil_gespeichert:
+    st.title("Profilverwaltung")
+    st.subheader("Persönliche Angaben")
+
+    col1, col2 = st.columns(2)
+    with col1:
+        name = st.text_input("Name*", help="Pflichtfeld")
+        geburtsdatum = st.date_input(
+            "Geburtsdatum*",
+            value=date(2000, 1, 1),
+            min_value=date(1940, 1, 1),
+            max_value=date.today(),
+            help="Pflichtfeld"
+        )
+    with col2:
+        vorname = st.text_input("Vorname*", help="Pflichtfeld")
+        geschlecht = st.radio("Geschlecht*", ["Weiblich", "Männlich"], horizontal=True, help="Pflichtfeld")
+
+    schwanger = st.radio("Schwanger*", ["Ja", "Nein", "Weiss nicht"], horizontal=True, help="Pflichtfeld")
+
+    herkunft = st.text_input(
+        "Herkunft / ethnischer Hintergrund",
+        help="Ihr ethnischer Hintergrund kann die medizinische Bewertung beeinflussen. Die Angaben dienen nur der individuellen Einschätzung und werden vertraulich behandelt."
     )
-with col2:
-    vorname = st.text_input("Vorname*", help="Pflichtfeld")
-    geschlecht = st.radio("Geschlecht*", ["Weiblich", "Männlich"], horizontal=True, help="Pflichtfeld")
 
-schwanger = st.radio("Schwanger*", ["Ja", "Nein", "Weiss nicht"], horizontal=True, help="Pflichtfeld")
+    st.subheader("Gesundheit")
+    vorerkrankung = st.text_area("Vorerkrankung")
+    medikamente = st.text_area("Medikamente")
+    allergien = st.text_area("Allergien / Besonderheiten")
 
-herkunft = st.text_input(
-    "Herkunft / ethnischer Hintergrund",
-    help="Ihr ethnischer Hintergrund kann die medizinische Bewertung beeinflussen. Die Angaben dienen nur der individuellen Einschätzung und werden vertraulich behandelt."
-)
+    if st.button("Profil speichern"):
+        if not name or not vorname or not geschlecht or not schwanger:
+            st.error("❌ Bitte füllen Sie alle mit * markierten Pflichtfelder aus.")
+        else:
+            eintrag = {
+                "Name": name,
+                "Vorname": vorname,
+                "Geburtsdatum": geburtsdatum.strftime("%d.%m.%Y"),
+                "Geschlecht": geschlecht,
+                "Schwanger": schwanger,
+                "Herkunft": herkunft,
+                "Vorerkrankung": vorerkrankung,
+                "Medikamente": medikamente,
+                "Allergien": allergien
+            }
 
-st.subheader("Gesundheit")
-vorerkrankung = st.text_area("Vorerkrankung")
-medikamente = st.text_area("Medikamente")
-allergien = st.text_area("Allergien / Besonderheiten")
+            data_manager.append_record(session_state_key=session_key, record_dict=eintrag)
+            st.session_state.profil_daten_anzeige = eintrag
+            st.session_state.profil_gespeichert = True
+            st.experimental_rerun()
 
-# === Validierung & Speichern
-if st.button("Profil speichern"):
-    if not name or not vorname or not geschlecht or not schwanger:
-        st.error("❌ Bitte füllen Sie alle mit * markierten Pflichtfelder aus.")
-    else:
-        eintrag = {
-            "Name": name,
-            "Vorname": vorname,
-            "Geburtsdatum": geburtsdatum.strftime("%d.%m.%Y"),
-            "Geschlecht": geschlecht,
-            "Schwanger": schwanger,
-            "Herkunft": herkunft,
-            "Vorerkrankung": vorerkrankung,
-            "Medikamente": medikamente,
-            "Allergien": allergien
-        }
+# === Nach dem Speichern: Profilanzeige ===
+else:
+    st.success("✅ Profil erfolgreich gespeichert!")
+    st.subheader("🧾 Ihr Profil")
 
-        data_manager.append_record(session_state_key=session_key, record_dict=eintrag)
-        st.success("✅ Profil erfolgreich gespeichert!")
+    bild = st.file_uploader("Profilbild hochladen", type=["png", "jpg", "jpeg"])
+    if bild:
+        st.image(bild, width=150)
 
-# === Navigation
-if st.button("Zurück zur Startseite"):
-    st.switch_page("Start.py")
+    daten = st.session_state.profil_daten_anzeige
+    st.markdown(f"**👤 Name:** {daten['Vorname']} {daten['Name']}")
+    st.markdown(f"**🎂 Geburtsdatum:** {daten['Geburtsdatum']}")
+    st.markdown(f"**🚻 Geschlecht:** {daten['Geschlecht']}")
+    st.markdown(f"**🤰 Schwanger:** {daten['Schwanger']}")
+    st.markdown(f"**🌍 Herkunft:** {daten['Herkunft']}")
+    st.markdown(f"**🩺 Vorerkrankung:** {daten['Vorerkrankung']}")
+    st.markdown(f"**💊 Medikamente:** {daten['Medikamente']}")
+    st.markdown(f"**⚠️ Allergien:** {daten['Allergien']}")
+
+    if st.button("Zurück zur Startseite"):
+        st.switch_page("Start.py")
