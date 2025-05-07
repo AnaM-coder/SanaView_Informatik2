@@ -170,8 +170,8 @@ else:
                 f"""
                 <div style='
                     background-color:#f0f0f0;
-                    width:150px;
-                    height:1500px;
+                    width:120px;
+                    height:120px;
                     border-radius:60px;
                     display:flex;
                     align-items:center;
