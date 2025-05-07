@@ -8,6 +8,11 @@ login_manager = LoginManager(data_manager=DataManager())
 login_manager.authenticator.logout("Logout", "sidebar")
 login_manager.go_to_login("Start.py")
 
+# === Login & Logout ===
+login_manager = LoginManager(data_manager=DataManager())
+login_manager.authenticator.logout("Logout", "sidebar")
+login_manager.go_to_login("Start.py")
+
 # === Seitenlayout ===
 st.set_page_config(page_title="Info-Seite", layout="wide")
 st.title("Info – Seite")
