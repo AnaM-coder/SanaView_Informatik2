@@ -10,8 +10,9 @@ st.set_page_config(page_title="SanaView", layout="wide")
 data_manager = DataManager(fs_protocol='webdav', fs_root_folder="SanaView2")
 login_manager = LoginManager(data_manager)
 
-# === Login & Registrierung anzeigen (im Hauptbereich) ===
-login_manager.login_register(location="main")
+# === Login + Registrierung anzeigen ===
+login_manager.authenticator.login("Login", location="main")
+login_manager.authenticator.register_user("Registrieren", preauthorization=False)
 
 # === Wenn nicht eingeloggt → abbrechen ===
 if not st.session_state.get("authentication_status", False):
@@ -26,7 +27,7 @@ if os.path.exists("img/sanaview_logo.png"):
 else:
     st.warning("⚠️ Logo nicht gefunden.")
 
-# === Begrüßung & Beschreibung ===
+# === Begrüßung & Beschreibung zentriert ===
 st.markdown("<h1 style='text-align: center;'>Willkommen bei SanaView</h1>", unsafe_allow_html=True)
 st.markdown("<p style='text-align: center; font-size:18px; color:gray;'>Ihre Werte sicher gespeichert – ohne Diagnose, dennoch mit Überblick.</p>", unsafe_allow_html=True)
 
