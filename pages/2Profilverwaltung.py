@@ -30,7 +30,13 @@ st.subheader("Persönliche Angaben")
 col1, col2 = st.columns(2)
 with col1:
     name = st.text_input("Name*", help="Pflichtfeld")
-    geburtsdatum = st.date_input("Geburtsdatum*", value=date(2000, 1, 1), help="Pflichtfeld")
+    geburtsdatum = st.date_input(
+        "Geburtsdatum*",
+        value=date(2025, 1, 1),
+        min_value=date(1940, 1, 1),
+        max_value=date.today(),
+        help="Pflichtfeld"
+    )
 with col2:
     vorname = st.text_input("Vorname*", help="Pflichtfeld")
     geschlecht = st.radio("Geschlecht*", ["Weiblich", "Männlich"], horizontal=True, help="Pflichtfeld")
