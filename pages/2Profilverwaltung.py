@@ -121,7 +121,7 @@ else:
     daten = st.session_state.profil_daten_anzeige
 
     with st.container():
-        st.markdown(f"**👤 Name:** {daten['Vorname']} {daten['Name']}")
+        st.markdown(f"**👤 Name, Vorname:** {daten['Vorname']} {daten['Name']}")
         st.markdown(f"**🎂 Geburtsdatum:** {daten['Geburtsdatum']}")
         st.markdown(f"**🚻 Geschlecht:** {daten['Geschlecht']}")
         st.markdown(f"**🤰 Schwanger:** {daten['Schwanger']}")
