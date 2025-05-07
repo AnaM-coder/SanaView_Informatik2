@@ -1,4 +1,5 @@
 import streamlit as st
+import streamlit as st
 import pandas as pd
 from utils.data_manager import DataManager
 from utils.login_manager import LoginManager
@@ -6,10 +7,15 @@ from utils.login_manager import LoginManager
 # === Seitenlayout ===
 st.set_page_config(page_title="Info-Seite", layout="wide")
 
-# === Login & Logout ===
+# === Login initialisieren & prüfen ===
 login_manager = LoginManager(data_manager=DataManager())
-login_manager.authenticator.logout("Logout", "sidebar")
-login_manager.go_to_login("Start.py")
+
+if not st.session_state.get("authentication_status", False):
+    st.stop()
+
+# === Logout-Button nur in der Sidebar ===
+with st.sidebar:
+    login_manager.authenticator.logout("Logout", key="logout_sidebar")
 
 # === Titel & Einleitung ===
 st.title("Info – Seite")

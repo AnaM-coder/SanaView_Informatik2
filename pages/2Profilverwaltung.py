@@ -6,11 +6,16 @@ from utils.login_manager import LoginManager
 
 # === Login & Logout ===
 login_manager = LoginManager(data_manager=DataManager())
-login_manager.authenticator.logout("Logout", "sidebar")
-login_manager.go_to_login("Start.py")
+
+# Nur wenn eingeloggt, Logout anzeigen
+if st.session_state.get("authentication_status", False):
+    with st.sidebar:
+        login_manager.authenticator.logout("Logout", key="logout_sidebar")
+else:
+    st.error("⚠️ Kein Benutzer eingeloggt! Anmeldung erforderlich.")
+    st.stop()
 
 # === Login absichern ===
-LoginManager().go_to_login("Start.py")
 username = st.session_state.get("username")
 if not username:
     st.stop()
@@ -21,10 +26,8 @@ file_name = "profil.csv"
 session_key = "profil_daten"
 
 # === Session init
-if "profil_gespeichert" not in st.session_state:
-    st.session_state.profil_gespeichert = False
-if "bearbeiten_modus" not in st.session_state:
-    st.session_state.bearbeiten_modus = False
+st.session_state.setdefault("profil_gespeichert", False)
+st.session_state.setdefault("bearbeiten_modus", False)
 
 # === CSV laden
 data_manager.load_user_data(
@@ -36,8 +39,7 @@ data_manager.load_user_data(
     ])
 )
 profil_df = st.session_state.get(session_key, pd.DataFrame())
-if "Benutzername" not in profil_df.columns:
-    profil_df["Benutzername"] = ""
+profil_df["Benutzername"] = profil_df.get("Benutzername", "")
 
 # === Profil automatisch laden
 if not st.session_state.profil_gespeichert:
@@ -50,21 +52,19 @@ if not st.session_state.profil_gespeichert:
 if not st.session_state.profil_gespeichert or st.session_state.bearbeiten_modus:
     st.title("Profilverwaltung")
     st.subheader("Persönliche Angaben")
-
     daten = st.session_state.get("profil_daten_anzeige", {})
 
     col1, col2 = st.columns(2)
     with col1:
-        name = st.text_input("Name*", value=daten.get("Name", ""), help="Pflichtfeld")
+        name = st.text_input("Name*", value=daten.get("Name", ""))
         geburtsdatum = st.date_input(
             "Geburtsdatum*",
             value=pd.to_datetime(daten.get("Geburtsdatum", "2000-01-01"), dayfirst=True),
             min_value=date(1940, 1, 1),
-            max_value=date.today(),
-            help="Pflichtfeld"
+            max_value=date.today()
         )
     with col2:
-        vorname = st.text_input("Vorname*", value=daten.get("Vorname", ""), help="Pflichtfeld")
+        vorname = st.text_input("Vorname*", value=daten.get("Vorname", ""))
         geschlecht = st.radio("Geschlecht*", ["Weiblich", "Männlich"],
                               index=["Weiblich", "Männlich"].index(daten.get("Geschlecht", "Weiblich")),
                               horizontal=True)
@@ -73,13 +73,9 @@ if not st.session_state.profil_gespeichert or st.session_state.bearbeiten_modus:
                          index=["Ja", "Nein", "Weiss nicht"].index(daten.get("Schwanger", "Nein")),
                          horizontal=True)
 
-    herkunft = st.text_input(
-        "Herkunft / ethnischer Hintergrund",
-        value=daten.get("Herkunft", ""),
-        help="Ihr ethnischer Hintergrund kann die medizinische Bewertung beeinflussen."
-    )
+    herkunft = st.text_input("Herkunft / ethnischer Hintergrund", value=daten.get("Herkunft", ""))
 
-    # === Avatar-Auswahl (17 Tiere)
+    # === Avatar-Auswahl
     st.subheader("Avatar auswählen")
     tier_auswahl = {
         "🦋 Schmetterling": "🦋", "🦄 Einhorn": "🦄", "🐶 Hund": "🐶", "🦊 Fuchs": "🦊",
@@ -90,17 +86,15 @@ if not st.session_state.profil_gespeichert or st.session_state.bearbeiten_modus:
     avatar_key = st.selectbox("Tier-Avatar wählen", list(tier_auswahl.keys()), index=0)
     avatar_symbol = tier_auswahl[avatar_key]
 
-    # === Gesundheitsdaten
     st.subheader("Gesundheit")
     vorerkrankung = st.text_area("Vorerkrankung", value=daten.get("Vorerkrankung", ""))
     medikamente = st.text_area("Medikamente", value=daten.get("Medikamente", ""))
     allergien = st.text_area("Allergien / Besonderheiten", value=daten.get("Allergien", ""))
 
-    # === Speichern & Anzeigen
     col1, col2 = st.columns(2)
     with col1:
         if st.button("Speichern"):
-            if not name or not vorname or not geschlecht or not schwanger:
+            if not name or not vorname:
                 st.error("❌ Bitte Pflichtfelder ausfüllen.")
             else:
                 eintrag = {
@@ -128,37 +122,16 @@ if not st.session_state.profil_gespeichert or st.session_state.bearbeiten_modus:
 
     with col2:
         if st.button("Profil anzeigen"):
-            gespeicherte_daten = st.session_state.get("profil_daten_anzeige", {})
-            aktuelle_daten = {
-                "Benutzername": username,
-                "Name": name,
-                "Vorname": vorname,
-                "Geburtsdatum": geburtsdatum.strftime("%d.%m.%Y"),
-                "Geschlecht": geschlecht,
-                "Schwanger": schwanger,
-                "Herkunft": herkunft,
-                "Vorerkrankung": vorerkrankung,
-                "Medikamente": medikamente,
-                "Allergien": allergien,
-                "Avatar": avatar_symbol
-            }
-
-            if gespeicherte_daten and aktuelle_daten != gespeicherte_daten:
-                st.warning("⚠️ Änderungen wurden vorgenommen, aber nicht gespeichert.")
-            elif gespeicherte_daten:
-                st.session_state.bearbeiten_modus = False
-                st.rerun()
-            else:
-                st.warning("⚠️ Bitte zuerst speichern.")
+            st.session_state.bearbeiten_modus = False
+            st.rerun()
 
 # === Profilansicht
 else:
     st.title("Ihr Profil")
-    st.success("Ihr Profil wurde gespeichert und geladen.")
+    st.success("Ihr Profil wurde geladen.")
     daten = st.session_state.profil_daten_anzeige
 
     col1, col2 = st.columns([2, 1])
-
     with col1:
         st.markdown(f"*👤 **Name, Vorname**:* {daten['Name']} {daten['Vorname']}")
         st.markdown(f"*🎂 **Geburtsdatum**:* {daten['Geburtsdatum']}")
@@ -173,18 +146,9 @@ else:
         if "Avatar" in daten:
             st.markdown(
                 f"""
-                <div style='
-                    background-color:#f0f0f0;
-                    width:140px;
-                    height:140px;
-                    border-radius:70px;
-                    display:flex;
-                    align-items:center;
-                    justify-content:center;
-                    font-size:80px;
-                    margin:auto;
-                    border:2px solid #ccc;
-                '>
+                <div style='background-color:#f0f0f0; width:140px; height:140px;
+                border-radius:70px; display:flex; align-items:center; justify-content:center;
+                font-size:80px; margin:auto; border:2px solid #ccc;'>
                     {daten['Avatar']}
                 </div>
                 """,

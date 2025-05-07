@@ -1,29 +1,35 @@
 import streamlit as st
-import datetime
-import pandas as pd
+import os
 from utils.data_manager import DataManager
 from utils.login_manager import LoginManager
-import os
 
 # === Seitenlayout ===
 st.set_page_config(page_title="SanaView – Hauptmenü", layout="wide")
 
-# === Login & Logout ===
+# === Login prüfen ===
 login_manager = LoginManager(data_manager=DataManager())
-login_manager.authenticator.logout("Logout", "sidebar")
-login_manager.go_to_login("Start.py")
 
-# === Logo links oben (korrekt eingebunden) ===
-if os.path.exists("img/sanaview_logo.png"):
-    st.image("img/sanaview_logo.png", width=200)
-else:
-    st.warning("⚠️ Logo nicht gefunden.")
+if not st.session_state.get("authentication_status", False):
+    st.error("⚠️ Kein Benutzer eingeloggt! Anmeldung erforderlich.")
+    st.stop()
 
-# === Haupttitel & Begrüssung (NICHT zentriert) ===
-st.markdown("## Willkommen auf der Hauptmenü")
+# === Logout nur in der Sidebar ===
+with st.sidebar:
+    login_manager.authenticator.logout("Logout", key="logout_sidebar")
+
+# === Logo links oben ===
+col_logo, col_text = st.columns([1, 8])
+with col_logo:
+    if os.path.exists("img/sanaview_logo.png"):
+        st.image("img/sanaview_logo.png", width=200)
+    else:
+        st.warning("⚠️ Logo nicht gefunden.")
+
+# === Haupttitel & Begrüssung ===
+st.markdown("## Willkommen auf dem Hauptmenü")
 st.markdown("#### Liebe Nutzerinnen und Nutzer 🧬")
 
-# === Beschreibung der Funktionen ===
+# === Beschreibung ===
 st.markdown("Mit der **SanaView App** können Sie:")
 
 st.markdown("""
@@ -37,5 +43,5 @@ st.markdown("""
 </ul>
 """, unsafe_allow_html=True)
 
-# === Abschluss — linke Ausrichtung beibehalten ===
+# === Abschluss ===
 st.markdown("<p style='margin-top: 25px; font-size:18px;'><strong>Behalten Sie Ihre Gesundheit im Blick – einfach, sicher und übersichtlich.</strong></p>", unsafe_allow_html=True)

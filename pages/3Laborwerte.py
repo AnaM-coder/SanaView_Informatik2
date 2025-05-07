@@ -1,21 +1,25 @@
 import streamlit as st
 import datetime
 import pandas as pd
-import fitz  # PyMuPDF für PDF-Texterkennung
+import fitz  # PyMuPDF
 from utils.data_manager import DataManager
 from utils.login_manager import LoginManager
 import re
 
-# === Login & Logout ===
+# === Login initialisieren ===
 login_manager = LoginManager(data_manager=DataManager())
-login_manager.authenticator.logout("Logout", "sidebar")
-login_manager.go_to_login("Start.py")
+
+# === Login absichern ===
+if not st.session_state.get("authentication_status", False):
+    st.error("⚠️ Kein Benutzer eingeloggt! Anmeldung erforderlich.")
+    st.stop()
+
+# === Logout-Button nur in der Sidebar ===
+with st.sidebar:
+    login_manager.authenticator.logout("Logout", key="logout_sidebar")
 
 # === Nutzername prüfen ===
 username = st.session_state.get("username")
-if not username:
-    st.error("⚠️ Kein Benutzer eingeloggt! Anmeldung erforderlich.")
-    st.stop()
 
 # === DataManager initialisieren ===
 data_manager = DataManager()
@@ -97,7 +101,7 @@ if st.button("Speichern"):
     data_manager.append_record(session_state_key=session_key, record_dict=neuer_eintrag)
     st.success("Laborwert erfolgreich gespeichert!")
 
-# === PDF-Upload und automatische Analyse
+# === PDF Upload
 st.markdown("### PDF mit Laborwerten hochladen")
 pdf = st.file_uploader("PDF auswählen", type="pdf")
 
@@ -105,18 +109,17 @@ if pdf:
     doc = fitz.open(stream=pdf.read(), filetype="pdf")
     text = "\n".join(page.get_text() for page in doc)
 
-    # Versuche Entnahme- oder Befunddatum zu extrahieren
     extrahiertes_datum = None
     for zeile in text.split("\n"):
-        if any(x in zeile.lower() for x in ["entnahme", "Befunddatum", "datum"]):
+        if any(x in zeile.lower() for x in ["entnahme", "befunddatum", "datum"]):
             match = re.search(r"\b(\d{2}\.\d{2}\.\d{4})\b", zeile)
             if match:
                 extrahiertes_datum = match.group(1)
                 break
 
     datum = extrahiertes_datum or datetime.date.today().strftime("%d.%m.%Y")
-
     gefunden = []
+
     for key, info in laboroptionen.items():
         pattern = rf"{re.escape(key)}\s*[:=]?\s*(-?\d+[.,]?\d*)"
         match = re.search(pattern, text, re.IGNORECASE)
