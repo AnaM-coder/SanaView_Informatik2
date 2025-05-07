@@ -10,32 +10,32 @@ username = st.session_state.get("username")
 if not username:
     st.stop()
 
-# === Pfad zur CSV im Switch Drive ===
+# === CSV-Dateipfad im Switch Drive ===
 profil_pfad = r"Z:\sanaView2\profil.csv"
 
-# === DataManager & SessionState ===
+# === Session Keys initialisieren ===
 session_key = "profil_daten"
-data_manager = DataManager()
-
-data_manager.load_user_data(
-    session_state_key=session_key,
-    file_name=profil_pfad,
-    initial_value=pd.DataFrame(columns=[
-        "Name", "Vorname", "Geburtsdatum", "Geschlecht", "Schwanger",
-        "Herkunft", "Vorerkrankung", "Medikamente", "Allergien"
-    ])
-)
-
-# === Initialzustände setzen ===
 if "profil_gespeichert" not in st.session_state:
     st.session_state.profil_gespeichert = False
 if "bearbeiten_modus" not in st.session_state:
     st.session_state.bearbeiten_modus = False
 
-# === Profildaten laden ===
-profil_df = st.session_state.get(session_key, pd.DataFrame())
-profil_eintrag = profil_df[(profil_df["Name"] != "") & (profil_df["Vorname"] != "")] if not profil_df.empty else pd.DataFrame()
+# === DataManager initialisieren ===
+data_manager = DataManager()
+data_manager.load_user_data(
+    session_state_key=session_key,
+    file_name=profil_pfad,
+    initial_value=pd.DataFrame(columns=[
+        "Benutzername", "Name", "Vorname", "Geburtsdatum", "Geschlecht", "Schwanger",
+        "Herkunft", "Vorerkrankung", "Medikamente", "Allergien"
+    ])
+)
 
+# === Profil aus Session State laden
+profil_df = st.session_state.get(session_key, pd.DataFrame())
+profil_eintrag = profil_df[profil_df["Benutzername"] == username] if not profil_df.empty else pd.DataFrame()
+
+# === Falls vorhanden: als geladen markieren
 if not profil_eintrag.empty and not st.session_state.profil_gespeichert:
     st.session_state.profil_daten_anzeige = profil_eintrag.iloc[-1].to_dict()
     st.session_state.profil_gespeichert = True
@@ -59,9 +59,13 @@ if not st.session_state.profil_gespeichert or st.session_state.bearbeiten_modus:
         )
     with col2:
         vorname = st.text_input("Vorname*", value=daten.get("Vorname", ""), help="Pflichtfeld")
-        geschlecht = st.radio("Geschlecht*", ["Weiblich", "Männlich"], index=["Weiblich", "Männlich"].index(daten.get("Geschlecht", "Weiblich")), horizontal=True, help="Pflichtfeld")
+        geschlecht = st.radio("Geschlecht*", ["Weiblich", "Männlich"],
+                              index=["Weiblich", "Männlich"].index(daten.get("Geschlecht", "Weiblich")),
+                              horizontal=True, help="Pflichtfeld")
 
-    schwanger = st.radio("Schwanger*", ["Ja", "Nein", "Weiss nicht"], index=["Ja", "Nein", "Weiss nicht"].index(daten.get("Schwanger", "Nein")), horizontal=True, help="Pflichtfeld")
+    schwanger = st.radio("Schwanger*", ["Ja", "Nein", "Weiss nicht"],
+                         index=["Ja", "Nein", "Weiss nicht"].index(daten.get("Schwanger", "Nein")),
+                         horizontal=True, help="Pflichtfeld")
 
     herkunft = st.text_input(
         "Herkunft / ethnischer Hintergrund",
@@ -79,6 +83,7 @@ if not st.session_state.profil_gespeichert or st.session_state.bearbeiten_modus:
             st.error("❌ Bitte füllen Sie alle mit * markierten Pflichtfelder aus.")
         else:
             eintrag = {
+                "Benutzername": username,
                 "Name": name,
                 "Vorname": vorname,
                 "Geburtsdatum": geburtsdatum.strftime("%d.%m.%Y"),
@@ -90,11 +95,16 @@ if not st.session_state.profil_gespeichert or st.session_state.bearbeiten_modus:
                 "Allergien": allergien
             }
 
-            data_manager.append_record(session_state_key=session_key, record_dict=eintrag)
+            # alten Eintrag des Benutzers löschen
+            updated_df = profil_df[profil_df["Benutzername"] != username]
+            updated_df = pd.concat([updated_df, pd.DataFrame([eintrag])], ignore_index=True)
+            st.session_state[session_key] = updated_df
+
+            data_manager.save_data(session_state_key=session_key)
             st.session_state.profil_daten_anzeige = eintrag
             st.session_state.profil_gespeichert = True
             st.session_state.bearbeiten_modus = False
-            st.experimental_rerun()
+            st.rerun()
 
 # === Profilansicht anzeigen ===
 else:
@@ -118,7 +128,7 @@ else:
     with col1:
         if st.button("Profil bearbeiten"):
             st.session_state.bearbeiten_modus = True
-            st.experimental_rerun()
+            st.rerun()
     with col2:
         if st.button("Zurück zur Startseite"):
             st.switch_page("Start.py")
