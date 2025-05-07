@@ -17,7 +17,7 @@ login_manager.go_to_login("Start.py")
 col_logo, _ = st.columns([1, 8])
 with col_logo:
     if os.path.exists("img/sanaview_logo.png"):
-        st.image("img/sanaview_logo.png", width=400)
+        st.image("img/sanaview_logo.png", width=800)
     else:
         st.warning("⚠️ Logo nicht gefunden.")
 
