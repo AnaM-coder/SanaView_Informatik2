@@ -106,7 +106,7 @@ if pdf:
     # Versuche Entnahme- oder Befunddatum zu extrahieren
     extrahiertes_datum = None
     for zeile in text.split("\n"):
-        if any(x in zeile.lower() for x in ["entnahme", "befunddatum", "datum"]):
+        if any(x in zeile.lower() for x in ["entnahme", "Befunddatum", "datum"]):
             match = re.search(r"\b(\d{2}\.\d{2}\.\d{4})\b", zeile)
             if match:
                 extrahiertes_datum = match.group(1)
