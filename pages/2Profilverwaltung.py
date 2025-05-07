@@ -10,9 +10,9 @@ username = st.session_state.get("username")
 if not username:
     st.stop()
 
-# === DataManager mit WebDAV
+# === WebDAV aktivieren
 data_manager = DataManager(fs_protocol="webdav", fs_root_folder="SanaView2")
-profil_dateiname = "profil.csv"
+file_name = "profil.csv"
 session_key = "profil_daten"
 
 # === Session-Status initialisieren
@@ -21,28 +21,32 @@ if "profil_gespeichert" not in st.session_state:
 if "bearbeiten_modus" not in st.session_state:
     st.session_state.bearbeiten_modus = False
 
-# === CSV vom WebDAV laden
+# === CSV laden
 data_manager.load_user_data(
     session_state_key=session_key,
-    file_name=profil_dateiname,
+    file_name=file_name,
     initial_value=pd.DataFrame(columns=[
         "Benutzername", "Name", "Vorname", "Geburtsdatum", "Geschlecht", "Schwanger",
         "Herkunft", "Vorerkrankung", "Medikamente", "Allergien"
     ])
 )
-
 profil_df = st.session_state.get(session_key, pd.DataFrame())
+
+# DEBUG
+# st.write("ANGEMELDET ALS:", username)
+# st.dataframe(profil_df)
 
 if "Benutzername" not in profil_df.columns:
     profil_df["Benutzername"] = ""
 
-# === Automatisches Laden bei Login
-if not st.session_state.profil_gespeichert and username in profil_df["Benutzername"].values:
-    eintrag = profil_df[profil_df["Benutzername"] == username].iloc[-1].to_dict()
-    st.session_state.profil_daten_anzeige = eintrag
-    st.session_state.profil_gespeichert = True
+# === Automatisches Laden gespeicherter Daten
+if not st.session_state.profil_gespeichert:
+    if username in profil_df["Benutzername"].values:
+        eintrag = profil_df[profil_df["Benutzername"] == username].iloc[-1].to_dict()
+        st.session_state.profil_daten_anzeige = eintrag
+        st.session_state.profil_gespeichert = True
 
-# === Formularanzeige
+# === Formular anzeigen, wenn kein Profil vorhanden oder im Bearbeitungsmodus
 if not st.session_state.profil_gespeichert or st.session_state.bearbeiten_modus:
     st.title("Profil bearbeiten" if st.session_state.bearbeiten_modus else "Profilverwaltung")
     st.subheader("Persönliche Angaben")
@@ -97,14 +101,11 @@ if not st.session_state.profil_gespeichert or st.session_state.bearbeiten_modus:
                 "Allergien": allergien
             }
 
-            # alten Eintrag ersetzen
             updated_df = profil_df[profil_df["Benutzername"] != username]
             updated_df = pd.concat([updated_df, pd.DataFrame([eintrag])], ignore_index=True)
             st.session_state[session_key] = updated_df
 
-            # Speichern via WebDAV
             data_manager.save_data(session_state_key=session_key)
-
             st.session_state.profil_daten_anzeige = eintrag
             st.session_state.profil_gespeichert = True
             st.session_state.bearbeiten_modus = False
@@ -113,7 +114,7 @@ if not st.session_state.profil_gespeichert or st.session_state.bearbeiten_modus:
 # === Profilanzeige
 else:
     st.title("Ihr Profil")
-    st.success("✅ Ihr Profil wurde gespeichert (SanaView2/profil.csv – WebDAV)")
+    st.success("✅ Ihr Profil wurde gespeichert und geladen.")
 
     daten = st.session_state.profil_daten_anzeige
 
