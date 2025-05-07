@@ -16,22 +16,22 @@ Hier finden Sie Erklärungen und die Referenzwerte zu Ihren Laborwerten.
 
 # === Laborwerte mit Erklärungen ===
 labor_erklärungen = {
-    "Albumin": "Eiweiß im Blut – trägt zum osmotischen Druck bei.",
+    "Albumin": "Eiweiss im Blut – trägt zum osmotischen Druck bei.",
     "Anionenlücke": "Rechengröße – ergibt sich aus Elektrolyten im Blut.",
     "Base Excess": "Gibt an, ob Basenüberschuss oder -mangel vorliegt.",
     "Bilirubin (gesamt)": "Abbauprodukt des roten Blutfarbstoffs.",
-    "CRP": "Eiweiß – Bestandteil der körpereigenen Abwehr.",
+    "CRP": "Eiweiss – Bestandteil der körpereigenen Abwehr.",
     "Calcium (ionisiert)": "Mineralstoff – wichtig für Zellen, Muskeln und Knochen.",
     "Chlorid": "Elektrolyt – unterstützt den Säure-Basen-Haushalt.",
-    "Fibrinogen": "Eiweiß – spielt eine Rolle bei der Blutgerinnung.",
+    "Fibrinogen": "Eiweiss – spielt eine Rolle bei der Blutgerinnung.",
     "Glukose (nüchtern)": "Zuckerwert im Blut – wird nüchtern gemessen.",
     "Hämoglobin (Frauen)": "Blutfarbstoff bei Frauen – relevant für den Sauerstofftransport.",
     "Hämoglobin (Männer)": "Blutfarbstoff, der Sauerstoff im Blut transportiert.",
     "Hämatokrit (Frauen)": "Anteil der festen Bestandteile bei Frauen.",
     "Hämatokrit (Männer)": "Anteil der festen Bestandteile bei Männern.",
-    "Harnstoff (BUN)": "Stoff, der beim Abbau von Eiweiß entsteht.",
+    "Harnstoff (BUN)": "Stoff, der beim Abbau von Eiweiss entsteht.",
     "HCO₃⁻": "Bikarbonat – ein Puffersystem im Blut.",
-    "INR": "Maß für die Blutgerinnung.",
+    "INR": "Mass für die Blutgerinnung.",
     "Kalium": "Elektrolyt – beteiligt an der Reizweiterleitung und Muskelfunktion.",
     "Kreatinin": "Stoffwechselprodukt – entsteht in der Muskulatur.",
     "Laktat": "Produkt des Stoffwechsels – bildet sich bei Aktivität.",
@@ -39,11 +39,11 @@ labor_erklärungen = {
     "Magnesium": "Mineralstoff – unterstützt Nerven und Enzymprozesse.",
     "Natrium": "Elektrolyt – wichtig für Flüssigkeitshaushalt und Zellfunktion.",
     "pCO₂": "Kohlendioxid-Gehalt im Blut.",
-    "pH (arteriell)": "Maß für den Säuregrad des Blutes.",
-    "Procalcitonin": "Eiweiß – Bestandteil regulativer Vorgänge im Körper.",
+    "pH (arteriell)": "Mass für den Säuregrad des Blutes.",
+    "Procalcitonin": "Eiweiss – Bestandteil regulativer Vorgänge im Körper.",
     "PTT (APTT)": "Zeit, die das Blut benötigt, um zu gerinnen.",
     "Thrombozyten": "Blutplättchen – beteiligt an der Blutgerinnung.",
-    "Troponin T/I": "Eiweiß – Bestandteil der Muskulatur."
+    "Troponin T/I": "Eiweiss – Bestandteil der Muskulatur."
 }
 
 df_info = pd.DataFrame(labor_erklärungen.items(), columns=["Begriff", "Erklärung"])
@@ -51,7 +51,7 @@ st.subheader("Begriffserklärungen")
 st.dataframe(df_info, use_container_width=True)
 
 # === Referenzwerte-Tabelle
-st.markdown("### Referenzwerte (Beispielwerte)")
+st.markdown("### Referenzwerte")
 
 referenzwerte = {
     "Hämoglobin (Männer)": "13.5 – 17.5 g/dl",
