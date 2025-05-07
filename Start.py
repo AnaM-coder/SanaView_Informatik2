@@ -3,35 +3,33 @@ import os
 from utils.data_manager import DataManager
 from utils.login_manager import LoginManager
 
-# === Seitenlayout: Muss ganz oben stehen ===
+# === Seitenlayout ===
 st.set_page_config(page_title="SanaView", layout="wide")
 
-# === DataManager & LoginManager initialisieren ===
+# === DataManager & LoginManager ===
 data_manager = DataManager(fs_protocol="webdav", fs_root_folder="SanaView2")
 login_manager = LoginManager(data_manager=data_manager)
-
-# === Login-Fenster anzeigen (zentral) ===
 login_manager.authenticator.login(location="main")
 
-# === Wenn nicht eingeloggt → stoppen ===
+# === Abbrechen, wenn nicht eingeloggt ===
 if not st.session_state.get("authentication_status"):
     st.stop()
 
-# === Logout-Button in Sidebar ===
+# === Logout in Sidebar ===
 login_manager.authenticator.logout("Logout", "sidebar")
 
-# === Zentriertes Logo anzeigen ===
-st.markdown("""
-<div style='text-align: center; margin-top: 30px; margin-bottom: 30px;'>
-    <img src='img/sanaview_logo.png' style='width: 250px;' alt='SanaView Logo'>
-</div>
-""", unsafe_allow_html=True)
+# === Logo zentriert anzeigen ===
+col1, col2, col3 = st.columns([2, 3, 2])
+with col2:
+    if os.path.exists("img/sanaview_logo.png"):
+        st.image("img/sanaview_logo.png", width=250)
+    else:
+        st.warning("⚠️ Logo nicht gefunden.")
 
-# === Titel & Begrüssung ===
+# === Begrüßung und Beschreibung ===
 st.markdown("<h1 style='text-align: center;'>Willkommen bei SanaView</h1>", unsafe_allow_html=True)
 st.markdown("<p style='text-align: center; font-size:18px; color:gray;'>Ihre Werte sicher gespeichert – ohne Diagnose, dennoch mit Überblick.</p>", unsafe_allow_html=True)
 
-# === Beschreibung ===
 st.markdown("""
 <div style='margin: 30px 0; font-size: 17px; line-height: 1.6;'>
     Diese App unterstützt Sie dabei, Ihre medizinischen Werte sicher zu speichern 
@@ -41,7 +39,7 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# === Eingeloggt-Hinweis ===
+# === Benutzername anzeigen ===
 username = st.session_state.get("username", "Unbekannt")
 st.markdown(f"""
 <div style="background-color: #e6f2ff; padding: 12px; border-radius: 10px; margin-top: 25px; margin-bottom: 30px;">
@@ -49,7 +47,7 @@ st.markdown(f"""
 </div>
 """, unsafe_allow_html=True)
 
-# === Autoren-Infos ===
+# === Autoreninfo ===
 st.markdown("### Autoren")
 st.write("""
 Diese App wurde im Rahmen des Moduls *Informatik 2* an der **ZHAW** entwickelt von:
