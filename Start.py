@@ -10,8 +10,8 @@ st.set_page_config(page_title="SanaView", layout="wide")
 data_manager = DataManager(fs_protocol='webdav', fs_root_folder="SanaView2")
 login_manager = LoginManager(data_manager)
 
-# === Login anzeigen (im Hauptbereich) ===
-login_manager.authenticator.login("main")  # FIXED!
+# === Login & Registrierung anzeigen (im Hauptbereich) ===
+login_manager.login_register(location="main")
 
 # === Wenn nicht eingeloggt → abbrechen ===
 if not st.session_state.get("authentication_status", False):
@@ -19,6 +19,7 @@ if not st.session_state.get("authentication_status", False):
 
 # === Logout nur in der Sidebar anzeigen ===
 login_manager.authenticator.logout("Logout", "sidebar")
+
 # === Logo links oben anzeigen ===
 if os.path.exists("img/sanaview_logo.png"):
     st.image("img/sanaview_logo.png", width=250)
