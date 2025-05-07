@@ -28,10 +28,10 @@ data_manager.load_user_data(
 
 # === Daten aus Session State laden ===
 profil_df = st.session_state.get(session_key, pd.DataFrame())
-profil_eintrag = profil_df[profil_df["Name"] == username] if username else pd.DataFrame()
+profil_eintrag = profil_df[(profil_df["Name"] != "") & (profil_df["Vorname"] != "")] if not profil_df.empty else pd.DataFrame()
 
 if not profil_eintrag.empty and "profil_gespeichert" not in st.session_state:
-    st.session_state.profil_daten_anzeige = profil_eintrag.iloc[0].to_dict()
+    st.session_state.profil_daten_anzeige = profil_eintrag.iloc[-1].to_dict()
     st.session_state.profil_gespeichert = True
 
 if "profil_gespeichert" not in st.session_state:
@@ -91,13 +91,8 @@ if not st.session_state.profil_gespeichert:
 
 # === Profilansicht anzeigen ===
 elif st.session_state.profil_gespeichert:
-    st.title("🧾 Ihr Profil")
+    st.title("Ihr Profil")
     st.success("✅ Ihr Profil wurde gespeichert.")
-
-    # Bild hochladen
-    bild = st.file_uploader("Profilbild hochladen", type=["png", "jpg", "jpeg"])
-    if bild:
-        st.image(bild, width=150)
 
     daten = st.session_state.profil_daten_anzeige
 
