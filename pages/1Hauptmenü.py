@@ -13,13 +13,11 @@ login_manager = LoginManager(data_manager=DataManager())
 login_manager.authenticator.logout("Logout", "sidebar")
 login_manager.go_to_login("Start.py")
 
-# === Logo links oben anzeigen ===
-col_logo, col_rest = st.columns([1, 8])
-with col_logo:
-    if os.path.exists("img/sanaview_logo.png"):
-        st.image("img/sanaview_logo.png", width=250)
-    else:
-        st.warning("⚠️ Logo nicht gefunden.")
+# === Logo links oben (korrekt eingebunden) ===
+if os.path.exists("img/sanaview_logo.png"):
+    st.image("img/sanaview_logo.png", width=250)
+else:
+    st.warning("⚠️ Logo nicht gefunden.")
 
 # === Haupttitel & Begrüssung (NICHT zentriert) ===
 st.markdown("## Willkommen auf der Hauptmenü")
