@@ -50,24 +50,36 @@ df_info = pd.DataFrame(labor_erklärungen.items(), columns=["Begriff", "Erkläru
 st.subheader("Begriffserklärungen")
 st.dataframe(df_info, use_container_width=True)
 
-# === Neue strukturierte Referenzwerte
+# === Referenzwerte nach Gruppen
 referenzwerte = {
-    "Hämoglobin": {"Männer": "13.5 – 17.5 g/dl", "Frauen": "12.0 – 16.0 g/dl", "Schwanger": "-"},
-    "Hämatokrit": {"Männer": "40 – 50 %", "Frauen": "36 – 46 %", "Schwanger": "-"},
-    "Leukozyten": {"Männer": "4000 – 10000 /µl", "Frauen": "4000 – 10000 /µl", "Schwanger": "6000 – 16000 /µl"},
-    "Thrombozyten": {"Männer": "150000 – 400000 /µl", "Frauen": "150000 – 400000 /µl", "Schwanger": "100000 – 400000 /µl"},
-    "Natrium": {"Männer": "135 – 145 mmol/l", "Frauen": "135 – 145 mmol/l", "Schwanger": "130 – 145 mmol/l"},
-    "Kalium": {"Männer": "3.5 – 5.0 mmol/l", "Frauen": "3.5 – 5.0 mmol/l", "Schwanger": "3.3 – 5.1 mmol/l"},
-    "Glukose (nüchtern)": {"Männer": "70 – 100 mg/dl", "Frauen": "70 – 100 mg/dl", "Schwanger": "60 – 90 mg/dl"},
-    "Kreatinin": {"Männer": "0.7 – 1.2 mg/dl", "Frauen": "0.6 – 1.1 mg/dl", "Schwanger": "0.4 – 0.8 mg/dl"},
+    "Albumin": {"Männer": "3.5 – 5.0 g/dl", "Frauen": "3.5 – 5.0 g/dl", "Schwanger": "-"},
+    "Anionenlücke": {"Männer": "8 – 16 mmol/l", "Frauen": "8 – 16 mmol/l", "Schwanger": "-"},
+    "Base Excess": {"Männer": "-2 – 2 mmol/l", "Frauen": "-2 – 2 mmol/l", "Schwanger": "-"},
+    "Bilirubin (gesamt)": {"Männer": "0.1 – 1.2 mg/dl", "Frauen": "0.1 – 1.2 mg/dl", "Schwanger": "-"},
     "CRP": {"Männer": "0 – 5 mg/l", "Frauen": "0 – 5 mg/l", "Schwanger": "<10 mg/l"},
-    "pH (arteriell)": {"Männer": "7.35 – 7.45", "Frauen": "7.35 – 7.45", "Schwanger": "7.44 – 7.46"},
-    "pCO₂": {"Männer": "35 – 45 mmHg", "Frauen": "35 – 45 mmHg", "Schwanger": "27 – 32 mmHg"},
+    "Calcium (ionisiert)": {"Männer": "1.15 – 1.30 mmol/l", "Frauen": "1.15 – 1.30 mmol/l", "Schwanger": "-"},
+    "Chlorid": {"Männer": "98 – 106 mmol/l", "Frauen": "98 – 106 mmol/l", "Schwanger": "-"},
     "Fibrinogen": {"Männer": "200 – 400 mg/dl", "Frauen": "200 – 400 mg/dl", "Schwanger": "400 – 650 mg/dl"},
+    "Glukose (nüchtern)": {"Männer": "70 – 100 mg/dl", "Frauen": "70 – 100 mg/dl", "Schwanger": "60 – 90 mg/dl"},
+    "Hämoglobin": {"Männer": "13.5 – 17.5 g/dl", "Frauen": "12.0 – 16.0 g/dl", "Schwanger": "11.0 – 14.0 g/dl"},
+    "Hämatokrit": {"Männer": "40 – 50 %", "Frauen": "36 – 46 %", "Schwanger": "34 – 46 %"},
+    "Harnstoff (BUN)": {"Männer": "7 – 20 mg/dl", "Frauen": "7 – 20 mg/dl", "Schwanger": "3 – 13 mg/dl"},
+    "HCO₃⁻": {"Männer": "22 – 26 mmol/l", "Frauen": "22 – 26 mmol/l", "Schwanger": "18 – 22 mmol/l"},
+    "INR": {"Männer": "0.8 – 1.2", "Frauen": "0.8 – 1.2", "Schwanger": "-"},
+    "Kalium": {"Männer": "3.5 – 5.0 mmol/l", "Frauen": "3.5 – 5.0 mmol/l", "Schwanger": "3.3 – 5.1 mmol/l"},
+    "Kreatinin": {"Männer": "0.7 – 1.2 mg/dl", "Frauen": "0.6 – 1.1 mg/dl", "Schwanger": "0.4 – 0.8 mg/dl"},
+    "Laktat": {"Männer": "0 – 1.5 mmol/l", "Frauen": "0 – 1.5 mmol/l", "Schwanger": "-"},
+    "Leukozyten": {"Männer": "4000 – 10000 /µl", "Frauen": "4000 – 10000 /µl", "Schwanger": "6000 – 16000 /µl"},
+    "Magnesium": {"Männer": "0.7 – 1.0 mmol/l", "Frauen": "0.7 – 1.0 mmol/l", "Schwanger": "-"},
+    "Natrium": {"Männer": "135 – 145 mmol/l", "Frauen": "135 – 145 mmol/l", "Schwanger": "130 – 145 mmol/l"},
+    "pCO₂": {"Männer": "35 – 45 mmHg", "Frauen": "35 – 45 mmHg", "Schwanger": "27 – 32 mmHg"},
+    "pH (arteriell)": {"Männer": "7.35 – 7.45", "Frauen": "7.35 – 7.45", "Schwanger": "7.44 – 7.46"},
+    "Procalcitonin": {"Männer": "0 – 0.5 ng/ml", "Frauen": "0 – 0.5 ng/ml", "Schwanger": "-"},
+    "PTT (APTT)": {"Männer": "25 – 35 s", "Frauen": "25 – 35 s", "Schwanger": "17 – 33 s"},
+    "Thrombozyten": {"Männer": "150000 – 400000 /µl", "Frauen": "150000 – 400000 /µl", "Schwanger": "100000 – 400000 /µl"},
     "Troponin T/I": {"Männer": "0 – 0.04 ng/ml", "Frauen": "0 – 0.04 ng/ml", "Schwanger": "0 – 0.04 ng/ml"},
 }
 
-# Umwandeln in DataFrame
 df_ref = pd.DataFrame([
     {"Laborwert": k, "Männer": v.get("Männer", "-"), "Frauen": v.get("Frauen", "-"), "Schwanger": v.get("Schwanger", "-")}
     for k, v in referenzwerte.items()
