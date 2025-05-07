@@ -17,7 +17,7 @@ Hier finden Sie Erklärungen und die Referenzwerte zu Ihren Laborwerten.
 # === Laborwerte mit Erklärungen ===
 labor_erklärungen = {
     "Albumin": "Eiweiss im Blut – trägt zum osmotischen Druck bei.",
-    "Anionenlücke": "Rechengröße – ergibt sich aus Elektrolyten im Blut.",
+    "Anionenlücke": "Rechengrösse – ergibt sich aus Elektrolyten im Blut.",
     "Base Excess": "Gibt an, ob Basenüberschuss oder -mangel vorliegt.",
     "Bilirubin (gesamt)": "Abbauprodukt des roten Blutfarbstoffs.",
     "CRP": "Eiweiss – Bestandteil der körpereigenen Abwehr.",
@@ -35,7 +35,7 @@ labor_erklärungen = {
     "Kalium": "Elektrolyt – beteiligt an der Reizweiterleitung und Muskelfunktion.",
     "Kreatinin": "Stoffwechselprodukt – entsteht in der Muskulatur.",
     "Laktat": "Produkt des Stoffwechsels – bildet sich bei Aktivität.",
-    "Leukozyten": "Weiße Blutkörperchen – Bestandteil des Immunsystems.",
+    "Leukozyten": "Weisse Blutkörperchen – Bestandteil des Immunsystems.",
     "Magnesium": "Mineralstoff – unterstützt Nerven und Enzymprozesse.",
     "Natrium": "Elektrolyt – wichtig für Flüssigkeitshaushalt und Zellfunktion.",
     "pCO₂": "Kohlendioxid-Gehalt im Blut.",
