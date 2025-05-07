@@ -6,10 +6,8 @@ from utils.data_manager import DataManager
 from utils.login_manager import LoginManager
 import re
 
-# === Login & Logout ===
-login_manager = LoginManager(data_manager=DataManager())
-login_manager.authenticator.logout("Logout", "sidebar")
-login_manager.go_to_login("Start.py")
+# === Login-Schutz ===
+LoginManager().go_to_login('Start.py')
 
 # === Nutzername prüfen ===
 username = st.session_state.get("username")
