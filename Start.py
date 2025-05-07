@@ -3,34 +3,35 @@ import os
 from utils.data_manager import DataManager
 from utils.login_manager import LoginManager
 
-# === Seitenlayout ===
+# Seitenkonfiguration
 st.set_page_config(page_title="SanaView", layout="wide")
 
-# === Login initialisieren ===
+# Login initialisieren
 data_manager = DataManager(fs_protocol='webdav', fs_root_folder="SanaView2")
 login_manager = LoginManager(data_manager)
 
-# === Login + Registrierung anzeigen ===
-login_manager.authenticator.login("Login", location="main")
-login_manager.authenticator.register_user("Registrieren", preauthorization=False)
+# Login/Registrierung anzeigen
+login_manager.login_register()
 
-# === Wenn nicht eingeloggt → abbrechen ===
+# Wenn nicht eingeloggt → abbrechen
 if not st.session_state.get("authentication_status", False):
     st.stop()
 
-# === Logout nur in der Sidebar anzeigen ===
-login_manager.authenticator.logout("Logout", "sidebar")
+# === Logout-Button in der Sidebar ===
+with st.sidebar:
+    login_manager.authenticator.logout("Logout", key="logout_sidebar")
 
-# === Logo links oben anzeigen ===
+# === Logo oben links ===
 if os.path.exists("img/sanaview_logo.png"):
-    st.image("img/sanaview_logo.png", width=250)
+    st.image("img/sanaview_logo.png", width=200)
 else:
     st.warning("⚠️ Logo nicht gefunden.")
 
-# === Begrüßung & Beschreibung zentriert ===
+# === Titel & Beschreibung zentriert ===
 st.markdown("<h1 style='text-align: center;'>Willkommen bei SanaView</h1>", unsafe_allow_html=True)
 st.markdown("<p style='text-align: center; font-size:18px; color:gray;'>Ihre Werte sicher gespeichert – ohne Diagnose, dennoch mit Überblick.</p>", unsafe_allow_html=True)
 
+# === Beschreibung zur App hinzufügen ===
 st.markdown("""
 <div style='margin: 30px 0; font-size: 17px; line-height: 1.6;'>
     Diese App unterstützt Sie dabei, Ihre medizinischen Werte sicher zu speichern 
