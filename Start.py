@@ -6,9 +6,10 @@ from utils.login_manager import LoginManager
 # Seitenkonfiguration
 st.set_page_config(page_title="SanaView", layout="wide")
 
-# Login initialisieren
+# === Login & Logout ===
 data_manager = DataManager(fs_protocol='webdav', fs_root_folder="SanaView2")
-login_manager = LoginManager(data_manager)
+login_manager = LoginManager(data_manager=data_manager)
+login_manager.authenticator.logout("🚪 Logout", "sidebar")
 login_manager.login_register()
 
 # Stoppen wenn nicht eingeloggt
