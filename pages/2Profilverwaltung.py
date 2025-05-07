@@ -155,14 +155,14 @@ else:
     col1, col2 = st.columns([2, 1])
 
     with col1:
-        st.markdown(f"*👤 Name:* {daten['Vorname']} {daten['Name']}")
-        st.markdown(f"*🎂 Geburtsdatum:* {daten['Geburtsdatum']}")
-        st.markdown(f"*🚻 Geschlecht:* {daten['Geschlecht']}")
-        st.markdown(f"*🤰 Schwanger:* {daten['Schwanger']}")
-        st.markdown(f"*🌍 Herkunft:* {daten['Herkunft']}")
-        st.markdown(f"*🩺 Vorerkrankung:* {daten['Vorerkrankung']}")
-        st.markdown(f"*💊 Medikamente:* {daten['Medikamente']}")
-        st.markdown(f"*⚠️ Allergien:* {daten['Allergien']}")
+        st.markdown(f"*👤 **Name,Vorname**:* {daten['Vorname']} {daten['Name']}")
+        st.markdown(f"*🎂 **Geburtsdatum**:* {daten['Geburtsdatum']}")
+        st.markdown(f"*🚻 **Geschlecht**:* {daten['Geschlecht']}")
+        st.markdown(f"*🤰 **Schwanger**:* {daten['Schwanger']}")
+        st.markdown(f"*🌍 **Herkunft**:* {daten['Herkunft']}")
+        st.markdown(f"*🩺 **Vorerkrankung**:* {daten['Vorerkrankung']}")
+        st.markdown(f"*💊 **Medikamente**:* {daten['Medikamente']}")
+        st.markdown(f"*⚠️ **Allergien**:* {daten['Allergien']}")
 
     with col2:
         if "Avatar" in daten:
