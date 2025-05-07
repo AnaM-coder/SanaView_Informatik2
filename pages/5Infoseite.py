@@ -3,18 +3,20 @@ import pandas as pd
 from utils.data_manager import DataManager
 from utils.login_manager import LoginManager
 
+# === Seitenlayout ===
+st.set_page_config(page_title="Info-Seite", layout="wide")
+
 # === Login & Logout ===
 login_manager = LoginManager(data_manager=DataManager())
 login_manager.authenticator.logout("Logout", "sidebar")
 login_manager.go_to_login("Start.py")
 
-# === Seitenlayout ===
-st.set_page_config(page_title="Info-Seite", layout="wide")
+# === Titel & Einleitung ===
 st.title("Info – Seite")
-
 st.markdown("""
 Hier finden Sie Erklärungen und die Referenzwerte zu Ihren Laborwerten.
 """)
+
 
 # === Laborwerte mit Erklärungen ===
 labor_erklärungen = {
