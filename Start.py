@@ -11,15 +11,14 @@ data_manager = DataManager(fs_protocol='webdav', fs_root_folder="SanaView2")
 login_manager = LoginManager(data_manager)
 
 # === Login anzeigen (im Hauptbereich) ===
-login_manager.authenticator.login("main") 
+login_manager.authenticator.login("Login", location="main")
 
 # === Wenn nicht eingeloggt → abbrechen ===
 if not st.session_state.get("authentication_status", False):
     st.stop()
 
 # === Logout nur in der Sidebar anzeigen ===
-login_manager.authenticator.logout("Logout", "sidebar")
-
+login_manager.authenticator.logout("Logout", location="sidebar")
 
 # === Logo links oben anzeigen ===
 if os.path.exists("img/sanaview_logo.png"):
