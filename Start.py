@@ -3,35 +3,33 @@ import os
 from utils.data_manager import DataManager
 from utils.login_manager import LoginManager
 
-# === Seitenlayout: Muss ganz oben stehen ===
+# === Seitenlayout ===
 st.set_page_config(page_title="SanaView", layout="wide")
 
-# === DataManager & LoginManager initialisieren ===
+# === Login initialisieren ===
 data_manager = DataManager(fs_protocol="webdav", fs_root_folder="SanaView2")
 login_manager = LoginManager(data_manager=data_manager)
 
-# === Login-Fenster anzeigen (zentral) ===
+# === Login durchführen ===
 login_manager.authenticator.login(location="main")
 
-# === Wenn nicht eingeloggt → stoppen ===
+# === Nur wenn eingeloggt: Logout anzeigen + Inhalt zeigen ===
 if not st.session_state.get("authentication_status"):
     st.stop()
 
-# === Logout-Button in Sidebar ===
 login_manager.authenticator.logout("Logout", "sidebar")
 
-# === Zentriertes Logo anzeigen ===
-st.markdown("""
-<div style='text-align: center; margin-top: 30px; margin-bottom: 30px;'>
-    <img src='img/sanaview_logo.png' style='width: 250px;' alt='SanaView Logo'>
-</div>
-""", unsafe_allow_html=True)
+# === Logo oben links ===
+try:
+    with open("img/sanaview_logo.png", "rb") as f:
+        st.image(f.read(), width=250)
+except FileNotFoundError:
+    st.warning("⚠️ Logo nicht gefunden.")
 
-# === Titel & Begrüssung ===
+# === Begrüßung & Info ===
 st.markdown("<h1 style='text-align: center;'>Willkommen bei SanaView</h1>", unsafe_allow_html=True)
 st.markdown("<p style='text-align: center; font-size:18px; color:gray;'>Ihre Werte sicher gespeichert – ohne Diagnose, dennoch mit Überblick.</p>", unsafe_allow_html=True)
 
-# === Beschreibung ===
 st.markdown("""
 <div style='margin: 30px 0; font-size: 17px; line-height: 1.6;'>
     Diese App unterstützt Sie dabei, Ihre medizinischen Werte sicher zu speichern 
@@ -41,7 +39,6 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# === Eingeloggt-Hinweis ===
 username = st.session_state.get("username", "Unbekannt")
 st.markdown(f"""
 <div style="background-color: #e6f2ff; padding: 12px; border-radius: 10px; margin-top: 25px; margin-bottom: 30px;">
@@ -49,7 +46,6 @@ st.markdown(f"""
 </div>
 """, unsafe_allow_html=True)
 
-# === Autoren-Infos ===
 st.markdown("### Autoren")
 st.write("""
 Diese App wurde im Rahmen des Moduls *Informatik 2* an der **ZHAW** entwickelt von:
@@ -58,3 +54,4 @@ Diese App wurde im Rahmen des Moduls *Informatik 2* an der **ZHAW** entwickelt v
 - Lou-Salomé Frehner (frehnlou@students.zhaw.ch)  
 - Cristiana Pereira Bastos (pereicri@students.zhaw.ch)
 """)
+
