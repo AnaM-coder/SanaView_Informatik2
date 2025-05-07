@@ -9,21 +9,19 @@ st.set_page_config(page_title="SanaView", layout="wide")
 # Login initialisieren
 data_manager = DataManager(fs_protocol='webdav', fs_root_folder="SanaView2")
 login_manager = LoginManager(data_manager)
-
-# Login/Registrierung anzeigen
 login_manager.login_register()
 
-# Wenn nicht eingeloggt → abbrechen
+# Stoppen wenn nicht eingeloggt
 if not st.session_state.get("authentication_status", False):
     st.stop()
 
-# === Logout-Button in der Sidebar ===
+# === Logout-Button in der Sidebar anzeigen ===
 with st.sidebar:
     login_manager.authenticator.logout("Logout", key="logout_sidebar")
 
 # === Logo oben links ===
 if os.path.exists("img/sanaview_logo.png"):
-    st.image("img/sanaview_logo.png", width=200)
+    st.image("img/sanaview_logo.png", width=250)
 else:
     st.warning("⚠️ Logo nicht gefunden.")
 
@@ -54,7 +52,7 @@ st.markdown("### Autoren")
 st.write("""
 Diese App wurde im Rahmen des Moduls *Informatik 2* an der **ZHAW** entwickelt von:
 
-- Ana Maria Andrade (andraana@students.zhaw.com)  
+- Ana Maria Andrade (andraana@students.zhaw.com)
 - Lou-Salomé Frehner (frehnlou@students.zhaw.ch)  
 - Cristiana Pereira Bastos (pereicri@students.zhaw.ch)
 """)
