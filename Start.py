@@ -3,30 +3,28 @@ import os
 from utils.data_manager import DataManager
 from utils.login_manager import LoginManager
 
-# === Seitenlayout ===
+
+# === Seitenlayout: Muss das erste Streamlit-Kommando sein ===
 st.set_page_config(page_title="SanaView", layout="wide")
 
-# === Login initialisieren ===
+# === DataManager & LoginManager initialisieren ===
 data_manager = DataManager(fs_protocol="webdav", fs_root_folder="SanaView2")
 login_manager = LoginManager(data_manager=data_manager)
 
-# === Login durchführen ===
+# === Login-Fenster anzeigen (im Hauptbereich) ===
 login_manager.authenticator.login(location="main")
 
-# === Nur wenn eingeloggt: Logout anzeigen + Inhalt zeigen ===
+# === Wenn nicht eingeloggt → Login abbrechen ===
 if not st.session_state.get("authentication_status"):
     st.stop()
 
+# === Logout-Button in der Sidebar anzeigen ===
 login_manager.authenticator.logout("Logout", "sidebar")
 
-# === Logo oben links ===
-try:
-    with open("img/sanaview_logo.png", "rb") as f:
-        st.image(f.read(), width=250)
-except FileNotFoundError:
-    st.warning("⚠️ Logo nicht gefunden.")
+# === Logo anzeigen (klein) ===
+zeige_logo(breite=250)
 
-# === Begrüßung & Info ===
+# === Begrüssung & Info ===
 st.markdown("<h1 style='text-align: center;'>Willkommen bei SanaView</h1>", unsafe_allow_html=True)
 st.markdown("<p style='text-align: center; font-size:18px; color:gray;'>Ihre Werte sicher gespeichert – ohne Diagnose, dennoch mit Überblick.</p>", unsafe_allow_html=True)
 
