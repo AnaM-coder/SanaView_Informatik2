@@ -21,9 +21,12 @@ if not st.session_state.get("authentication_status"):
 login_manager.authenticator.logout("Logout", "sidebar")
 
 # === Logo anzeigen (klein) ===
-zeige_logo(breite=250)
+if os.path.exists("img/sanaview_logo.png"):
+    st.image("img/sanaview_logo.png", width=250)
+else:
+    st.warning("⚠️ Logo nicht gefunden.")
 
-# === Begrüssung & Info ===
+# === Begrüßung & Info ===
 st.markdown("<h1 style='text-align: center;'>Willkommen bei SanaView</h1>", unsafe_allow_html=True)
 st.markdown("<p style='text-align: center; font-size:18px; color:gray;'>Ihre Werte sicher gespeichert – ohne Diagnose, dennoch mit Überblick.</p>", unsafe_allow_html=True)
 
