@@ -26,24 +26,20 @@ if os.path.exists("img/sanaview_logo.png"):
 else:
     st.warning("⚠️ Logo nicht gefunden.")
 
-# === Begrüßung ganz normal (linksbündig, nicht zentriert) ===
+# === Begrüßung ganz normal (linksbündig, kein HTML) ===
 st.title("Willkommen bei SanaView")
 st.markdown("*Ihre Werte sicher gespeichert – ohne Diagnose, dennoch mit Überblick.*")
 
-st.markdown("""
+st.write("""
 Diese App unterstützt Sie dabei, Ihre medizinischen Werte sicher zu speichern  
 und den Verlauf über einen längeren Zeitraum im Blick zu behalten – etwa im Rahmen einer Behandlung.  
 Ergänzend erhalten Sie hilfreiche Informationen zu verschiedenen Analysewerten –  
 **ohne dabei medizinische Diagnosen zu ersetzen**.
 """)
 
-# === Hinweis für eingeloggte Nutzer (zentriert gelassen für Lesbarkeit) ===
+# === Hinweis für eingeloggte Nutzer ===
 username = st.session_state.get("username", "Unbekannt")
-st.markdown(f"""
-<div style="background-color: #e6f2ff; padding: 12px; border-radius: 10px; margin-top: 25px; margin-bottom: 30px;">
-    👋 <strong>Eingeloggt als:</strong> {username}
-</div>
-""", unsafe_allow_html=True)
+st.info(f"👋 Eingeloggt als: {username}")
 
 # === Autoren ===
 st.markdown("### Autoren")
