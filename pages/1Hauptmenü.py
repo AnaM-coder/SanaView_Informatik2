@@ -3,7 +3,6 @@ import datetime
 import pandas as pd
 from utils.data_manager import DataManager
 from utils.login_manager import LoginManager
-from utils.logo_loader import zeige_logo
 import os
 
 # === Seitenlayout ganz oben ===

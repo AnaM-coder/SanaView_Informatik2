@@ -2,7 +2,6 @@ import streamlit as st
 import os
 from utils.data_manager import DataManager
 from utils.login_manager import LoginManager
-from utils.logo_loader import zeige_logo
 
 # === Seitenlayout: Muss das erste Streamlit-Kommando sein ===
 st.set_page_config(page_title="SanaView", layout="wide")
