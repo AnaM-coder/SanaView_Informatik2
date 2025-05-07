@@ -10,7 +10,7 @@ username = st.session_state.get("username")
 if not username:
     st.stop()
 
-# === Pfad zur Datei im Switch Drive Ordner sanaView2 ===
+# === Pfad zur CSV im Switch Drive ===
 profil_pfad = r"Z:\sanaView2\profil.csv"
 
 # === DataManager & SessionState ===
@@ -26,8 +26,8 @@ data_manager.load_user_data(
     ])
 )
 
-# === Vorhandenes Profil automatisch laden (wenn Name = Username passt) ===
-profil_df = data_manager.get_data(session_state_key=session_key)
+# === Daten aus Session State laden (korrekt mit get_user_data) ===
+profil_df = data_manager.get_user_data(session_state_key=session_key)
 profil_eintrag = profil_df[profil_df["Name"] == username] if username else pd.DataFrame()
 
 if not profil_eintrag.empty and "profil_gespeichert" not in st.session_state:
@@ -87,14 +87,13 @@ if not st.session_state.profil_gespeichert:
             data_manager.append_record(session_state_key=session_key, record_dict=eintrag)
             st.session_state.profil_daten_anzeige = eintrag
             st.session_state.profil_gespeichert = True
-            st.experimental_rerun()  # 👈 wichtig: Ansicht aktualisieren!
+            st.experimental_rerun()
 
 # === Nach dem Speichern: Profilanzeige ===
 else:
     st.success("✅ Profil erfolgreich gespeichert!")
     st.subheader("🧾 Ihr Profil")
 
-    # Profilbild-Upload
     bild = st.file_uploader("Profilbild hochladen", type=["png", "jpg", "jpeg"])
     if bild:
         st.image(bild, width=150)
@@ -111,6 +110,3 @@ else:
 
     if st.button("Zurück zur Startseite"):
         st.switch_page("Start.py")
-    if st.button("Profil bearbeiten"):
-        st.session_state.profil_gespeichert = False
-        st.experimental_rerun()
