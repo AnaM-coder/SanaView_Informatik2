@@ -33,6 +33,11 @@ data_manager.load_user_data(
 
 # === Profil aus Session State laden
 profil_df = st.session_state.get(session_key, pd.DataFrame())
+
+# 💡 Sicherstellen, dass 'Benutzername' existiert
+if "Benutzername" not in profil_df.columns:
+    profil_df["Benutzername"] = ""
+
 profil_eintrag = profil_df[profil_df["Benutzername"] == username] if not profil_df.empty else pd.DataFrame()
 
 # === Falls vorhanden: als geladen markieren
@@ -95,7 +100,7 @@ if not st.session_state.profil_gespeichert or st.session_state.bearbeiten_modus:
                 "Allergien": allergien
             }
 
-            # alten Eintrag des Benutzers löschen
+            # Alten Eintrag ersetzen
             updated_df = profil_df[profil_df["Benutzername"] != username]
             updated_df = pd.concat([updated_df, pd.DataFrame([eintrag])], ignore_index=True)
             st.session_state[session_key] = updated_df
