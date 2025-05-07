@@ -20,6 +20,7 @@ if not st.session_state.get("authentication_status", False):
 # === Logout nur in der Sidebar anzeigen ===
 login_manager.authenticator.logout("Logout", "sidebar")
 
+
 # === Logo links oben anzeigen ===
 if os.path.exists("img/sanaview_logo.png"):
     st.image("img/sanaview_logo.png", width=250)
