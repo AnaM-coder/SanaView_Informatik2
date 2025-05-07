@@ -24,7 +24,7 @@ if st.session_state.get("authentication_status", False):
 
 # === Logo oben links ===
 if os.path.exists("img/sanaview_logo.png"):
-    st.image("img/sanaview_logo.png", width=200)
+    st.image("img/sanaview_logo.png", width=220)
 else:
     st.warning("⚠️ Logo nicht gefunden.")
 
