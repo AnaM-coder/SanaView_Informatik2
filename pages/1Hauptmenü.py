@@ -5,13 +5,13 @@ from utils.data_manager import DataManager
 from utils.login_manager import LoginManager
 import os
 
+# === Seitenlayout ganz oben ===
+st.set_page_config(page_title="SanaView – Hauptmenü", layout="wide")
+
 # === Login & Logout ===
 login_manager = LoginManager(data_manager=DataManager())
 login_manager.authenticator.logout("Logout", "sidebar")
 login_manager.go_to_login("Start.py")
-
-# === Seitenlayout ===
-st.set_page_config(page_title="SanaView – Hauptmenü", layout="wide")
 
 # === Logo oben links ===
 col_logo, _ = st.columns([1, 8])
@@ -20,7 +20,6 @@ with col_logo:
         st.image("img/sanaview_logo.png", width=250)
     else:
         st.warning("⚠️ Logo nicht gefunden.")
-
 # === Haupttitel & Begrüssung ===
 st.markdown("<h1 style='margin-top: 20px;'>Willkommen auf der Hauptmenü</h1>", unsafe_allow_html=True)
 st.markdown("<h4>Liebe Nutzerinnen und Nutzer 🧬 </h4>", unsafe_allow_html=True)
