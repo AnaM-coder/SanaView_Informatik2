@@ -26,8 +26,8 @@ data_manager.load_user_data(
     ])
 )
 
-# === Daten aus Session State laden (korrekt mit get_user_data) ===
-profil_df = data_manager.get_user_data(session_state_key=session_key)
+# === Profildaten direkt aus dem Session State laden ===
+profil_df = st.session_state.get(session_key, pd.DataFrame())
 profil_eintrag = profil_df[profil_df["Name"] == username] if username else pd.DataFrame()
 
 if not profil_eintrag.empty and "profil_gespeichert" not in st.session_state:
