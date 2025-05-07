@@ -5,6 +5,11 @@ from utils.data_manager import DataManager
 from utils.login_manager import LoginManager
 import os
 
+# === Login & Logout ===
+login_manager = LoginManager(data_manager=DataManager())
+login_manager.authenticator.logout("Logout", "sidebar")
+login_manager.go_to_login("Start.py")
+
 # === Login-Schutz ===
 LoginManager().go_to_login("Start.py")
 
@@ -33,10 +38,8 @@ st.markdown("""
     <li>Ampelfarben zur Bewertung nutzen</li>
     <li>Referenzwerte individuell einsehen</li>
     <li>Ihr Gesundheitsprofil verwalten</li>
-    <li>Laborberichte als PDF hochladen</li>
 </ul>
 """, unsafe_allow_html=True)
-
 
 # === Abschluss ===
 st.markdown("<p style='margin-top: 25px; font-size:18px;'><strong>Behalten Sie Ihre Gesundheit im Blick – einfach, sicher und übersichtlich.</strong></p>", unsafe_allow_html=True)
