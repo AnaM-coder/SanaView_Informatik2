@@ -2,6 +2,7 @@ import streamlit as st
 import os
 from utils.data_manager import DataManager
 from utils.login_manager import LoginManager
+from utils.logo_loader import zeige_logo
 
 # === Seitenlayout: Muss das erste Streamlit-Kommando sein ===
 st.set_page_config(page_title="SanaView", layout="wide")
@@ -20,12 +21,10 @@ if not st.session_state.get("authentication_status"):
 # === Logout-Button in der Sidebar anzeigen ===
 login_manager.authenticator.logout("Logout", "sidebar")
 
-# === App-Inhalt (nur sichtbar, wenn eingeloggt) ===
-if os.path.exists("img/sanaview_logo.png"):
-    st.image("img/sanaview_logo.png", width=250)
-else:
-    st.warning("⚠️ Logo nicht gefunden.")
+# === Logo anzeigen (klein) ===
+zeige_logo(breite=250)
 
+# === Begrüssung & Info ===
 st.markdown("<h1 style='text-align: center;'>Willkommen bei SanaView</h1>", unsafe_allow_html=True)
 st.markdown("<p style='text-align: center; font-size:18px; color:gray;'>Ihre Werte sicher gespeichert – ohne Diagnose, dennoch mit Überblick.</p>", unsafe_allow_html=True)
 
@@ -53,3 +52,4 @@ Diese App wurde im Rahmen des Moduls *Informatik 2* an der **ZHAW** entwickelt v
 - Lou-Salomé Frehner (frehnlou@students.zhaw.ch)  
 - Cristiana Pereira Bastos (pereicri@students.zhaw.ch)
 """)
+

@@ -3,6 +3,7 @@ import datetime
 import pandas as pd
 from utils.data_manager import DataManager
 from utils.login_manager import LoginManager
+from utils.logo_loader import zeige_logo
 import os
 
 # === Seitenlayout ganz oben ===
@@ -13,19 +14,15 @@ login_manager = LoginManager(data_manager=DataManager())
 login_manager.authenticator.logout("Logout", "sidebar")
 login_manager.go_to_login("Start.py")
 
-# === Logo oben links ===
+# === Logo oben links (grösser) ===
 col_logo, _ = st.columns([1, 8])
 with col_logo:
-    if os.path.exists("img/sanaview_logo.png"):
-        st.image("img/sanaview_logo.png", width=250)
-    else:
-        st.warning("⚠️ Logo nicht gefunden.")
+    zeige_logo(breite=250)
 
-# === Haupttitel & Begrüssung ===
+# === Begrüßung & Inhalte ===
 st.markdown("<h1 style='margin-top: 20px;'>Willkommen auf der Hauptmenü</h1>", unsafe_allow_html=True)
 st.markdown("<h4>Liebe Nutzerinnen und Nutzer 🧬 </h4>", unsafe_allow_html=True)
 
-# === Funktionsbeschreibung ===
 st.markdown("<p style='margin-top: 15px; font-size:18px;'>Mit der <strong>SanaView App</strong> können Sie:</p>", unsafe_allow_html=True)
 
 st.markdown("""
@@ -39,5 +36,4 @@ st.markdown("""
 </ul>
 """, unsafe_allow_html=True)
 
-# === Abschluss ===
 st.markdown("<p style='margin-top: 25px; font-size:18px;'><strong>Behalten Sie Ihre Gesundheit im Blick – einfach, sicher und übersichtlich.</strong></p>", unsafe_allow_html=True)
