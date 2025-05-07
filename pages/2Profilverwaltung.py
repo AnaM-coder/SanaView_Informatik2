@@ -170,15 +170,15 @@ else:
                 f"""
                 <div style='
                     background-color:#f0f0f0;
-                    width:160px;
-                    height:160px;
-                    border-radius:80px;
+                    width:220px;
+                    height:220px;
+                    border-radius:110px;
                     display:flex;
                     align-items:center;
                     justify-content:center;
-                    font-size:90px;
+                    font-size:140px;
                     margin:auto;
-                    border:2px solid #ccc;
+                    border:4px solid #ccc;
                 '>
                     {daten['Avatar']}
                 </div>
