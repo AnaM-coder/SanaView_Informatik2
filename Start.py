@@ -3,27 +3,28 @@ import os
 from utils.data_manager import DataManager
 from utils.login_manager import LoginManager
 
-# === Seitenlayout ===
+# Seitenkonfiguration
 st.set_page_config(page_title="SanaView", layout="wide")
 
-# === Login initialisieren ===
+# Login initialisieren
 data_manager = DataManager(fs_protocol='webdav', fs_root_folder="SanaView2")
 login_manager = LoginManager(data_manager)
 
-# === Login/Registrierung anzeigen ===
+# Login/Registrierung anzeigen
 login_manager.login_register()
 
-# === Wenn nicht eingeloggt → abbrechen ===
+# Wenn nicht eingeloggt → abbrechen
 if not st.session_state.get("authentication_status", False):
     st.stop()
 
-# === Logout-Button nur anzeigen, wenn eingeloggt ===
-with st.sidebar:
-    login_manager.authenticator.logout("Logout", key="logout_sidebar")
+# === Logout-Button in der Sidebar (nur wenn eingeloggt) ===
+if st.session_state.get("authentication_status", False):
+    with st.sidebar:
+        login_manager.authenticator.logout("Logout", key="logout_sidebar")
 
-# === Logo oben links anzeigen ===
+# === Logo oben links ===
 if os.path.exists("img/sanaview_logo.png"):
-    st.image("img/sanaview_logo.png", width=220)
+    st.image("img/sanaview_logo.png", width=2)
 else:
     st.warning("⚠️ Logo nicht gefunden.")
 
