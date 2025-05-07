@@ -10,10 +10,10 @@ username = st.session_state.get("username")
 if not username:
     st.stop()
 
-# === Pfad zur gemeinsamen Datei im Switch-Drive (sanaView2) ===
+# === Pfad zur Datei im Switch Drive Ordner sanaView2 ===
 profil_pfad = r"Z:\sanaView2\profil.csv"
 
-# === DataManager & SessionState
+# === DataManager & SessionState ===
 session_key = "profil_daten"
 data_manager = DataManager()
 
@@ -26,18 +26,18 @@ data_manager.load_user_data(
     ])
 )
 
-# === Profildaten beim Start automatisch laden (wenn vorhanden)
+# === Vorhandenes Profil automatisch laden (wenn Name = Username passt) ===
 profil_df = data_manager.get_data(session_state_key=session_key)
 profil_eintrag = profil_df[profil_df["Name"] == username] if username else pd.DataFrame()
 
-if not profil_eintrag.empty:
+if not profil_eintrag.empty and "profil_gespeichert" not in st.session_state:
     st.session_state.profil_daten_anzeige = profil_eintrag.iloc[0].to_dict()
     st.session_state.profil_gespeichert = True
 
 if "profil_gespeichert" not in st.session_state:
     st.session_state.profil_gespeichert = False
 
-# === Formular anzeigen (wenn noch kein Profil gespeichert wurde)
+# === Formular anzeigen ===
 if not st.session_state.profil_gespeichert:
     st.title("Profilverwaltung")
     st.subheader("Persönliche Angaben")
@@ -87,13 +87,14 @@ if not st.session_state.profil_gespeichert:
             data_manager.append_record(session_state_key=session_key, record_dict=eintrag)
             st.session_state.profil_daten_anzeige = eintrag
             st.session_state.profil_gespeichert = True
-            st.experimental_rerun()
+            st.experimental_rerun()  # 👈 wichtig: Ansicht aktualisieren!
 
 # === Nach dem Speichern: Profilanzeige ===
 else:
     st.success("✅ Profil erfolgreich gespeichert!")
     st.subheader("🧾 Ihr Profil")
 
+    # Profilbild-Upload
     bild = st.file_uploader("Profilbild hochladen", type=["png", "jpg", "jpeg"])
     if bild:
         st.image(bild, width=150)
@@ -110,3 +111,6 @@ else:
 
     if st.button("Zurück zur Startseite"):
         st.switch_page("Start.py")
+    if st.button("Profil bearbeiten"):
+        st.session_state.profil_gespeichert = False
+        st.experimental_rerun()
