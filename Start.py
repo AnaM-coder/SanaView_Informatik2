@@ -22,7 +22,7 @@ login_manager.authenticator.logout("Logout", "sidebar")
 # === Logo 
 try:
     with open("img/sanaview_logo.png", "rb") as f:
-        st.image(f.read(), width=250)
+        st.image(f.read(), width=200)
 except FileNotFoundError:
     st.warning("⚠️ Logo nicht gefunden.")
 
