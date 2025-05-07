@@ -20,6 +20,7 @@ with col_logo:
         st.image("img/sanaview_logo.png", width=250)
     else:
         st.warning("⚠️ Logo nicht gefunden.")
+        
 # === Haupttitel & Begrüssung ===
 st.markdown("<h1 style='margin-top: 20px;'>Willkommen auf der Hauptmenü</h1>", unsafe_allow_html=True)
 st.markdown("<h4>Liebe Nutzerinnen und Nutzer 🧬 </h4>", unsafe_allow_html=True)
