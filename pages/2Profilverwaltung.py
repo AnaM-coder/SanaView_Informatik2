@@ -160,7 +160,7 @@ else:
     col1, col2 = st.columns([2, 1])
 
     with col1:
-        st.markdown(f"*👤 **Name, Vorname**:* {daten['Vorname']} {daten['Name']}")
+        st.markdown(f"*👤 **Name, Vorname**:* {daten['Name']} {daten['Vorname']}")
         st.markdown(f"*🎂 **Geburtsdatum**:* {daten['Geburtsdatum']}")
         st.markdown(f"*🚻 **Geschlecht**:* {daten['Geschlecht']}")
         st.markdown(f"*🤰 **Schwanger**:* {daten['Schwanger']}")

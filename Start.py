@@ -20,17 +20,20 @@ if not st.session_state.get("authentication_status"):
 # === Logout-Button in der Sidebar anzeigen ===
 login_manager.authenticator.logout("Logout", "sidebar")
 
-# === App-Inhalt (nur sichtbar, wenn eingeloggt) ===
-if os.path.exists("img/sanaview_logo.png"):
-    st.image("img/sanaview_logo.png", width=250)
-else:
-    st.warning("⚠️ Logo nicht gefunden.")
+# === Logo links anzeigen ===
+col1, _ = st.columns([1, 5])
+with col1:
+    if os.path.exists("img/sanaview_logo.png"):
+        st.image("img/sanaview_logo.png", width=200)
+    else:
+        st.warning("⚠️ Logo nicht gefunden.")
 
-st.markdown("<h1 style='text-align: center;'>Willkommen bei SanaView</h1>", unsafe_allow_html=True)
-st.markdown("<p style='text-align: center; font-size:18px; color:gray;'>Ihre Werte sicher gespeichert – ohne Diagnose, dennoch mit Überblick.</p>", unsafe_allow_html=True)
+# === Begrüßung & Info ===
+st.markdown("<h1 style='text-align: left;'>Willkommen bei SanaView</h1>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: left; font-size:18px; color:gray;'>Ihre Werte sicher gespeichert – ohne Diagnose, dennoch mit Überblick.</p>", unsafe_allow_html=True)
 
 st.markdown("""
-<div style='margin: 30px 0; font-size: 17px; line-height: 1.6;'>
+<div style='margin: 30px 0; font-size: 17px; line-height: 1.6; text-align: left;'>
     Diese App unterstützt Sie dabei, Ihre medizinischen Werte sicher zu speichern 
     und den Verlauf über einen längeren Zeitraum im Blick zu behalten – etwa im Rahmen einer Behandlung. 
     Ergänzend erhalten Sie hilfreiche Informationen zu verschiedenen Analysewerten – 
@@ -40,7 +43,7 @@ st.markdown("""
 
 username = st.session_state.get("username", "Unbekannt")
 st.markdown(f"""
-<div style="background-color: #e6f2ff; padding: 12px; border-radius: 10px; margin-top: 25px; margin-bottom: 30px;">
+<div style="background-color: #e6f2ff; padding: 12px; border-radius: 10px; margin-top: 25px; margin-bottom: 30px; text-align: left;">
     👋 <strong>Eingeloggt als:</strong> {username}
 </div>
 """, unsafe_allow_html=True)
