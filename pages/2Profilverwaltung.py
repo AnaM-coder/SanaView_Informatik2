@@ -10,8 +10,8 @@ username = st.session_state.get("username")
 if not username:
     st.stop()
 
-# === CSV-Dateipfad im Switch Drive ===
-profil_pfad = r"Z:\sanaView2\profil.csv"
+# === Lokaler Pfad zur CSV-Datei ===
+profil_pfad = "profil.csv"  # 🔁 statt WebDAV
 
 # === Session Keys initialisieren ===
 session_key = "profil_daten"
@@ -105,7 +105,9 @@ if not st.session_state.profil_gespeichert or st.session_state.bearbeiten_modus:
             updated_df = pd.concat([updated_df, pd.DataFrame([eintrag])], ignore_index=True)
             st.session_state[session_key] = updated_df
 
-            data_manager.save_data(session_state_key=session_key)
+            # Lokale Speicherung (ohne WebDAV)
+            updated_df.to_csv(profil_pfad, index=False)
+
             st.session_state.profil_daten_anzeige = eintrag
             st.session_state.profil_gespeichert = True
             st.session_state.bearbeiten_modus = False
