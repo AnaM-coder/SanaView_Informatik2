@@ -10,12 +10,12 @@ username = st.session_state.get("username")
 if not username:
     st.stop()
 
-# === WebDAV aktivieren
+# === WebDAV DataManager
 data_manager = DataManager(fs_protocol="webdav", fs_root_folder="SanaView2")
 file_name = "profil.csv"
 session_key = "profil_daten"
 
-# === Session-Status initialisieren
+# === Session init
 if "profil_gespeichert" not in st.session_state:
     st.session_state.profil_gespeichert = False
 if "bearbeiten_modus" not in st.session_state:
@@ -27,28 +27,23 @@ data_manager.load_user_data(
     file_name=file_name,
     initial_value=pd.DataFrame(columns=[
         "Benutzername", "Name", "Vorname", "Geburtsdatum", "Geschlecht", "Schwanger",
-        "Herkunft", "Vorerkrankung", "Medikamente", "Allergien"
+        "Herkunft", "Vorerkrankung", "Medikamente", "Allergien", "Avatar"
     ])
 )
 profil_df = st.session_state.get(session_key, pd.DataFrame())
-
-# DEBUG
-# st.write("ANGEMELDET ALS:", username)
-# st.dataframe(profil_df)
-
 if "Benutzername" not in profil_df.columns:
     profil_df["Benutzername"] = ""
 
-# === Automatisches Laden gespeicherter Daten
+# === Profil automatisch laden
 if not st.session_state.profil_gespeichert:
     if username in profil_df["Benutzername"].values:
         eintrag = profil_df[profil_df["Benutzername"] == username].iloc[-1].to_dict()
         st.session_state.profil_daten_anzeige = eintrag
         st.session_state.profil_gespeichert = True
 
-# === Formular anzeigen, wenn kein Profil vorhanden oder im Bearbeitungsmodus
+# === Formular anzeigen
 if not st.session_state.profil_gespeichert or st.session_state.bearbeiten_modus:
-    st.title("Profil bearbeiten" if st.session_state.bearbeiten_modus else "Profilverwaltung")
+    st.title("Profilverwaltung")
     st.subheader("Persönliche Angaben")
 
     daten = st.session_state.get("profil_daten_anzeige", {})
@@ -67,28 +62,69 @@ if not st.session_state.profil_gespeichert or st.session_state.bearbeiten_modus:
         vorname = st.text_input("Vorname*", value=daten.get("Vorname", ""), help="Pflichtfeld")
         geschlecht = st.radio("Geschlecht*", ["Weiblich", "Männlich"],
                               index=["Weiblich", "Männlich"].index(daten.get("Geschlecht", "Weiblich")),
-                              horizontal=True, help="Pflichtfeld")
+                              horizontal=True)
 
     schwanger = st.radio("Schwanger*", ["Ja", "Nein", "Weiss nicht"],
                          index=["Ja", "Nein", "Weiss nicht"].index(daten.get("Schwanger", "Nein")),
-                         horizontal=True, help="Pflichtfeld")
+                         horizontal=True)
 
     herkunft = st.text_input(
         "Herkunft / ethnischer Hintergrund",
         value=daten.get("Herkunft", ""),
-        help="Ihr ethnischer Hintergrund kann die medizinische Bewertung beeinflussen. Die Angaben dienen nur der individuellen Einschätzung und werden vertraulich behandelt."
+        help="Ihr ethnischer Hintergrund kann die medizinische Bewertung beeinflussen."
     )
 
+    # === Avatar-Auswahl (17 Tiere)
+    st.subheader("Avatar auswählen")
+    tier_auswahl = {
+        "🦋 Schmetterling": "🦋", "🦄 Einhorn": "🦄", "🐶 Hund": "🐶", "🦊 Fuchs": "🦊",
+        "🐯 Tiger": "🐯", "🦁 Löwe": "🦁", "🐻 Bär": "🐻", "🐱 Katze": "🐱", "🐭 Maus": "🐭",
+        "🐼 Panda": "🐼", "🐻‍❄️ Eisbär": "🐻‍❄️", "🐰 Hase": "🐰", "🐨 Koala": "🐨",
+        "🐸 Frosch": "🐸", "🐢 Schildkröte": "🐢", "🦉 Eule": "🦉", "🐺 Wolf": "🐺"
+    }
+    avatar_key = st.selectbox("Tier-Avatar wählen", list(tier_auswahl.keys()), index=0)
+    avatar_symbol = tier_auswahl[avatar_key]
+
+    # === Gesundheitsdaten
     st.subheader("Gesundheit")
     vorerkrankung = st.text_area("Vorerkrankung", value=daten.get("Vorerkrankung", ""))
     medikamente = st.text_area("Medikamente", value=daten.get("Medikamente", ""))
     allergien = st.text_area("Allergien / Besonderheiten", value=daten.get("Allergien", ""))
 
-    if st.button("Speichern"):
-        if not name or not vorname or not geschlecht or not schwanger:
-            st.error("❌ Bitte füllen Sie alle mit * markierten Pflichtfelder aus.")
-        else:
-            eintrag = {
+    # === Speichern & Anzeigen
+    col1, col2 = st.columns(2)
+    with col1:
+        if st.button("Speichern"):
+            if not name or not vorname or not geschlecht or not schwanger:
+                st.error("❌ Bitte Pflichtfelder ausfüllen.")
+            else:
+                eintrag = {
+                    "Benutzername": username,
+                    "Name": name,
+                    "Vorname": vorname,
+                    "Geburtsdatum": geburtsdatum.strftime("%d.%m.%Y"),
+                    "Geschlecht": geschlecht,
+                    "Schwanger": schwanger,
+                    "Herkunft": herkunft,
+                    "Vorerkrankung": vorerkrankung,
+                    "Medikamente": medikamente,
+                    "Allergien": allergien,
+                    "Avatar": avatar_symbol
+                }
+
+                updated_df = profil_df[profil_df["Benutzername"] != username]
+                updated_df = pd.concat([updated_df, pd.DataFrame([eintrag])], ignore_index=True)
+                st.session_state[session_key] = updated_df
+
+                data_manager.save_data(session_state_key=session_key)
+                st.session_state.profil_daten_anzeige = eintrag
+                st.session_state.profil_gespeichert = True
+                st.success("✅ Profil gespeichert!")
+
+    with col2:
+        if st.button("Profil anzeigen"):
+            gespeicherte_daten = st.session_state.get("profil_daten_anzeige", {})
+            aktuelle_daten = {
                 "Benutzername": username,
                 "Name": name,
                 "Vorname": vorname,
@@ -98,38 +134,60 @@ if not st.session_state.profil_gespeichert or st.session_state.bearbeiten_modus:
                 "Herkunft": herkunft,
                 "Vorerkrankung": vorerkrankung,
                 "Medikamente": medikamente,
-                "Allergien": allergien
+                "Allergien": allergien,
+                "Avatar": avatar_symbol
             }
 
-            updated_df = profil_df[profil_df["Benutzername"] != username]
-            updated_df = pd.concat([updated_df, pd.DataFrame([eintrag])], ignore_index=True)
-            st.session_state[session_key] = updated_df
+            if gespeicherte_daten and aktuelle_daten != gespeicherte_daten:
+                st.warning("⚠️ Änderungen wurden vorgenommen, aber nicht gespeichert.")
+            elif gespeicherte_daten:
+                st.session_state.bearbeiten_modus = False
+                st.rerun()
+            else:
+                st.warning("⚠️ Bitte zuerst speichern.")
 
-            data_manager.save_data(session_state_key=session_key)
-            st.session_state.profil_daten_anzeige = eintrag
-            st.session_state.profil_gespeichert = True
-            st.session_state.bearbeiten_modus = False
-            st.rerun()
-
-# === Profilanzeige
+# === Profilansicht
 else:
     st.title("Ihr Profil")
     st.success("Ihr Profil wurde gespeichert und geladen.")
-
     daten = st.session_state.profil_daten_anzeige
 
-    with st.container():
-        st.markdown(f"**👤 Name:** {daten['Vorname']} {daten['Name']}")
-        st.markdown(f"**🎂 Geburtsdatum:** {daten['Geburtsdatum']}")
-        st.markdown(f"**🚻 Geschlecht:** {daten['Geschlecht']}")
-        st.markdown(f"**🤰 Schwanger:** {daten['Schwanger']}")
-        st.markdown(f"**🌍 Herkunft:** {daten['Herkunft']}")
-        st.markdown(f"**🩺 Vorerkrankung:** {daten['Vorerkrankung']}")
-        st.markdown(f"**💊 Medikamente:** {daten['Medikamente']}")
-        st.markdown(f"**⚠️ Allergien:** {daten['Allergien']}")
+    col1, col2 = st.columns([2, 1])
+
+    with col1:
+        st.markdown(f"*👤 Name:* {daten['Vorname']} {daten['Name']}")
+        st.markdown(f"*🎂 Geburtsdatum:* {daten['Geburtsdatum']}")
+        st.markdown(f"*🚻 Geschlecht:* {daten['Geschlecht']}")
+        st.markdown(f"*🤰 Schwanger:* {daten['Schwanger']}")
+        st.markdown(f"*🌍 Herkunft:* {daten['Herkunft']}")
+        st.markdown(f"*🩺 Vorerkrankung:* {daten['Vorerkrankung']}")
+        st.markdown(f"*💊 Medikamente:* {daten['Medikamente']}")
+        st.markdown(f"*⚠️ Allergien:* {daten['Allergien']}")
+
+    with col2:
+        if "Avatar" in daten:
+            st.markdown(
+                f"""
+                <div style='
+                    background-color:#f0f0f0;
+                    width:120px;
+                    height:120px;
+                    border-radius:60px;
+                    display:flex;
+                    align-items:center;
+                    justify-content:center;
+                    font-size:60px;
+                    margin:auto;
+                    border:2px solid #ccc;
+                '>
+                    {daten['Avatar']}
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
 
     st.markdown("---")
-    col1, col2 = st.columns([1, 1])
+    col1, col2 = st.columns(2)
     with col1:
         if st.button("Profil bearbeiten"):
             st.session_state.bearbeiten_modus = True
