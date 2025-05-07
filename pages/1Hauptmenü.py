@@ -33,8 +33,10 @@ st.markdown("""
     <li>Ampelfarben zur Bewertung nutzen</li>
     <li>Referenzwerte individuell einsehen</li>
     <li>Ihr Gesundheitsprofil verwalten</li>
+    <li>Laborberichte als PDF hochladen</li>
 </ul>
 """, unsafe_allow_html=True)
+
 
 # === Abschluss ===
 st.markdown("<p style='margin-top: 25px; font-size:18px;'><strong>Behalten Sie Ihre Gesundheit im Blick – einfach, sicher und übersichtlich.</strong></p>", unsafe_allow_html=True)
