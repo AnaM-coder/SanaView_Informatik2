@@ -164,27 +164,27 @@ else:
         st.markdown(f"*💊 **Medikamente**:* {daten['Medikamente']}")
         st.markdown(f"*⚠️ **Allergien**:* {daten['Allergien']}")
 
-    with col2:
-        if "Avatar" in daten:
-            st.markdown(
-                f"""
-                <div style='
-                    background-color:#f0f0f0;
-                    width:120px;
-                    height:120px;
-                    border-radius:60px;
-                    display:flex;
-                    align-items:center;
-                    justify-content:center;
-                    font-size:60px;
-                    margin:auto;
-                    border:2px solid #ccc;
-                '>
-                    {daten['Avatar']}
-                </div>
-                """,
-                unsafe_allow_html=True
-            )
+with col2:
+    if "Avatar" in daten:
+        st.markdown(
+            f"""
+            <div style='
+                background-color:#f0f0f0;
+                width:160px;
+                height:160px;
+                border-radius:80px;
+                display:flex;
+                align-items:center;
+                justify-content:center;
+                font-size:90px;
+                margin:auto;
+                border:3px solid #bbb;
+            '>
+                {daten['Avatar']}
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
 
     st.markdown("---")
     col1, col2 = st.columns(2)
