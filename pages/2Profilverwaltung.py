@@ -176,7 +176,7 @@ else:
                     display:flex;
                     align-items:center;
                     justify-content:center;
-                    font-size:60px;
+                    font-size:90px;
                     margin:auto;
                     border:2px solid #ccc;
                 '>
