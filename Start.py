@@ -18,7 +18,7 @@ if not st.session_state.get("authentication_status"):
 # === Logout in Sidebar ===
 login_manager.authenticator.logout("Logout", "sidebar")
 
-# === Logo zentriert anzeigen ===
+# === Logo links anzeigen ===
 col1, col2, col3 = st.columns([2, 3, 2])
 with col2:
     if os.path.exists("img/sanaview_logo.png"):

@@ -13,7 +13,7 @@ login_manager = LoginManager(data_manager=DataManager())
 login_manager.authenticator.logout("Logout", "sidebar")
 login_manager.go_to_login("Start.py")
 
-# === Logo zentriert anzeigen ===
+# === Logo links anzeigen ===
 col1, col2, col3 = st.columns([2, 3, 2])
 with col2:
     if os.path.exists("img/sanaview_logo.png"):
