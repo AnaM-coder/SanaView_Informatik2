@@ -37,7 +37,10 @@ with col2:
 
 schwanger = st.radio("Schwanger*", ["Ja", "Nein", "Weiss nicht"], horizontal=True, help="Pflichtfeld")
 
-herkunft = st.text_input("Herkunft / ethnischer Hintergrund")
+herkunft = st.text_input(
+    "Herkunft / ethnischer Hintergrund",
+    help="Für eine medizinisch fundierte Einordnung Ihrer Werte können Faktoren wie ethnischer Hintergrund, genetische Veranlagung oder regionale Besonderheiten eine Rolle spielen. Diese Daten dienen ausschliesslich der individuellen Bewertung und werden vertraulich behandelt."
+)
 
 st.subheader("Gesundheit")
 vorerkrankung = st.text_area("Vorerkrankung")
@@ -62,7 +65,7 @@ if st.button("Profil speichern"):
         }
 
         data_manager.append_record(session_state_key=session_key, record_dict=eintrag)
-        st.success(" Profil erfolgreich gespeichert!")
+        st.success("✅ Profil erfolgreich gespeichert!")
 
 # === Navigation
 if st.button("Zurück zur Startseite"):
