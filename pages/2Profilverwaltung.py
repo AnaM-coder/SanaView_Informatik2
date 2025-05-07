@@ -59,13 +59,9 @@ if not st.session_state.profil_gespeichert or st.session_state.bearbeiten_modus:
         )
     with col2:
         vorname = st.text_input("Vorname*", value=daten.get("Vorname", ""), help="Pflichtfeld")
-        geschlecht = st.radio("Geschlecht*", ["Weiblich", "Männlich"],
-                              index=["Weiblich", "Männlich"].index(daten.get("Geschlecht", "Weiblich")),
-                              horizontal=True, help="Pflichtfeld")
+        geschlecht = st.radio("Geschlecht*", ["Weiblich", "Männlich"], index=["Weiblich", "Männlich"].index(daten.get("Geschlecht", "Weiblich")), horizontal=True, help="Pflichtfeld")
 
-    schwanger = st.radio("Schwanger*", ["Ja", "Nein", "Weiss nicht"],
-                         index=["Ja", "Nein", "Weiss nicht"].index(daten.get("Schwanger", "Nein")),
-                         horizontal=True, help="Pflichtfeld")
+    schwanger = st.radio("Schwanger*", ["Ja", "Nein", "Weiss nicht"], index=["Ja", "Nein", "Weiss nicht"].index(daten.get("Schwanger", "Nein")), horizontal=True, help="Pflichtfeld")
 
     herkunft = st.text_input(
         "Herkunft / ethnischer Hintergrund",
@@ -98,7 +94,7 @@ if not st.session_state.profil_gespeichert or st.session_state.bearbeiten_modus:
             st.session_state.profil_daten_anzeige = eintrag
             st.session_state.profil_gespeichert = True
             st.session_state.bearbeiten_modus = False
-            st.rerun()
+            st.experimental_rerun()
 
 # === Profilansicht anzeigen ===
 else:
@@ -122,7 +118,7 @@ else:
     with col1:
         if st.button("Profil bearbeiten"):
             st.session_state.bearbeiten_modus = True
-            st.rerun()
+            st.experimental_rerun()
     with col2:
         if st.button("Zurück zur Startseite"):
             st.switch_page("Start.py")
