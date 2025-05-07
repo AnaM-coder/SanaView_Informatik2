@@ -3,16 +3,19 @@ import os
 from utils.data_manager import DataManager
 from utils.login_manager import LoginManager
 
-# Seitenkonfiguration
+# === Seitenlayout – Muss als Erstes kommen ===
 st.set_page_config(page_title="SanaView", layout="wide")
 
 # === Login & Logout ===
 data_manager = DataManager(fs_protocol='webdav', fs_root_folder="SanaView2")
 login_manager = LoginManager(data_manager=data_manager)
-login_manager.login_register()
 
-# Stoppen wenn nicht eingeloggt
-if not st.session_state.get("authentication_status", False):
+# Logout-Button in Sidebar anzeigen
+login_manager.authenticator.logout("🚪 Logout", "sidebar")
+
+# Wenn nicht eingeloggt → zurück zur Login-Seite
+if "authentication_status" not in st.session_state or not st.session_state["authentication_status"]:
+    login_manager.go_to_login("Start.py")
     st.stop()
 
 # === Logo oben links ===
@@ -25,7 +28,7 @@ else:
 st.markdown("<h1 style='text-align: center;'>Willkommen bei SanaView</h1>", unsafe_allow_html=True)
 st.markdown("<p style='text-align: center; font-size:18px; color:gray;'>Ihre Werte sicher gespeichert – ohne Diagnose, dennoch mit Überblick.</p>", unsafe_allow_html=True)
 
-# === Beschreibung zur App hinzufügen ===
+# === App-Beschreibung ===
 st.markdown("""
 <div style='margin: 30px 0; font-size: 17px; line-height: 1.6;'>
     Diese App unterstützt Sie dabei, Ihre medizinischen Werte sicher zu speichern 
