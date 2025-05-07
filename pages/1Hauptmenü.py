@@ -15,7 +15,7 @@ login_manager.go_to_login("Start.py")
 
 # === Logo links oben (korrekt eingebunden) ===
 if os.path.exists("img/sanaview_logo.png"):
-    st.image("img/sanaview_logo.png", width=250)
+    st.image("img/sanaview_logo.png", width=200)
 else:
     st.warning("⚠️ Logo nicht gefunden.")
 
