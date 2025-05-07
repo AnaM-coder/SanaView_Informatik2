@@ -11,7 +11,7 @@ data_manager = DataManager(fs_protocol='webdav', fs_root_folder="SanaView2")
 login_manager = LoginManager(data_manager=data_manager)
 
 # Logout-Button in Sidebar anzeigen
-login_manager.authenticator.logout("🚪 Logout", "sidebar")
+login_manager.authenticator.logout("Logout", "sidebar")
 
 # Wenn nicht eingeloggt → zurück zur Login-Seite
 if "authentication_status" not in st.session_state or not st.session_state["authentication_status"]:
