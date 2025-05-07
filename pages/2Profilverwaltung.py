@@ -37,9 +37,10 @@ with col2:
 
 schwanger = st.radio("Schwanger*", ["Ja", "Nein", "Weiss nicht"], horizontal=True, help="Pflichtfeld")
 
-herkunft = st.text_input("Herkunft / ethnischer Hintergrund")
-st.info("Ihr ethnischer Hintergrund kann die medizinische Bewertung beeinflussen. "
-        "Die Angaben dienen nur der individuellen Einschätzung und werden vertraulich behandelt.")
+herkunft = st.text_input(
+    "Herkunft / ethnischer Hintergrund",
+    help="Ihr ethnischer Hintergrund kann die medizinische Bewertung beeinflussen. Die Angaben dienen nur der individuellen Einschätzung und werden vertraulich behandelt."
+)
 
 st.subheader("Gesundheit")
 vorerkrankung = st.text_area("Vorerkrankung")
