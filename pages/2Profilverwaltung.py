@@ -20,20 +20,16 @@ username = st.session_state.get("username")
 if not username:
     st.stop()
 
-# === Vorheriges Profil löschen, wenn es nicht zum aktuellen Benutzer gehört ===
-if "profil_daten_anzeige" in st.session_state:
-    if st.session_state.profil_daten_anzeige.get("Benutzername") != username:
-        del st.session_state["profil_daten_anzeige"]
-        st.session_state["profil_gespeichert"] = False
-
-# === WebDAV DataManager
-data_manager = DataManager(fs_protocol="webdav", fs_root_folder="SanaView2")
-file_name = "profil.csv"
-session_key = "profil_daten"
+# === Session Key (benutzerspezifisch)
+session_key = f"profil_daten_{username}"
 
 # === Session init
 st.session_state.setdefault("profil_gespeichert", False)
 st.session_state.setdefault("bearbeiten_modus", False)
+
+# === WebDAV DataManager
+data_manager = DataManager(fs_protocol="webdav", fs_root_folder="SanaView2")
+file_name = "profil.csv"
 
 # === CSV laden
 data_manager.load_user_data(
@@ -46,6 +42,12 @@ data_manager.load_user_data(
 )
 profil_df = st.session_state.get(session_key, pd.DataFrame())
 profil_df["Benutzername"] = profil_df.get("Benutzername", "")
+
+# === Vorheriges Profil löschen, wenn es nicht zum aktuellen Benutzer gehört
+if "profil_daten_anzeige" in st.session_state:
+    if st.session_state.profil_daten_anzeige.get("Benutzername") != username:
+        del st.session_state["profil_daten_anzeige"]
+        st.session_state["profil_gespeichert"] = False
 
 # === Profil automatisch laden
 if not st.session_state.profil_gespeichert:
