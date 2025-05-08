@@ -47,7 +47,7 @@ class LoginManager:
 
     def login_register(self, login_title='Login', register_title='Registrieren'):
         if st.session_state.get("authentication_status") is True:
-            self.authenticator.logout("Logout", "main")
+            return  # Kein Logout-Button hier mehr
         else:
             login_tab, register_tab = st.tabs((login_title, register_title))
             with login_tab:
@@ -68,7 +68,7 @@ class LoginManager:
 
     def register(self, stop=True):
         if st.session_state.get("authentication_status") is True:
-            self.authenticator.logout("Logout", "main")
+            return  # Kein Logout-Button mehr hier
         else:
             st.info("""
             Passwortanforderungen: 8–20 Zeichen, Gross-/Kleinbuchstaben, Zahl und ein Sonderzeichen (@$!%*?&).
@@ -101,7 +101,7 @@ class LoginManager:
         Führt Logout durch, entfernt alle relevanten Daten aus st.session_state.
         """
         if hasattr(self, 'authenticator'):
-            self.authenticator.logout("Logout", "main")  # oder "sidebar" falls gewünscht
+            self.authenticator.logout("Logout", "sidebar")  # Optional, aber wenn du es brauchst
 
         for key in list(st.session_state.keys()):
             if key not in ["data_manager", "login_manager"]:
