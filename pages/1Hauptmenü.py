@@ -21,7 +21,7 @@ with st.sidebar:
 col_logo, col_text = st.columns([1, 8])
 with col_logo:
     if os.path.exists("img/sanaview_logo.png"):
-        st.image("img/sanaview_logo.png", width=280)
+        st.image("img/sanaview_logo.png", width=220)
     else:
         st.warning("⚠️ Logo nicht gefunden.")
 
