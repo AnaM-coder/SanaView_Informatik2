@@ -18,12 +18,10 @@ with st.sidebar:
     login_manager.authenticator.logout("Logout", key="logout_sidebar")
 
 # === Logo links oben ===
-col_logo, col_text = st.columns([1, 8])
-with col_logo:
-    if os.path.exists("img/sanaview_logo.png"):
-        st.image("img/sanaview_logo.png", width=220)
-    else:
-        st.warning("⚠️ Logo nicht gefunden.")
+if os.path.exists("img/sanaview_logo.png"):
+    st.image("img/sanaview_logo.png", width=220)
+else:
+    st.warning("⚠️ Logo nicht gefunden.")
 
 # === Haupttitel & Begrüssung ===
 st.markdown("## Willkommen auf dem Hauptmenü")
