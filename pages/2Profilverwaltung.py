@@ -20,6 +20,12 @@ username = st.session_state.get("username")
 if not username:
     st.stop()
 
+# === Vorheriges Profil löschen, wenn es nicht zum aktuellen Benutzer gehört ===
+if "profil_daten_anzeige" in st.session_state:
+    if st.session_state.profil_daten_anzeige.get("Benutzername") != username:
+        del st.session_state["profil_daten_anzeige"]
+        st.session_state["profil_gespeichert"] = False
+
 # === WebDAV DataManager
 data_manager = DataManager(fs_protocol="webdav", fs_root_folder="SanaView2")
 file_name = "profil.csv"
