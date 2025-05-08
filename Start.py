@@ -17,45 +17,63 @@ login_manager.login_register()
 if not st.session_state.get("authentication_status", False):
     st.stop()
 
-# === Logout-Button ganz unten in der Sidebar ===
+# === Sidebar-Navigation mit Logout ganz unten ===
 with st.sidebar:
-    st.markdown("<hr style='margin-top: 60px;'>", unsafe_allow_html=True)
+    # Platzhalter für Menü trennt optisch
+    st.markdown("## ")
+    st.markdown("## ")
+    st.markdown("---")  # Trennlinie
+    st.markdown("### ")
+    st.markdown("### ")
+    st.markdown("### ")
+    st.markdown("### ")
+    st.markdown("### ")
+    st.markdown("### ")
+    st.markdown("### ")
+    st.markdown("### ")
+    st.markdown("### ")
+    st.markdown("### ")
+    st.markdown("### ")
+
+    # Logout ganz unten anzeigen
     login_manager.authenticator.logout("Logout", key="logout_sidebar")
 
-# === Logo oben links ===
-if os.path.exists("img/sanaview_logo.png"):
-    st.image("img/sanaview_logo.png", width=220)
-else:
-    st.warning("⚠️ Logo nicht gefunden.")
+# === Logo oben links im Hauptbereich anzeigen ===
+col1, col2 = st.columns([1, 8])
+with col1:
+    if os.path.exists("img/sanaview_logo.png"):
+        st.image("img/sanaview_logo.png", width=200)
+    else:
+        st.warning("⚠️ Logo nicht gefunden.")
 
 # === Titel & Beschreibung zentriert ===
-st.markdown("<h1 style='text-align: center;'>Willkommen bei SanaView</h1>", unsafe_allow_html=True)
-st.markdown("<p style='text-align: center; font-size:18px; color:gray;'>Ihre Werte sicher gespeichert – ohne Diagnose, dennoch mit Überblick.</p>", unsafe_allow_html=True)
+with col2:
+    st.markdown("<h1 style='text-align: center;'>Willkommen bei SanaView</h1>", unsafe_allow_html=True)
+    st.markdown("<p style='text-align: center; font-size:18px; color:gray;'>Ihre Werte sicher gespeichert – ohne Diagnose, dennoch mit Überblick.</p>", unsafe_allow_html=True)
 
-# === Beschreibung zur App hinzufügen ===
-st.markdown("""
-<div style='margin: 30px 0; font-size: 17px; line-height: 1.6;'>
-    Diese App unterstützt Sie dabei, Ihre medizinischen Werte sicher zu speichern 
-    und den Verlauf über einen längeren Zeitraum im Blick zu behalten – etwa im Rahmen einer Behandlung. 
-    Ergänzend erhalten Sie hilfreiche Informationen zu verschiedenen Analysewerten – 
-    <strong>ohne dabei medizinische Diagnosen zu ersetzen</strong>.
-</div>
-""", unsafe_allow_html=True)
+    st.markdown("""
+    <div style='margin: 30px 0; font-size: 17px; line-height: 1.6;'>
+        Diese App unterstützt Sie dabei, Ihre medizinischen Werte sicher zu speichern 
+        und den Verlauf über einen längeren Zeitraum im Blick zu behalten – etwa im Rahmen einer Behandlung. 
+        Ergänzend erhalten Sie hilfreiche Informationen zu verschiedenen Analysewerten – 
+        <strong>ohne dabei medizinische Diagnosen zu ersetzen</strong>.
+    </div>
+    """, unsafe_allow_html=True)
 
-# === Eingeloggt-Hinweis ===
-username = st.session_state.get("username", "Unbekannt")
-st.markdown(f"""
-<div style="background-color: #e6f2ff; padding: 12px; border-radius: 10px; margin-top: 25px; margin-bottom: 30px;">
-    👋 <strong>Eingeloggt als:</strong> {username}
-</div>
-""", unsafe_allow_html=True)
+    # === Eingeloggt-Hinweis ===
+    username = st.session_state.get("username", "Unbekannt")
+    st.markdown(f"""
+    <div style="background-color: #e6f2ff; padding: 12px; border-radius: 10px; margin-top: 25px; margin-bottom: 30px;">
+        👋 <strong>Eingeloggt als:</strong> {username}
+    </div>
+    """, unsafe_allow_html=True)
 
-# === Autoren-Info ===
-st.markdown("### Autoren")
-st.write("""
-Diese App wurde im Rahmen des Moduls *Informatik 2* an der **ZHAW** entwickelt von:
+    # === Autoren-Info ===
+    st.markdown("### Autoren")
+    st.write("""
+    Diese App wurde im Rahmen des Moduls *Informatik 2* an der **ZHAW** entwickelt von:
 
-- Ana Maria Andrade (andraana@students.zhaw.com)  
-- Lou-Salomé Frehner (frehnlou@students.zhaw.ch)  
-- Cristiana Pereira Bastos (pereicri@students.zhaw.ch)
-""")
+    - Ana Maria Andrade (andraana@students.zhaw.com)  
+    - Lou-Salomé Frehner (frehnlou@students.zhaw.ch)  
+    - Cristiana Pereira Bastos (pereicri@students.zhaw.ch)
+    """)
