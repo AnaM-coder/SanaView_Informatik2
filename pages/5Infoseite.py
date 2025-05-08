@@ -1,5 +1,4 @@
 import streamlit as st
-import streamlit as st
 import pandas as pd
 from utils.data_manager import DataManager
 from utils.login_manager import LoginManager
@@ -11,6 +10,7 @@ st.set_page_config(page_title="Info-Seite", layout="wide")
 login_manager = LoginManager(data_manager=DataManager())
 
 if not st.session_state.get("authentication_status", False):
+    st.warning("⚠️ Kein Benutzer eingeloggt! Anmeldung erforderlich.")
     st.stop()
 
 # === Logout-Button nur in der Sidebar ===
