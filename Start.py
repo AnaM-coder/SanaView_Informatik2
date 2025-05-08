@@ -18,9 +18,8 @@ if not st.session_state.get("authentication_status", False):
     st.stop()
 
 # === Logout-Button nur in der Sidebar anzeigen ===
-if st.session_state.get("authentication_status", False):
-    with st.sidebar:
-        login_manager.authenticator.logout("Logout", key="logout_sidebar")
+with st.sidebar:
+    login_manager.authenticator.logout("Logout", key="logout_sidebar")
 
 # === Logo oben links ===
 if os.path.exists("img/sanaview_logo.png"):
