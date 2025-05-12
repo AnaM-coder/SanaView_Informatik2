@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 from datetime import date
+from dateutil.relativedelta import relativedelta
 from utils.data_manager import DataManager
 from utils.login_manager import LoginManager
 
@@ -37,7 +38,8 @@ data_manager.load_user_data(
     file_name=file_name,
     initial_value=pd.DataFrame(columns=[
         "Benutzername", "Name", "Vorname", "Geburtsdatum", "Geschlecht", "Schwanger",
-        "Herkunft", "Vorerkrankung", "Medikamente", "Allergien", "Avatar"
+        "Herkunft", "Vorerkrankung", "Medikamente", "Allergien", "Avatar",
+        "Eltern_Name", "Eltern_Kontakt"
     ])
 )
 profil_df = st.session_state.get(session_key, pd.DataFrame())
@@ -81,7 +83,23 @@ if not st.session_state.profil_gespeichert or st.session_state.bearbeiten_modus:
                          index=["Ja", "Nein", "Weiss nicht"].index(daten.get("Schwanger", "Nein")),
                          horizontal=True)
 
-    herkunft = st.text_input("Herkunft / ethnischer Hintergrund", value=daten.get("Herkunft", ""))
+    herkunft = st.text_input(
+        "Herkunft / ethnischer Hintergrund",
+        value=daten.get("Herkunft", ""),
+        help="Für eine medizinisch fundierte Einordnung Ihrer Werte können Faktoren wie ethnischer Hintergrund, genetische Veranlagung oder regionale Besonderheiten eine Rolle spielen. Diese Daten dienen ausschließlich der individuellen Bewertung und werden vertraulich behandelt."
+    )
+
+    # === Alter berechnen
+    alter = relativedelta(date.today(), geburtsdatum).years
+
+    # === Angaben Elternteil bei Minderjährigen
+    if alter < 18:
+        st.subheader("Angaben eines Elternteils (bei Minderjährigen)")
+        eltern_name = st.text_input("Name des Elternteils*", value=daten.get("Eltern_Name", ""))
+        eltern_kontakt = st.text_input("Kontakt (Telefon oder E-Mail)*", value=daten.get("Eltern_Kontakt", ""))
+    else:
+        eltern_name = ""
+        eltern_kontakt = ""
 
     # === Avatar-Auswahl
     st.subheader("Avatar auswählen")
@@ -104,6 +122,8 @@ if not st.session_state.profil_gespeichert or st.session_state.bearbeiten_modus:
         if st.button("Speichern"):
             if not name or not vorname:
                 st.error("❌ Bitte Pflichtfelder ausfüllen.")
+            elif alter < 18 and (not eltern_name or not eltern_kontakt):
+                st.error("❌ Angaben des Elternteils erforderlich für Minderjährige.")
             else:
                 eintrag = {
                     "Benutzername": username,
@@ -116,7 +136,9 @@ if not st.session_state.profil_gespeichert or st.session_state.bearbeiten_modus:
                     "Vorerkrankung": vorerkrankung,
                     "Medikamente": medikamente,
                     "Allergien": allergien,
-                    "Avatar": avatar_symbol
+                    "Avatar": avatar_symbol,
+                    "Eltern_Name": eltern_name,
+                    "Eltern_Kontakt": eltern_kontakt
                 }
 
                 updated_df = profil_df[profil_df["Benutzername"] != username]
@@ -138,17 +160,23 @@ else:
     st.title("Ihr Profil")
     st.success("Ihr Profil wurde geladen.")
     daten = st.session_state.profil_daten_anzeige
+    geburtsdatum = pd.to_datetime(daten["Geburtsdatum"], dayfirst=True)
+    alter = relativedelta(date.today(), geburtsdatum).years
 
     col1, col2 = st.columns([2, 1])
     with col1:
+        st.markdown(f"**Benutzername**: {daten['Benutzername']}")
         st.markdown(f"**Name, Vorname**: {daten['Name']} {daten['Vorname']}")
-        st.markdown(f"**Geburtsdatum**: {daten['Geburtsdatum']}")
+        st.markdown(f"**Geburtsdatum**: {daten['Geburtsdatum']} ({alter} Jahre)")
         st.markdown(f"**Geschlecht**: {daten['Geschlecht']}")
         st.markdown(f"**Schwanger**: {daten['Schwanger']}")
         st.markdown(f"**Herkunft**: {daten['Herkunft']}")
         st.markdown(f"**Vorerkrankung**: {daten['Vorerkrankung']}")
         st.markdown(f"**Medikamente**: {daten['Medikamente']}")
         st.markdown(f"**Allergien**: {daten['Allergien']}")
+        if alter < 18:
+            st.markdown(f"**Elternteil**: {daten.get('Eltern_Name', '')}")
+            st.markdown(f"**Kontakt Elternteil**: {daten.get('Eltern_Kontakt', '')}")
 
     with col2:
         if "Avatar" in daten:
@@ -172,3 +200,4 @@ else:
     with col2:
         if st.button("Zurück zur Startseite"):
             st.switch_page("Start.py")
+
