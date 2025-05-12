@@ -152,7 +152,17 @@ if pdf:
         st.warning("Keine bekannten Laborwerte im PDF erkannt.")
 
 # === Tabelle anzeigen
-if not st.session_state[session_key].empty:
+df = st.session_state[session_key]
+if not df.empty:
     st.markdown("---")
     st.subheader("Ihre gespeicherten Laborwerte")
-    st.dataframe(st.session_state[session_key], use_container_width=True)
+
+    ansicht = st.radio("Ansicht wählen", ["Gesamttabelle", "Nach Laborwert gruppiert"])
+
+    if ansicht == "Gesamttabelle":
+        st.dataframe(df, use_container_width=True)
+    else:
+        st.markdown("### Laborwerte je Typ anzeigen")
+        for laborwert in sorted(df["Laborwert"].unique()):
+            with st.expander(f"{laborwert}"):
+                st.dataframe(df[df["Laborwert"] == laborwert].reset_index(drop=True), use_container_width=True)
