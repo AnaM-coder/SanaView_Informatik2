@@ -86,7 +86,7 @@ if not st.session_state.profil_gespeichert or st.session_state.bearbeiten_modus:
     herkunft = st.text_input(
         "Herkunft / ethnischer Hintergrund",
         value=daten.get("Herkunft", ""),
-        help="Für eine medizinisch fundierte Einordnung Ihrer Werte können Faktoren wie ethnischer Hintergrund, genetische Veranlagung oder regionale Besonderheiten eine Rolle spielen. Diese Daten dienen ausschließlich der individuellen Bewertung und werden vertraulich behandelt."
+        help="Für eine medizinisch fundierte Einordnung Ihrer Werte können Faktoren wie ethnischer Hintergrund, genetische Veranlagung oder regionale Besonderheiten eine Rolle spielen. Diese Daten dienen ausschliesslich der individuellen Bewertung und werden vertraulich behandelt."
     )
 
     # === Alter berechnen
