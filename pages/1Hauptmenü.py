@@ -36,6 +36,7 @@ st.markdown("""
     <li>Verlauf grafisch anzeigen</li>
     <li>Ampelfarben zur Bewertung nutzen</li>
     <li>Referenzwerte individuell einsehen</li>
+    <li>Laborwerte verstehen – mit Erklärungen und Referenzwerten</li>
     <li>Ihr Gesundheitsprofil verwalten</li>
     <li>Laborberichte als PDF hochladen</li>
 </ul>
