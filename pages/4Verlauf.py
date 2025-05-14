@@ -6,17 +6,17 @@ import matplotlib.pyplot as plt
 from utils.data_manager import DataManager
 from utils.login_manager import LoginManager
 
-import streamlit as st
-
-# === Hintergrundfarbe festlegen ===
+# === Hintergrundfarbe setzen ===
 st.markdown("""
     <style>
-        html, body, [data-testid="stAppViewContainer"], [data-testid="stAppViewContainer"] > .main {
-            background-color: #f0f8ff !important;
+        body {
+            background-color: #f0f8ff;
+        }
+        [data-testid="stAppViewContainer"] > .main {
+            background-color: #f0f8ff;
         }
     </style>
 """, unsafe_allow_html=True)
-
 
 # === Login initialisieren ===
 login_manager = LoginManager(data_manager=DataManager())
@@ -88,27 +88,27 @@ def zeige_histogramm(df, farbe, titel, y_max):
 # === Drei Histogramme nebeneinander anzeigen ===
 col1, col2, col3 = st.columns(3)
 
-with with col1:
+with col1:
     st.markdown("### 🟢 Normalbereich")
     if not grün.empty:
         zeige_histogramm(grün, "green", "Normalbereich", y_max)
     else:
-        leeres_histogramm("Normalbereich", y_max)
+        st.info("Keine grünen Werte.")
 
 with col2:
     st.markdown("### 🟡 Leicht ausserhalb")
     if not gelb.empty:
         zeige_histogramm(gelb, "yellow", "Leicht ausserhalb", y_max)
     else:
-        leeres_histogramm("Leicht ausserhalb", y_max)
+        st.info("Keine gelben Werte.")
 
 with col3:
     st.markdown("### 🔴 Stark abweichend")
     if not rot.empty:
         zeige_histogramm(rot, "red", "Stark abweichend", y_max)
     else:
-        leeres_histogramm("Stark abweichend", y_max)
-        
+        st.info("Keine roten Werte.")
+
 # === Legende ===
 st.markdown("---")
 st.markdown("### Ampelfarben-Legende")
