@@ -3,17 +3,6 @@ import pandas as pd
 from utils.data_manager import DataManager
 from utils.login_manager import LoginManager
 
-import streamlit as st
-
-# === Hintergrundfarbe festlegen ===
-st.markdown("""
-    <style>
-        html, body, [data-testid="stAppViewContainer"], [data-testid="stAppViewContainer"] > .main {
-            background-color: #f0f8ff !important;
-        }
-    </style>
-""", unsafe_allow_html=True)
-
 # === Seitenlayout ===
 st.set_page_config(page_title="Info-Seite", layout="wide")
 
