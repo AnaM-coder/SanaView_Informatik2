@@ -3,6 +3,9 @@ import pandas as pd
 from utils.data_manager import DataManager
 from utils.login_manager import LoginManager
 
+# === Seitenlayout ===
+st.set_page_config(page_title="Info-Seite", layout="wide")
+
 # === Hintergrundfarbe setzen ===
 st.markdown("""
     <style>
@@ -11,8 +14,6 @@ st.markdown("""
         }
     </style>
 """, unsafe_allow_html=True)
-# === Seitenlayout ===
-st.set_page_config(page_title="Info-Seite", layout="wide")
 
 # === Login initialisieren & prüfen ===
 login_manager = LoginManager(data_manager=DataManager())
