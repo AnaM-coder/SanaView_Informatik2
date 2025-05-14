@@ -6,11 +6,10 @@ from utils.login_manager import LoginManager
 # === Seitenlayout ===
 st.set_page_config(page_title="SanaView – Hauptmenü", layout="wide")
 
-# === Hintergrundfarbe festlegen ===
 st.markdown("""
     <style>
         html, body, [data-testid="stAppViewContainer"], [data-testid="stAppViewContainer"] > .main {
-            background-color: #f0f8ff !important;
+            background-color: #d9ecf2 !important;
         }
     </style>
 """, unsafe_allow_html=True)

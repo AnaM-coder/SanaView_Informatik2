@@ -8,15 +8,13 @@ from utils.login_manager import LoginManager
 
 import streamlit as st
 
-# === Hintergrundfarbe festlegen ===
 st.markdown("""
     <style>
         html, body, [data-testid="stAppViewContainer"], [data-testid="stAppViewContainer"] > .main {
-            background-color: #f0f8ff !important;
+            background-color: #d9ecf2 !important;
         }
     </style>
 """, unsafe_allow_html=True)
-
 
 # === Login initialisieren ===
 login_manager = LoginManager(data_manager=DataManager())
