@@ -6,6 +6,15 @@ from utils.data_manager import DataManager
 from utils.login_manager import LoginManager
 import re
 
+# === Hintergrundfarbe setzen ===
+st.markdown("""
+    <style>
+        [data-testid="stAppViewContainer"] > .main {
+            background-color: #f0f8ff;
+        }
+    </style>
+""", unsafe_allow_html=True)
+
 # === Login initialisieren ===
 login_manager = LoginManager(data_manager=DataManager())
 
