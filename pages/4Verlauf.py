@@ -94,13 +94,15 @@ with col1:
         zeige_histogramm(grün, "green", "Normalbereich", y_max)
     else:
         st.info("Keine grünen Werte.")
-
+        st.markdown("<div style='height:250px'>&nbsp;</div>", unsafe_allow_html=True)
+        
 with col2:
     st.markdown("### 🟡 Leicht ausserhalb")
     if not gelb.empty:
         zeige_histogramm(gelb, "yellow", "Leicht ausserhalb", y_max)
     else:
         st.info("Keine gelben Werte.")
+        st.markdown("<div style='height:250px'>&nbsp;</div>", unsafe_allow_html=True)
 
 with col3:
     st.markdown("### 🔴 Stark abweichend")
@@ -108,6 +110,7 @@ with col3:
         zeige_histogramm(rot, "red", "Stark abweichend", y_max)
     else:
         st.info("Keine roten Werte.")
+        st.markdown("<div style='height:250px'>&nbsp;</div>", unsafe_allow_html=True)
 
 # === Legende ===
 st.markdown("---")
