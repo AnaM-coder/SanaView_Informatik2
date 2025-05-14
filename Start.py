@@ -23,9 +23,12 @@ if not st.session_state.get("authentication_status"):
 with st.sidebar:
     login_manager.authenticator.logout("Logout", key="logout_sidebar")
 
-# === Logo oben links ===
+# === Logo mittig ===
 if os.path.exists("img/sanaview_logo.png"):
-    st.image("img/sanaview_logo.png", width=180)
+    logo = Image.open("img/sanaview_logo.png")
+    col1, col2, col3 = st.columns([1, 4, 1])
+    with col2:
+        st.image(logo, width=360)
 else:
     st.warning("⚠️ Logo nicht gefunden.")
 
