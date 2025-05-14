@@ -111,13 +111,12 @@ st.dataframe(df_ref, use_container_width=True)
 st.markdown("---")
 st.markdown("### Quellen")
 st.markdown("""
-Die angegebenen Referenzwerte und Erklärungen basieren auf folgenden Quellen:
-
-- **SwissLab** – Schweizer Labornormen und Richtwerte  
-- **Unilabs Schweiz** – Laborinformationsdienste für medizinisches Fachpersonal  
-- **Ladr Gruppe Medizinische Labore** – Laborwerte und deren Einordnung  
-- **Medizinische Lehrbücher** wie *Pschyrembel Klinisches Wörterbuch*, *Thieme Innere Medizin*  
-- **Kinderärztliche Leitlinien** (z.B. [pädiatrie-online.de](https://www.paediatrie-online.de))  
+* *Klinische Chemie und Hämatologie für den Einstieg* von Jürgen Hallbach  
+  ISBN: 9783131063427  
+* Online-Ressource: [www.labor-und-diagnose.de](https://www.labor-und-diagnose.de)  
+* Schäfer, Constanze: *Laborwerte* – bestimmen, bewerten, vermitteln (Taschenbuch)  
+  ISBN: 978-3-8047-2606-2  
 
 *Hinweis: Die Werte und Texte dienen der Orientierung und ersetzen keine ärztliche Beratung.*
 """)
+
