@@ -110,10 +110,9 @@ with col3:
         st.info("Keine roten Werte.")
 
 # === Legende ===
-st.markdown("---")
 st.markdown("### Ampelfarben-Legende")
 st.markdown("""
-- 🟢 Wert im Normalbereich  
-- 🟡 Wert leicht ausserhalb  
-- 🔴 Wert stark abweichend  
+🟢 Wert im Normalbereich  
+🟡 Wert leicht ausserhalb des Referenzbereichs  
+🔴 Wert stark abweichend vom Referenzbereich
 """)
