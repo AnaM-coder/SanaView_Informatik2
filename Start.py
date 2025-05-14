@@ -25,7 +25,7 @@ with st.sidebar:
 
 # === Logo zentriert und gross ===
 if os.path.exists("img/sanaview_logo.png"):
-    col1, col2, col3 = st.columns([1, 5, 2])
+    col1, col2, col3 = st.columns([0.5, 3, 2.5])
     with col2:
         st.image("img/sanaview_logo.png", width=360)
 else:
