@@ -1,9 +1,9 @@
 import streamlit as st
-import pandas as pd
+import os
 from utils.data_manager import DataManager
 from utils.login_manager import LoginManager
 
-# === Seitenlayout (MUSS zuerst kommen) ===
+# === Seitenlayout===
 st.set_page_config(page_title="Info-Seite", layout="wide")
 
 # === Hintergrundfarbe setzen ===
@@ -13,7 +13,8 @@ st.markdown("""
             background-color: #f0f8ff !important;
         }
     </style>
-""", unsafe_allow_html=True)      
+""", unsafe_allow_html=True)
+
 # === Login initialisieren ===
 data_manager = DataManager(fs_protocol='webdav', fs_root_folder="SanaView2")
 login_manager = LoginManager(data_manager)
