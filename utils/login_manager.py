@@ -8,11 +8,11 @@ class LoginManager:
     Singleton-Klasse, die Authentifizierung und Anwendungszustand verwaltet.
     """
 
-    def _new_(cls, *args, **kwargs):
+    def __new__(cls, *args, **kwargs):
         if 'login_manager' in st.session_state:
             return st.session_state.login_manager
         else:
-            instance = super(LoginManager, cls)._new_(cls)
+            instance = super(LoginManager, cls).__new__(cls)
             st.session_state.login_manager = instance
             return instance
 
