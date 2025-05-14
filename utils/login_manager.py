@@ -67,7 +67,7 @@ class LoginManager:
         elif auth_status is None:
             st.warning("Bitte geben Sie Ihren Benutzernamen und Ihr Passwort ein.")
         elif auth_status is True:
-            st.experimental_rerun()  # Wichtig für stabilen Zustand nach Login
+            st.rerun()  # Wichtig für stabilen Zustand nach Login
 
         if stop:
             st.stop()
@@ -114,4 +114,4 @@ class LoginManager:
                 del st.session_state[key]
 
         st.success("✅ Erfolgreich ausgeloggt.")
-        st.experimental_rerun()
+        st.rerun()  # aktualisiert den Zustand nach dem Logout
