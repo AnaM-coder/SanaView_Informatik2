@@ -107,6 +107,8 @@ with col3:
     else:
         st.info("Keine roten Werte.")
 
+
+
 # === Legende ===
 st.markdown("### Ampelfarben-Legende")
 st.markdown("""
