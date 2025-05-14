@@ -60,7 +60,8 @@ class LoginManager:
             return
 
         # Korrigierte Login-Abfrage mit Rückgabewerten
-        name, auth_status, username = self.authenticator.login("Login", "main")
+        name, auth_status, username = self.authenticator.login(form_name="Login", location="main")
+
 
         # Rückmeldung abhängig vom Zustand
         if auth_status is False:
