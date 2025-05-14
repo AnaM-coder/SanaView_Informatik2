@@ -88,30 +88,27 @@ def zeige_histogramm(df, farbe, titel, y_max):
 # === Drei Histogramme nebeneinander anzeigen ===
 col1, col2, col3 = st.columns(3)
 
-with col1:
+with with col1:
     st.markdown("### 🟢 Normalbereich")
     if not grün.empty:
         zeige_histogramm(grün, "green", "Normalbereich", y_max)
     else:
-        st.info("Keine grünen Werte.")
-        st.markdown("<div style='height:250px'>&nbsp;</div>", unsafe_allow_html=True)
-        
+        leeres_histogramm("Normalbereich", y_max)
+
 with col2:
     st.markdown("### 🟡 Leicht ausserhalb")
     if not gelb.empty:
         zeige_histogramm(gelb, "yellow", "Leicht ausserhalb", y_max)
     else:
-        st.info("Keine gelben Werte.")
-        st.markdown("<div style='height:250px'>&nbsp;</div>", unsafe_allow_html=True)
+        leeres_histogramm("Leicht ausserhalb", y_max)
 
 with col3:
     st.markdown("### 🔴 Stark abweichend")
     if not rot.empty:
         zeige_histogramm(rot, "red", "Stark abweichend", y_max)
     else:
-        st.info("Keine roten Werte.")
-        st.markdown("<div style='height:250px'>&nbsp;</div>", unsafe_allow_html=True)
-
+        leeres_histogramm("Stark abweichend", y_max)
+        
 # === Legende ===
 st.markdown("---")
 st.markdown("### Ampelfarben-Legende")
