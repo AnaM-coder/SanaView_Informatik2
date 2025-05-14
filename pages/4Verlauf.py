@@ -6,13 +6,17 @@ import matplotlib.pyplot as plt
 from utils.data_manager import DataManager
 from utils.login_manager import LoginManager
 
+import streamlit as st
+
+# === Hintergrundfarbe festlegen ===
 st.markdown("""
     <style>
         html, body, [data-testid="stAppViewContainer"], [data-testid="stAppViewContainer"] > .main {
-            background-color: #d9ecf2 !important;
+            background-color: #f0f8ff !important;
         }
     </style>
 """, unsafe_allow_html=True)
+
 
 # === Login initialisieren ===
 login_manager = LoginManager(data_manager=DataManager())

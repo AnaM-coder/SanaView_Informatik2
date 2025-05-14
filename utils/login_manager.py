@@ -8,15 +8,15 @@ class LoginManager:
     Singleton-Klasse, die Authentifizierung und Anwendungszustand verwaltet.
     """
 
-    def __new__(cls, *args, **kwargs):
+    def _new_(cls, *args, **kwargs):
         if 'login_manager' in st.session_state:
             return st.session_state.login_manager
         else:
-            instance = super(LoginManager, cls).__new__(cls)
+            instance = super(LoginManager, cls)._new_(cls)
             st.session_state.login_manager = instance
             return instance
 
-    def __init__(self, data_manager: DataManager = None,
+    def _init_(self, data_manager: DataManager = None,
                  auth_credentials_file: str = 'credentials.yaml',
                  auth_cookie_name: str = 'bmld_inf2_streamlit_app'):
         if hasattr(self, 'authenticator'):
@@ -47,7 +47,7 @@ class LoginManager:
 
     def login_register(self, login_title='Login', register_title='Registrieren'):
         if st.session_state.get("authentication_status") is True:
-            return
+            return  # Kein Logout-Button hier mehr
         else:
             login_tab, register_tab = st.tabs((login_title, register_title))
             with login_tab:
@@ -58,23 +58,17 @@ class LoginManager:
     def login(self, stop=True):
         if st.session_state.get("authentication_status") is True:
             return
-
-        # Ältere Version: nur ein Rückgabewert
-        auth_status = self.authenticator.login("Login", "main")
-
-        if auth_status is False:
-            st.error("❌ Benutzername oder Passwort ist falsch.")
-        elif auth_status is None:
-            st.info("Bitte geben Sie Ihren Benutzernamen und Ihr Passwort ein.")
-
-        st.session_state["authentication_status"] = auth_status
-
+        self.authenticator.login()
+        if st.session_state["authentication_status"] is False:
+            st.error("Benutzername oder Passwort ist falsch.")
+        else:
+            st.warning("Bitte geben Sie Ihren Benutzernamen und Ihr Passwort ein.")
         if stop:
             st.stop()
 
     def register(self, stop=True):
         if st.session_state.get("authentication_status") is True:
-            return
+            return  # Kein Logout-Button mehr hier
         else:
             st.info("""
             Passwortanforderungen: 8–20 Zeichen, Gross-/Kleinbuchstaben, Zahl und ein Sonderzeichen (@$!%*?&).
@@ -107,7 +101,7 @@ class LoginManager:
         Führt Logout durch, entfernt alle relevanten Daten aus st.session_state.
         """
         if hasattr(self, 'authenticator'):
-            self.authenticator.logout("Logout", "sidebar")
+            self.authenticator.logout("Logout", "sidebar")  # Optional, aber wenn du es brauchst
 
         for key in list(st.session_state.keys()):
             if key not in ["data_manager", "login_manager"]:
