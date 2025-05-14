@@ -108,13 +108,14 @@ df_ref = pd.DataFrame([
 st.markdown("### Referenzwerte (nach Personengruppe)")
 st.dataframe(df_ref, use_container_width=True)
 
-st.markdown("---")
 st.markdown("### Quellen")
 st.markdown("""
-* *Klinische Chemie und Hämatologie für den Einstieg* von Jürgen Hallbach  
+Die angegebenen Referenzwerte und Erklärungen basieren auf folgenden Quellen:
+
+- **Klinische Chemie und Hämatologie für den Einstieg** von Jürgen Hallbach  
   ISBN: 9783131063427  
-* Online-Ressource: [www.labor-und-diagnose.de](https://www.labor-und-diagnose.de)  
-* Schäfer, Constanze: *Laborwerte* – bestimmen, bewerten, vermitteln (Taschenbuch)  
+- **Online-Ressource:** [www.labor-und-diagnose.de](https://www.labor-und-diagnose.de)  
+- **Schäfer, Constanze: Laborwerte – bestimmen, bewerten, vermitteln** (Taschenbuch)  
   ISBN: 978-3-8047-2606-2  
 
 *Hinweis: Die Werte und Texte dienen der Orientierung und ersetzen keine ärztliche Beratung.*
