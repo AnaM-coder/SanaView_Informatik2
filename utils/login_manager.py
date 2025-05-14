@@ -4,10 +4,6 @@ import streamlit_authenticator as stauth
 from utils.data_manager import DataManager
 
 class LoginManager:
-    """
-    Singleton-Klasse, die Authentifizierung und Anwendungszustand verwaltet.
-    """
-
     def __new__(cls, *args, **kwargs):
         if 'login_manager' in st.session_state:
             return st.session_state.login_manager
@@ -20,7 +16,7 @@ class LoginManager:
                  auth_credentials_file: str = 'credentials.yaml',
                  auth_cookie_name: str = 'bmld_inf2_streamlit_app'):
         if hasattr(self, 'authenticator'):
-            return  # Schon initialisiert
+            return
 
         if data_manager is None:
             return
@@ -59,17 +55,16 @@ class LoginManager:
         if st.session_state.get("authentication_status") is True:
             return
 
-        # Korrigierte Login-Abfrage mit Rückgabewerten
-        name, auth_status, username = self.authenticator.login(form_name="Login", location="main")
+        # Für aktuelle Version (>= 0.2.0)
+        name, auth_status, username = self.authenticator.login(
+            form_name="Login", location="main"
+        )
 
-
-        # Rückmeldung abhängig vom Zustand
         if auth_status is False:
             st.error("❌ Benutzername oder Passwort ist falsch.")
         elif auth_status is None:
             st.info("Bitte geben Sie Ihren Benutzernamen und Ihr Passwort ein.")
 
-        # Optional: automatische Speicherung in session_state
         st.session_state["authentication_status"] = auth_status
         st.session_state["username"] = username
 
@@ -107,9 +102,6 @@ class LoginManager:
             st.switch_page(login_page_py_file)
 
     def logout(self):
-        """
-        Führt Logout durch, entfernt alle relevanten Daten aus st.session_state.
-        """
         if hasattr(self, 'authenticator'):
             self.authenticator.logout("Logout", "sidebar")
 
