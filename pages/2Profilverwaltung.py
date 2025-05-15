@@ -4,8 +4,6 @@ from datetime import date
 from utils.data_manager import DataManager
 from utils.login_manager import LoginManager
 
-import streamlit as st
-
 st.markdown("""
     <style>
         html, body, [data-testid="stAppViewContainer"], [data-testid="stAppViewContainer"] > .main {
@@ -91,10 +89,23 @@ if not st.session_state.profil_gespeichert or st.session_state.bearbeiten_modus:
                          index=["Ja", "Nein", "Weiss nicht"].index(daten.get("Schwanger", "Nein")),
                          horizontal=True)
 
-    herkunft = st.text_input(
-        "Herkunft / ethnischer Hintergrund",
-        value=daten.get("Herkunft", ""),
-        help="Für eine medizinisch fundierte Einordnung Ihrer Werte können Faktoren wie ethnischer Hintergrund, genetische Veranlagung oder regionale Besonderheiten eine Rolle spielen. Diese Daten dienen ausschliesslich der individuellen Bewertung und werden vertraulich behandelt."
+    st.subheader("Ethnischer Hintergrund")
+    herkunftsoptionen = [
+        "Weiss / Europäisch",
+        "Schwarz / Afrikanisch / Afro-karibisch",
+        "Lateinamerikanisch / Hispanoamerikanisch",
+        "Arabisch / Nahost",
+        "Südasiatisch (Indien, Pakistan, etc.)",
+        "Ostasiatisch (China, Japan, Korea)",
+        "Südostasiatisch (Vietnam, Thailand, etc.)",
+        "Indigen / Ureinwohner",
+        "Gemischte Herkunft",
+        "Möchte ich nicht angeben"
+    ]
+    herkunft = st.selectbox(
+        "Bitte wählen Sie Ihre ethnische Herkunft:",
+        herkunftsoptionen,
+        index=herkunftsoptionen.index(daten.get("Herkunft", "Möchte ich nicht angeben"))
     )
 
     # === Avatar-Auswahl
