@@ -82,7 +82,7 @@ if not st.session_state.profil_gespeichert or st.session_state.bearbeiten_modus:
     # === Ethnischer Hintergrund
     st.subheader("Ethnischer Hintergrund")
     herkunftsoptionen = [
-        "Weiß / Europäisch",
+        "Weiss / Europäisch",
         "Schwarz / Afrikanisch / Afro-karibisch",
         "Lateinamerikanisch / Hispanoamerikanisch",
         "Arabisch / Nahost",
