@@ -91,7 +91,7 @@ if not st.session_state.profil_gespeichert or st.session_state.bearbeiten_modus:
 
     st.subheader("Ethnischer Hintergrund")
     herkunftsoptionen = [
-        "Weiss / Europäisch",
+        "Weiß / Europäisch",
         "Schwarz / Afrikanisch / Afro-karibisch",
         "Lateinamerikanisch / Hispanoamerikanisch",
         "Arabisch / Nahost",
@@ -102,10 +102,14 @@ if not st.session_state.profil_gespeichert or st.session_state.bearbeiten_modus:
         "Gemischte Herkunft",
         "Möchte ich nicht angeben"
     ]
-    herkunft = st.selectbox(                    
-        "Herkunft*",
+    herkunft_vorbelegt = daten.get("Herkunft", "Möchte ich nicht angeben")
+    if herkunft_vorbelegt not in herkunftsoptionen:
+        herkunft_vorbelegt = "Möchte ich nicht angeben"
+
+    herkunft = st.selectbox(
+        "Bitte wählen Sie Ihre ethnische Herkunft:",
         herkunftsoptionen,
-        index=herkunftsoptionen.index(daten.get("Herkunft", "Weiss / Europäisch"))
+        index=herkunftsoptionen.index(herkunft_vorbelegt)
     )
 
     # === Avatar-Auswahl
