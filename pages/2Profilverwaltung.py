@@ -102,8 +102,11 @@ if not st.session_state.profil_gespeichert or st.session_state.bearbeiten_modus:
         "Gemischte Herkunft",
         "Möchte ich nicht angeben"
     ]
-   
-        
+    herkunft = st.selectbox(                    
+        "Herkunft*",
+        herkunftsoptionen,
+        index=herkunftsoptionen.index(daten.get("Herkunft", "Weiss / Europäisch"))
+    )
 
     # === Avatar-Auswahl
     st.subheader("Avatar auswählen")
