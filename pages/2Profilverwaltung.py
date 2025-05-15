@@ -15,7 +15,6 @@ st.markdown("""
 # === Login & Logout ===
 login_manager = LoginManager(data_manager=DataManager())
 
-# Nur wenn eingeloggt, Logout anzeigen
 if st.session_state.get("authentication_status", False):
     with st.sidebar:
         login_manager.authenticator.logout("Logout", key="logout_sidebar")
@@ -23,23 +22,17 @@ else:
     st.error("⚠️ Kein Benutzer eingeloggt! Anmeldung erforderlich.")
     st.stop()
 
-# === Login absichern ===
 username = st.session_state.get("username")
 if not username:
     st.stop()
 
-# === Session Key (benutzerspezifisch)
 session_key = f"profil_daten_{username}"
-
-# === Session init
 st.session_state.setdefault("profil_gespeichert", False)
 st.session_state.setdefault("bearbeiten_modus", False)
 
-# === WebDAV DataManager
 data_manager = DataManager(fs_protocol="webdav", fs_root_folder="SanaView2")
 file_name = "profil.csv"
 
-# === CSV laden
 data_manager.load_user_data(
     session_state_key=session_key,
     file_name=file_name,
@@ -51,20 +44,17 @@ data_manager.load_user_data(
 profil_df = st.session_state.get(session_key, pd.DataFrame())
 profil_df["Benutzername"] = profil_df.get("Benutzername", "")
 
-# === Vorheriges Profil löschen, wenn es nicht zum aktuellen Benutzer gehört
 if "profil_daten_anzeige" in st.session_state:
     if st.session_state.profil_daten_anzeige.get("Benutzername") != username:
         del st.session_state["profil_daten_anzeige"]
         st.session_state["profil_gespeichert"] = False
 
-# === Profil automatisch laden
 if not st.session_state.profil_gespeichert:
     if username in profil_df["Benutzername"].values:
         eintrag = profil_df[profil_df["Benutzername"] == username].iloc[-1].to_dict()
         st.session_state.profil_daten_anzeige = eintrag
         st.session_state.profil_gespeichert = True
 
-# === Formular anzeigen
 if not st.session_state.profil_gespeichert or st.session_state.bearbeiten_modus:
     st.title("Profilverwaltung")
     st.subheader("Persönliche Angaben")
@@ -89,6 +79,7 @@ if not st.session_state.profil_gespeichert or st.session_state.bearbeiten_modus:
                          index=["Ja", "Nein", "Weiss nicht"].index(daten.get("Schwanger", "Nein")),
                          horizontal=True)
 
+    # === Ethnischer Hintergrund
     st.subheader("Ethnischer Hintergrund")
     herkunftsoptionen = [
         "Weiß / Europäisch",
@@ -109,7 +100,8 @@ if not st.session_state.profil_gespeichert or st.session_state.bearbeiten_modus:
     herkunft = st.selectbox(
         "Bitte wählen Sie Ihre ethnische Herkunft:",
         herkunftsoptionen,
-        index=herkunftsoptionen.index(herkunft_vorbelegt)
+        index=herkunftsoptionen.index(herkunft_vorbelegt),
+        help="Für eine medizinisch fundierte Einordnung Ihrer Werte können Faktoren wie ethnischer Hintergrund, genetische Veranlagung oder regionale Besonderheiten eine Rolle spielen. Diese Daten dienen ausschliesslich der individuellen Bewertung und werden vertraulich behandelt."
     )
 
     # === Avatar-Auswahl
