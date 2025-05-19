@@ -6,8 +6,6 @@ from utils.data_manager import DataManager
 from utils.login_manager import LoginManager
 import re
 
-import streamlit as st
-
 st.markdown("""
     <style>
         html, body, [data-testid="stAppViewContainer"], [data-testid="stAppViewContainer"] > .main {
@@ -180,14 +178,14 @@ if not df.empty:
     # === Löschfunktion einfügen ===
     st.markdown("### Eintrag löschen")
 
-    df['Anzeige'] = df["Datum"] + " – " + df["Laborwert"] + f" ({df['Wert'].astype(str)} {df['Einheit']})"
-    eintrag_auswahl = st.selectbox("Eintrag auswählen", df["Anzeige"])
+    anzeige_df = df.copy()
+    anzeige_df["Eintrag"] = anzeige_df["Datum"] + " – " + anzeige_df["Laborwert"] + " (" + anzeige_df["Wert"].astype(str) + " " + anzeige_df["Einheit"] + ")"
+    auswahl = st.selectbox("Eintrag auswählen", anzeige_df["Eintrag"].tolist())
 
     if st.button("❌ Eintrag löschen"):
-        index_to_delete = df[df["Anzeige"] == eintrag_auswahl].index
-        if not index_to_delete.empty:
-            df = df.drop(index_to_delete).reset_index(drop=True)
-            st.session_state[session_key] = df
-            data_manager.save_user_data(session_state_key=session_key, file_name=file_name)
-            st.success("Eintrag wurde gelöscht.")
-            st.experimental_rerun()
+        index_to_delete = anzeige_df[anzeige_df["Eintrag"] == auswahl].index[0]
+        df = df.drop(index_to_delete).reset_index(drop=True)
+        st.session_state[session_key] = df
+        data_manager.save_user_data(session_state_key=session_key, file_name=file_name)
+        st.success("Eintrag wurde gelöscht.")
+        st.experimental_rerun()
