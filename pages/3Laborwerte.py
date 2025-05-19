@@ -179,7 +179,11 @@ if not df.empty:
     st.markdown("### Eintrag löschen")
 
     anzeige_df = df.copy()
-    anzeige_df["Eintrag"] = anzeige_df["Datum"] + " – " + anzeige_df["Laborwert"] + " (" + anzeige_df["Wert"].astype(str) + " " + anzeige_df["Einheit"] + ")"
+    anzeige_df["Eintrag"] = (
+        anzeige_df["Datum"] + " – " + anzeige_df["Laborwert"] +
+        " (" + anzeige_df["Wert"].astype(str) + " " + anzeige_df["Einheit"] + ")"
+    )
+
     if not anzeige_df.empty:
         auswahl = st.selectbox("Eintrag auswählen", anzeige_df["Eintrag"].tolist())
         if st.button("Eintrag löschen"):
