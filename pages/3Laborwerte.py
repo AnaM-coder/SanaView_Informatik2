@@ -5,7 +5,6 @@ import fitz  # PyMuPDF
 from utils.data_manager import DataManager
 from utils.login_manager import LoginManager
 import re
-import os
 
 st.markdown("""
     <style>
@@ -176,21 +175,17 @@ if not df.empty:
             with st.expander(f"{laborwert}"):
                 st.dataframe(df[df["Laborwert"] == laborwert].reset_index(drop=True), use_container_width=True)
 
-    # === Alternative Löschfunktion ===
+    # === Löschfunktion einfügen ===
     st.markdown("### Eintrag löschen")
 
     anzeige_df = df.copy()
     anzeige_df["Eintrag"] = anzeige_df["Datum"] + " – " + anzeige_df["Laborwert"] + " (" + anzeige_df["Wert"].astype(str) + " " + anzeige_df["Einheit"] + ")"
-
     auswahl = st.selectbox("Eintrag auswählen", anzeige_df["Eintrag"].tolist())
 
-    if st.button("❌ Eintrag löschen"):
+    if st.button("Eintrag löschen"):
         index_to_delete = anzeige_df[anzeige_df["Eintrag"] == auswahl].index[0]
         df = df.drop(index_to_delete).reset_index(drop=True)
         st.session_state[session_key] = df
-
-        os.makedirs("user_data", exist_ok=True)
-        df.to_csv(os.path.join("user_data", file_name), index=False)
-
+        data_manager.save_user_data(session_state_key=session_key, file_name=file_name)
         st.success("Eintrag wurde gelöscht.")
         st.experimental_rerun()
