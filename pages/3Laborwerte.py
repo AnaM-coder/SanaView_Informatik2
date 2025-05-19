@@ -180,12 +180,16 @@ if not df.empty:
 
     anzeige_df = df.copy()
     anzeige_df["Eintrag"] = anzeige_df["Datum"] + " – " + anzeige_df["Laborwert"] + " (" + anzeige_df["Wert"].astype(str) + " " + anzeige_df["Einheit"] + ")"
-    auswahl = st.selectbox("Eintrag auswählen", anzeige_df["Eintrag"].tolist())
-
-    if st.button("Eintrag löschen"):
-        index_to_delete = anzeige_df[anzeige_df["Eintrag"] == auswahl].index[0]
-        df = df.drop(index_to_delete).reset_index(drop=True)
-        st.session_state[session_key] = df
-        data_manager.save_data(session_state_key=session_key)
-        st.success("Eintrag wurde gelöscht.")
-        st.experimental_rerun()
+    if not anzeige_df.empty:
+        auswahl = st.selectbox("Eintrag auswählen", anzeige_df["Eintrag"].tolist())
+        if st.button("Eintrag löschen"):
+            index_to_delete = anzeige_df[anzeige_df["Eintrag"] == auswahl].index[0]
+            df = df.drop(index_to_delete).reset_index(drop=True)
+            st.session_state[session_key] = df
+            data_manager.save_data(session_state_key=session_key)
+            st.success("Eintrag wurde gelöscht.")
+            st.experimental_rerun()
+    else:
+        st.info("Keine Einträge zum Löschen vorhanden.")
+else:
+    st.info("Noch keine Laborwerte gespeichert.")
