@@ -5,7 +5,6 @@ import fitz  # PyMuPDF
 from utils.data_manager import DataManager
 from utils.login_manager import LoginManager
 import re
-import os
 
 st.markdown("""
     <style>
@@ -193,11 +192,11 @@ if not df.empty:
                 df = df.drop(index_to_delete).reset_index(drop=True)
                 st.session_state[session_key] = df
 
-                # Speichern ohne save_data
-                os.makedirs("user_data", exist_ok=True)
-                df.to_csv(os.path.join("user_data", file_name), index=False)
+                # Speichern mit DataManager
+                data_manager.save_data(session_state_key=session_key)
 
                 st.success("Eintrag wurde gelöscht. Änderungen werden beim nächsten Seitenaufruf sichtbar.")
+                st.experimental_rerun()
             except Exception as e:
                 st.error(f"Fehler beim Löschen: {e}")
     else:
