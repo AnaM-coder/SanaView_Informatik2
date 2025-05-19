@@ -5,6 +5,7 @@ import fitz  # PyMuPDF
 from utils.data_manager import DataManager
 from utils.login_manager import LoginManager
 import re
+import os
 
 st.markdown("""
     <style>
@@ -175,7 +176,7 @@ if not df.empty:
             with st.expander(f"{laborwert}"):
                 st.dataframe(df[df["Laborwert"] == laborwert].reset_index(drop=True), use_container_width=True)
 
-       # === Löschfunktion einfügen ===
+    # === Löschfunktion ===
     st.markdown("### Eintrag löschen")
 
     anzeige_df = df.copy()
@@ -185,17 +186,21 @@ if not df.empty:
     )
 
     if not anzeige_df.empty:
-        auswahl = st.selectbox(
-            "Eintrag auswählen",
-            anzeige_df["Eintrag"].tolist(),
-            key="loesch_selectbox"
-        )
-        if st.button("Eintrag löschen", key="loesch_button"):
-            index_to_delete = anzeige_df[anzeige_df["Eintrag"] == auswahl].index[0]
-            df = df.drop(index_to_delete).reset_index(drop=True)
-            st.session_state[session_key] = df
-            data_manager.save_data(session_state_key=session_key)
-            st.success("Eintrag wurde gelöscht.")
-            st.experimental_rerun()
+        auswahl = st.selectbox("Eintrag auswählen", anzeige_df["Eintrag"].tolist())
+        if st.button("Eintrag löschen"):
+            try:
+                index_to_delete = anzeige_df[anzeige_df["Eintrag"] == auswahl].index[0]
+                df = df.drop(index_to_delete).reset_index(drop=True)
+                st.session_state[session_key] = df
+
+                # Speichern ohne save_data
+                os.makedirs("user_data", exist_ok=True)
+                df.to_csv(os.path.join("user_data", file_name), index=False)
+
+                st.success("Eintrag wurde gelöscht. Änderungen werden beim nächsten Seitenaufruf sichtbar.")
+            except Exception as e:
+                st.error(f"Fehler beim Löschen: {e}")
     else:
         st.info("Keine Einträge zum Löschen vorhanden.")
+else:
+    st.info("Noch keine Laborwerte gespeichert.")
