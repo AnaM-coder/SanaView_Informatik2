@@ -197,7 +197,7 @@ if not df.empty:
                 os.makedirs("user_data", exist_ok=True)
                 df.to_csv(os.path.join("user_data", file_name), index=False)
 
-                st.success("Eintrag wurde gelöscht. Änderungen werden beim nächsten Seitenaufruf sichtbar.")
+                st.success("Eintrag wurde gelöscht.")
             except Exception as e:
                 st.error(f"Fehler beim Löschen: {e}")
     else:
