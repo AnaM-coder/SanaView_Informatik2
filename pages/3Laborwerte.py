@@ -175,7 +175,7 @@ if not df.empty:
             with st.expander(f"{laborwert}"):
                 st.dataframe(df[df["Laborwert"] == laborwert].reset_index(drop=True), use_container_width=True)
 
-    # === Löschfunktion einfügen ===
+       # === Löschfunktion einfügen ===
     st.markdown("### Eintrag löschen")
 
     anzeige_df = df.copy()
@@ -185,8 +185,12 @@ if not df.empty:
     )
 
     if not anzeige_df.empty:
-        auswahl = st.selectbox("Eintrag auswählen", anzeige_df["Eintrag"].tolist())
-        if st.button("Eintrag löschen"):
+        auswahl = st.selectbox(
+            "Eintrag auswählen",
+            anzeige_df["Eintrag"].tolist(),
+            key="loesch_selectbox"
+        )
+        if st.button("Eintrag löschen", key="loesch_button"):
             index_to_delete = anzeige_df[anzeige_df["Eintrag"] == auswahl].index[0]
             df = df.drop(index_to_delete).reset_index(drop=True)
             st.session_state[session_key] = df
@@ -195,5 +199,3 @@ if not df.empty:
             st.experimental_rerun()
     else:
         st.info("Keine Einträge zum Löschen vorhanden.")
-else:
-    st.info("Noch keine Laborwerte gespeichert.")
