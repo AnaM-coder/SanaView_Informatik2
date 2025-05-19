@@ -176,3 +176,18 @@ if not df.empty:
         for laborwert in sorted(df["Laborwert"].unique()):
             with st.expander(f"{laborwert}"):
                 st.dataframe(df[df["Laborwert"] == laborwert].reset_index(drop=True), use_container_width=True)
+
+    # === Löschfunktion einfügen ===
+    st.markdown("### Eintrag löschen")
+
+    df['Anzeige'] = df["Datum"] + " – " + df["Laborwert"] + f" ({df['Wert'].astype(str)} {df['Einheit']})"
+    eintrag_auswahl = st.selectbox("Eintrag auswählen", df["Anzeige"])
+
+    if st.button("❌ Eintrag löschen"):
+        index_to_delete = df[df["Anzeige"] == eintrag_auswahl].index
+        if not index_to_delete.empty:
+            df = df.drop(index_to_delete).reset_index(drop=True)
+            st.session_state[session_key] = df
+            data_manager.save_user_data(session_state_key=session_key, file_name=file_name)
+            st.success("Eintrag wurde gelöscht.")
+            st.experimental_rerun()
