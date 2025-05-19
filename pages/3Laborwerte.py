@@ -186,6 +186,6 @@ if not df.empty:
         index_to_delete = anzeige_df[anzeige_df["Eintrag"] == auswahl].index[0]
         df = df.drop(index_to_delete).reset_index(drop=True)
         st.session_state[session_key] = df
-        data_manager.save_user_data(session_state_key=session_key, file_name=file_name)
+        data_manager.save_data(session_state_key=session_key)
         st.success("Eintrag wurde gelöscht.")
         st.experimental_rerun()
