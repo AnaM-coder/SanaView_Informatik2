@@ -196,7 +196,7 @@ if not df.empty:
                 data_manager.save_data(session_state_key=session_key)
 
                 st.success("Eintrag wurde gelöscht. Änderungen werden beim nächsten Seitenaufruf sichtbar.")
-                st.experimental_rerun()
+                st.rerun()
             except Exception as e:
                 st.error(f"Fehler beim Löschen: {e}")
     else:
