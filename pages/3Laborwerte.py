@@ -195,11 +195,17 @@ if not df.empty:
                 # Speichern mit DataManager
                 data_manager.save_data(session_state_key=session_key)
 
-                st.success("Eintrag wurde gelöscht. Änderungen werden beim nächsten Seitenaufruf sichtbar.")
+                # Erfolgsmeldung im Session-State merken
+                st.session_state["loesch_erfolg"] = True
                 st.rerun()
             except Exception as e:
                 st.error(f"Fehler beim Löschen: {e}")
     else:
         st.info("Keine Einträge zum Löschen vorhanden.")
+
+    # Erfolgsmeldung nach dem Reload anzeigen
+    if st.session_state.get("loesch_erfolg", False):
+        st.success("Eintrag wurde gelöscht.")
+        st.session_state["loesch_erfolg"] = False
 else:
     st.info("Noch keine Laborwerte gespeichert.")
