@@ -73,10 +73,10 @@ profil = st.sidebar.selectbox("Profil wählen", ["Männer", "Frauen", "Schwanger
 # === Eingabe
 st.title(" 🩸 Laborwerte – Eingabe")
 ausgewählt = st.selectbox("Laborwert", sorted(referenzwerte.keys()))
-einheit = referenzwerte[ausgewählt]["Männer"].split()[-1]  # Einheit aus Referenzwert nehmen
+ref_string = referenzwerte[ausgewählt][profil]
+einheit = ref_string.split()[-1]  # Einheit aus Referenzwert für das Profil nehmen
 
 # Referenzbereich für das gewählte Profil extrahieren
-ref_string = referenzwerte[ausgewählt][profil]
 ref_min, ref_max = None, None
 if "≥" in ref_string:
     ref_min = float(ref_string.replace("≥", "").replace(einheit, "").strip().replace(",", "."))
