@@ -130,19 +130,19 @@ Die angegebenen Referenzwerte und Erklärungen basieren auf folgenden Quellen:
 """)
 
 # === Navigations-Buttons am Schluss ===
-cols = st.columns(9)
-with cols[1]:
+col1, col2, col3, col4, col5 = st.columns(5)
+with col1:
     if st.button("Start"):
         st.switch_page("Start.py")
-with cols[2]:
+with col2:
     if st.button("Hauptmenü"):
         st.switch_page("pages/1Hauptmenü.py")
-with cols[3]:
+with col3:
     if st.button("Profil verwalten"):
         st.switch_page("pages/2Profilverwaltung.py")
-with cols[4]:
+with col4:
     if st.button("Laborwerte – Eingabe"):
         st.switch_page("pages/3Laborwerte.py")
-with cols[5]:
+with col5:
     if st.button("Verlauf"):
         st.switch_page("pages/4Verlauf.py")
