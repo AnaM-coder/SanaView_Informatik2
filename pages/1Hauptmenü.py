@@ -52,7 +52,6 @@ st.markdown("""
 # === Abschluss ===
 st.markdown("<p style='margin-top: 25px; font-size:18px;'><strong>Behalten Sie Ihre Gesundheit im Blick – einfach, sicher und übersichtlich ✨.</strong></p>", unsafe_allow_html=True)
 
-# === Schnellzugriff-Buttons ganz am Schluss ===
 st.markdown("### Schnellzugriff:")
 
 col1, col2 = st.columns(2)
