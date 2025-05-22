@@ -52,19 +52,19 @@ st.markdown("""
 # === Abschluss ===
 st.markdown("<p style='margin-top: 25px; font-size:18px;'><strong>Behalten Sie Ihre Gesundheit im Blick – einfach, sicher und übersichtlich ✨.</strong></p>", unsafe_allow_html=True)
 
-cols = st.columns(10)
+cols = st.columns(7)
 with cols[1]:
     if st.button("Profil verwalten"):
         st.switch_page("pages/2Profilverwaltung.py")
-with cols[3]:
+with cols[2]:
     if st.button("Laborwerte – Eingabe"):
         st.switch_page("pages/3Laborwerte.py")
-with cols[5]:
+with cols[3]:
     if st.button("Verlauf anzeigen"):
         st.switch_page("pages/4Verlauf.py")
-with cols[7]:
+with cols[4]:
     if st.button("Infoseite"):
         st.switch_page("pages/5Infoseite.py")
-with cols[9]:
+with cols[5]:
     if st.button("Start"):
         st.switch_page("Start.py")
