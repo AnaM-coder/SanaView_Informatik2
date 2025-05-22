@@ -7,8 +7,6 @@ import base64
 from utils.data_manager import DataManager
 from utils.login_manager import LoginManager
 
-import base64
-
 def get_base64_of_bin_file(bin_file):
     with open(bin_file, 'rb') as f:
         data = f.read()
@@ -32,6 +30,7 @@ try:
     )
 except Exception as e:
     st.warning(f"Fehler beim Laden des Hintergrundbilds: {e}")
+
 # === Login ===
 login_manager = LoginManager(data_manager=DataManager())
 if not st.session_state.get("authentication_status", False):
