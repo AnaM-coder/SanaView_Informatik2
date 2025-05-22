@@ -185,6 +185,15 @@ else:
                 unsafe_allow_html=True
             )
 
+    st.markdown("---")
+    col1, col2 = st.columns(2)
+    with col1:
+        if st.button("Profil bearbeiten"):
+            st.session_state.bearbeiten_modus = True
+            st.rerun()
+    with col2:
+        if st.button("Zurück zur Startseite"):
+            st.switch_page("Start.py")
 
     st.markdown("---")
     nav1, nav2, nav3, nav4, nav5 = st.columns(5)
@@ -199,7 +208,7 @@ else:
             st.switch_page("pages/5Infoseite.py")
     with nav4:
         if st.button("Start"):
-            st.switch_page("pages/Start.py")
+            st.switch_page("Start.py")
     with nav5:
         if st.button("Hauptmenü"):
             st.switch_page("pages/1Hauptmenü.py")
