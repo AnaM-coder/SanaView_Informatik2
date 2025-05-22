@@ -198,8 +198,8 @@ else:
         if st.button("Infoseite"):
             st.switch_page("pages/5Infoseite.py")
     with nav4:
-        if st.button("Startseite"):
-            st.switch_page("pages/0_Startseite.py")
+        if st.button("Start"):
+            st.switch_page("pages/Start.py")
     with nav5:
         if st.button("Hauptmenü"):
             st.switch_page("pages/1Hauptmenü.py")
