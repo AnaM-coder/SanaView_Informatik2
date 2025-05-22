@@ -239,6 +239,7 @@ if pdf and pdf.name != st.session_state.get("last_pdf_name"):
 elif pdf:
     st.info("PDF wurde bereits verarbeitet. Bitte eine andere Datei auswählen.")
 
+# ...vorheriger Code...
 
 # === Anzeige & Löschen
 df = st.session_state[session_key]
@@ -269,21 +270,6 @@ if not df.empty:
         if "delete_result" not in st.session_state:
             st.session_state["delete_result"] = None
 
-        # CSS für Link-Buttons
-        st.markdown("""
-            <style>
-            div.stButton > button {
-                background: none;
-                color: #0066cc;
-                border: none;
-                padding: 0;
-                text-decoration: underline;
-                cursor: pointer;
-                font-size: 1.1em;
-            }
-            </style>
-        """, unsafe_allow_html=True)
-
         if st.button("Eintrag löschen", type="primary", key="delete_button"):
             st.session_state["delete_confirm"] = True
             st.session_state["delete_result"] = None
@@ -293,25 +279,27 @@ if not df.empty:
             col_ja, col_nein = st.columns([1, 1])
             with col_ja:
                 if st.button("Ja", key="delete_yes"):
+                    # Setze nur delete_result, NICHT delete_confirm, dann rerun
                     maske = df.apply(lambda row: f"{row['Datum']} – {row['Laborwert']} ({row['Wert']:.2f} {row['Einheit']})", axis=1) == auswahl
                     df = df[~maske].reset_index(drop=True)
                     st.session_state[session_key] = df
                     data_manager.save_data(session_state_key=session_key)
-                    st.session_state["delete_confirm"] = False
                     st.session_state["delete_result"] = "success"
                     st.experimental_rerun()
             with col_nein:
                 if st.button("Nein", key="delete_no"):
-                    st.session_state["delete_confirm"] = False
                     st.session_state["delete_result"] = "cancel"
                     st.experimental_rerun()
 
+        # Erfolgsmeldung nach dem Rerun anzeigen und dann State zurücksetzen
         if st.session_state.get("delete_result") == "success":
             st.success("Eintrag erfolgreich gelöscht!")
             st.session_state["delete_result"] = None
+            st.session_state["delete_confirm"] = False
         elif st.session_state.get("delete_result") == "cancel":
             st.info("Eintrag nicht gelöscht.")
             st.session_state["delete_result"] = None
+            st.session_state["delete_confirm"] = False
     else:
         st.info("Keine Einträge zum Löschen vorhanden.")
 
