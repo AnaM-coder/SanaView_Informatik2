@@ -289,4 +289,4 @@ with col4:
         st.switch_page("pages/1Hauptmenü.py")
 with col5:
     if st.button("Start"):
-        st.switch_page("pages/0_Start.py")
+        st.switch_page("pages/Start.py")
