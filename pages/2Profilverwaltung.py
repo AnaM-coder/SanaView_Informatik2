@@ -185,10 +185,8 @@ else:
                 unsafe_allow_html=True
             )
 
-# ...existing code...
-
     st.markdown("---")
-    col1, col2 = st.columns(2)
+    col1, col2 = st.columns([1, 1], gap="large")
     with col1:
         if st.button("Profil bearbeiten"):
             st.session_state.bearbeiten_modus = True
