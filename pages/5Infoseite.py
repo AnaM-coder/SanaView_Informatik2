@@ -129,3 +129,20 @@ Die angegebenen Referenzwerte und Erklärungen basieren auf folgenden Quellen:
 *Hinweis: Die Werte und Texte dienen der Orientierung und ersetzen keine ärztliche Beratung.*
 """)
 
+# === Navigations-Buttons am Schluss ===
+col1, col2, col3, col4, col5 = st.columns(5)
+with col1:
+    if st.button("Startseite"):
+        st.switch_page("pages/0_Startseite.py")
+with col2:
+    if st.button("Hauptmenü"):
+        st.switch_page("pages/1Hauptmenü.py")
+with col3:
+    if st.button("Profil verwalten"):
+        st.switch_page("pages/2Profilverwaltung.py")
+with col4:
+    if st.button("Laborwerte – Eingabe"):
+        st.switch_page("pages/3Laborwerte.py")
+with col5:
+    if st.button("Verlauf"):
+        st.switch_page("pages/4Verlauf.py")

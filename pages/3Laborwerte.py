@@ -270,3 +270,21 @@ if not df.empty:
         st.info("Keine Einträge zum Löschen vorhanden.")
 else:
     st.info("Noch keine Laborwerte gespeichert.")
+
+# === Navigations-Buttons am Schluss ===
+col1, col2, col3, col4, col5 = st.columns(5)
+with col1:
+    if st.button("Profil verwalten"):
+        st.switch_page("pages/2Profilverwaltung.py")
+with col2:
+    if st.button("Verlauf"):
+        st.switch_page("pages/4Verlauf.py")
+with col3:
+    if st.button("Infoseite"):
+        st.switch_page("pages/5Infoseite.py")
+with col4:
+    if st.button("Hauptmenü"):
+        st.switch_page("pages/1Hauptmenü.py")
+with col5:
+    if st.button("Startseite"):
+        st.switch_page("pages/0_Startseite.py")

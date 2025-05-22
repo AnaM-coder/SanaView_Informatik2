@@ -185,12 +185,21 @@ else:
                 unsafe_allow_html=True
             )
 
+
     st.markdown("---")
-    col1, col2 = st.columns(2)
-    with col1:
-        if st.button("Profil bearbeiten"):
-            st.session_state.bearbeiten_modus = True
-            st.rerun()
-    with col2:
-        if st.button("Zurück zur Startseite"):
-            st.switch_page("Start.py")
+    nav1, nav2, nav3, nav4, nav5 = st.columns(5)
+    with nav1:
+        if st.button("Laborwerte – Eingabe"):
+            st.switch_page("pages/3Laborwerte.py")
+    with nav2:
+        if st.button("Verlauf"):
+            st.switch_page("pages/4Verlauf.py")
+    with nav3:
+        if st.button("Infoseite"):
+            st.switch_page("pages/5Infoseite.py")
+    with nav4:
+        if st.button("Startseite"):
+            st.switch_page("pages/0_Startseite.py")
+    with nav5:
+        if st.button("Hauptmenü"):
+            st.switch_page("pages/1Hauptmenü.py")
