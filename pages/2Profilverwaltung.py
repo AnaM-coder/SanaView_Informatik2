@@ -186,7 +186,7 @@ else:
             )
 
     st.markdown("---")
-    col1, col2 = st.columns(2)
+    col1, col2, col3, col4, col5, col6 = st.columns(6)
     with col1:
         if st.button("Profil bearbeiten"):
             st.session_state.bearbeiten_modus = True
@@ -194,21 +194,15 @@ else:
     with col2:
         if st.button("Zurück zur Startseite"):
             st.switch_page("Start.py")
-
-    st.markdown("---")
-    col1, col2, col3, col4, col5 = st.columns(5)
-    with col1:
-        if st.button("Laborwerte – Eingabe"):
-            st.switch_page("pages/3Laborwerte.py")
-    with col2:
-        if st.button("Verlauf"):
-            st.switch_page("pages/4Verlauf.py")
     with col3:
-        if st.button("Infoseite"):
-            st.switch_page("pages/5Infoseite.py")
-    with col4:
-        if st.button("Start"):
-            st.switch_page("Start.py")
-    with col5:
         if st.button("Hauptmenü"):
             st.switch_page("pages/1Hauptmenü.py")
+    with col4:
+        if st.button("Laborwerte – Eingabe"):
+            st.switch_page("pages/3Laborwerte.py")
+    with col5:
+        if st.button("Verlauf"):
+            st.switch_page("pages/4Verlauf.py")
+    with col6:
+        if st.button("Infoseite"):
+            st.switch_page("pages/5Infoseite.py")
