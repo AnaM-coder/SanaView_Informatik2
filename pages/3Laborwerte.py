@@ -3,33 +3,17 @@ import datetime
 import pandas as pd
 import fitz  # PyMuPDF
 import re
-import base64
 from utils.data_manager import DataManager
 from utils.login_manager import LoginManager
 
-def get_base64_of_bin_file(bin_file):
-    with open(bin_file, 'rb') as f:
-        data = f.read()
-    return base64.b64encode(data).decode()
-
-img_path = "img/labor_bg.png"  # Passe ggf. den Pfad und Namen an
-try:
-    img_base64 = get_base64_of_bin_file(img_path)
-    st.markdown(
-        f"""
-        <style>
-        [data-testid="stAppViewContainer"] {{
-            background-image: url("data:image/png;base64,{img_base64}");
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-        }}
-        </style>
-        """,
-        unsafe_allow_html=True
-    )
-except Exception as e:
-    st.warning(f"Fehler beim Laden des Hintergrundbilds: {e}")
+# === Seitenstil ===
+st.markdown("""
+    <style>
+        html, body, [data-testid="stAppViewContainer"], [data-testid="stAppViewContainer"] > .main {
+            background-color: #d9ecf2 !important;
+        }
+    </style>
+""", unsafe_allow_html=True)
 
 # === Login ===
 login_manager = LoginManager(data_manager=DataManager())
