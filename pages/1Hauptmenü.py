@@ -49,6 +49,9 @@ st.markdown("""
 </ul>
 """, unsafe_allow_html=True)
 
+# === Abschluss ===
+st.markdown("<p style='margin-top: 25px; font-size:18px;'><strong>Behalten Sie Ihre Gesundheit im Blick – einfach, sicher und übersichtlich ✨.</strong></p>", unsafe_allow_html=True)
+
 st.markdown("### Schnellzugriff:")
 
 col1, col2, col3 = st.columns(3)
@@ -65,6 +68,3 @@ with col2:
 with col3:
     if st.button("Laborbericht (PDF) hochladen"):
         st.switch_page("pages/3Laborwerte.py")  # oder eigene Upload-Seite
-
-# === Abschluss ===
-st.markdown("<p style='margin-top: 25px; font-size:18px;'><strong>Behalten Sie Ihre Gesundheit im Blick – einfach, sicher und übersichtlich ✨.</strong></p>", unsafe_allow_html=True)
