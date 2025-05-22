@@ -1,5 +1,6 @@
 import streamlit as st
 import os
+import time
 from utils.data_manager import DataManager
 from utils.login_manager import LoginManager
 
@@ -70,3 +71,12 @@ Diese App wurde im Rahmen des Moduls *Informatik 2* an der **ZHAW** entwickelt v
 - Lou-Salomé Frehner (frehnlou@students.zhaw.ch)  
 - Cristiana Pereira Bastos (pereicri@students.zhaw.ch)
 """)
+
+# === Automatische Weiterleitung nach 40 Sekunden ===
+st.info("Du wirst in 40 Sekunden automatisch zum Hauptmenü weitergeleitet.")
+
+if "redirect_time" not in st.session_state:
+    st.session_state["redirect_time"] = time.time()
+
+if time.time() - st.session_state["redirect_time"] > 40:
+    st.switch_page("pages/1Hauptmenü.py")
