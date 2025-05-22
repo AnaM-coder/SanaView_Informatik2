@@ -239,8 +239,6 @@ if pdf and pdf.name != st.session_state.get("last_pdf_name"):
 elif pdf:
     st.info("PDF wurde bereits verarbeitet. Bitte eine andere Datei auswählen.")
 
-# ...vorheriger Code...
-
 # === Anzeige & Löschen
 df = st.session_state[session_key]
 df = df[[c for c in df.columns if c in ["Datum", "Laborwert", "Wert", "Einheit", "Referenz", "Ampel"]]]
@@ -273,10 +271,16 @@ if not df.empty:
         if st.button("Eintrag löschen", type="primary", key="delete_button"):
             st.session_state["delete_confirm"] = True
             st.session_state["delete_result"] = None
+            st.session_state["delete_action"] = ""  # Reset Auswahl
 
         if st.session_state.get("delete_confirm"):
             st.warning("Sind Sie sicher, dass Sie diesen Eintrag löschen möchten?")
-            aktion = st.selectbox("Bitte wählen:", ["", "Ja", "Nein"], key="delete_action")
+            st.markdown("**Ja / Nein**")
+            aktion = st.selectbox(
+                "Bitte wählen:",
+                ["", "Ja", "Nein"],
+                key="delete_action"
+            )
             if aktion == "Ja":
                 maske = df.apply(lambda row: f"{row['Datum']} – {row['Laborwert']} ({row['Wert']:.2f} {row['Einheit']})", axis=1) == auswahl
                 df = df[~maske].reset_index(drop=True)
@@ -284,10 +288,12 @@ if not df.empty:
                 data_manager.save_data(session_state_key=session_key)
                 st.session_state["delete_confirm"] = False
                 st.session_state["delete_result"] = "success"
+                st.session_state["delete_action"] = ""
                 st.experimental_rerun()
             elif aktion == "Nein":
                 st.session_state["delete_confirm"] = False
                 st.session_state["delete_result"] = "cancel"
+                st.session_state["delete_action"] = ""
                 st.experimental_rerun()
 
         if st.session_state.get("delete_result") == "success":
