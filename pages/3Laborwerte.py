@@ -173,7 +173,7 @@ if not df.empty:
             df = df[~maske].reset_index(drop=True)
             st.session_state[session_key] = df
             data_manager.save_data(session_state_key=session_key)
-            st.success("Eintrag wurde gelöscht.")
+            st.rerun()  # Seite neu laden, damit alles korrekt aktualisiert wird
     else:
         st.info("Keine Einträge zum Löschen vorhanden.")
 else:
