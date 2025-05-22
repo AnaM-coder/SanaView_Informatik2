@@ -72,17 +72,15 @@ Diese App wurde im Rahmen des Moduls *Informatik 2* an der **ZHAW** entwickelt v
 - Cristiana Pereira Bastos (pereicri@students.zhaw.ch)
 """)
 
-# === Automatische Weiterleitung nach 40 Sekunden ===
-st.info("Du wirst in 40 Sekunden automatisch zum Hauptmenü weitergeleitet.")
+# === Automatische Weiterleitung nach 30 Sekunden ===
+st.info("Du wirst in 30 Sekunden automatisch zum Hauptmenü weitergeleitet.")
 
 if "redirect_time" not in st.session_state:
     st.session_state["redirect_time"] = time.time()
 
-# Streamlit muss regelmäßig neu ausgeführt werden, damit die Zeit weiterläuft.
-# Das geht mit st.experimental_rerun() und time.sleep()
-if time.time() - st.session_state["redirect_time"] > 40:
+if time.time() - st.session_state["redirect_time"] > 30:
     st.switch_page("pages/1Hauptmenü.py")
 else:
-    # Alle 1 Sekunde neu ausführen, damit der Timer weiterläuft
+    # Seite alle 1 Sekunde neu laden, damit der Timer weiterläuft
     time.sleep(1)
     st.experimental_rerun()
