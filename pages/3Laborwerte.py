@@ -6,7 +6,22 @@ import re
 from utils.data_manager import DataManager
 from utils.login_manager import LoginManager
 
-# === Seitenstil ===
+# === Seitenstil (optional: Hintergrundbild, falls gewünscht) ===
+# Beispiel für Hintergrundbild aus public-Ordner:
+st.markdown(
+    """
+    <style>
+    [data-testid="stAppViewContainer"] {
+        background-image: url('/public/labor_bg.png');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
 st.markdown("""
     <style>
         html, body, [data-testid="stAppViewContainer"], [data-testid="stAppViewContainer"] > .main {
@@ -85,9 +100,10 @@ try:
 except:
     alter = 30  # Fallback
 
+# Robuste Schwanger-Erkennung
 if alter < 18:
     profil = "Kinder"
-elif geschlecht.lower() == "weiblich" and schwanger.lower() == "ja":
+elif geschlecht.lower() == "weiblich" and str(schwanger).strip().lower() in ["ja", "true", "1"]:
     profil = "Schwanger"
 elif geschlecht.lower() == "weiblich":
     profil = "Frauen"
