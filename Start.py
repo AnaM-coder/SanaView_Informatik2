@@ -72,15 +72,15 @@ Diese App wurde im Rahmen des Moduls *Informatik 2* an der **ZHAW** entwickelt v
 - Cristiana Pereira Bastos (pereicri@students.zhaw.ch)
 """)
 
-# === Automatische Weiterleitung nach 30 Sekunden ===
-st.info("Du wirst in 30 Sekunden automatisch zum Hauptmenü weitergeleitet.")
+st.markdown("---")
+st.markdown(
+    "<div style='text-align:center; margin-top:30px;'>"
+    "<span style='font-size:40px;'>Weiter zum Hauptmenü</span><br><br>"
+    "</div>",
+    unsafe_allow_html=True
+)
 
-if "redirect_time" not in st.session_state:
-    st.session_state["redirect_time"] = time.time()
-
-if time.time() - st.session_state["redirect_time"] > 30:
-    st.switch_page("pages/1Hauptmenü.py")
-else:
-    # Seite alle 1 Sekunde neu laden, damit der Timer weiterläuft
-    time.sleep(1)
-    st.experimental_rerun()
+col1, col2, col3 = st.columns([2,1,2])
+with col2:
+    if st.button("➡️", key="goto_mainmenu"):
+        st.switch_page("pages/1Hauptmenü.py")
