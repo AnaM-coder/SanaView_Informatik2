@@ -152,5 +152,5 @@ with col4:
     if st.button("Infoseite"):
         st.switch_page("pages/5Infoseite.py")
 with col5:
-    if st.button("Startseite"):
-        st.switch_page("pages/0_Startseite.py")
+    if st.button("Start"):
+        st.switch_page("pages/0_Start.py")

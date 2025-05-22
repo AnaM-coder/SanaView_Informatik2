@@ -132,8 +132,8 @@ Die angegebenen Referenzwerte und Erklärungen basieren auf folgenden Quellen:
 # === Navigations-Buttons am Schluss ===
 col1, col2, col3, col4, col5 = st.columns(5)
 with col1:
-    if st.button("Startseite"):
-        st.switch_page("pages/0_Startseite.py")
+    if st.button("Start"):
+        st.switch_page("pages/0_Start.py")
 with col2:
     if st.button("Hauptmenü"):
         st.switch_page("pages/1Hauptmenü.py")

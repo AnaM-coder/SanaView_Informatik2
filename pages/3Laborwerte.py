@@ -288,5 +288,5 @@ with col4:
     if st.button("Hauptmenü"):
         st.switch_page("pages/1Hauptmenü.py")
 with col5:
-    if st.button("Startseite"):
-        st.switch_page("pages/0_Startseite.py")
+    if st.button("Start"):
+        st.switch_page("pages/0_Start.py")
