@@ -36,46 +36,56 @@ data_manager.load_user_data(
     initial_value=pd.DataFrame(columns=["Datum", "Laborwert", "Wert", "Einheit", "Referenz", "Ampel"])
 )
 
-# === Laboroptionen ===
-laboroptionen = {
-    "Albumin": {"einheit": "g/dl", "ref_min": 3.5, "ref_max": 5.0},
-    "Anionenlücke": {"einheit": "mmol/l", "ref_min": 8, "ref_max": 16},
-    "Base Excess": {"einheit": "mmol/l", "ref_min": -2, "ref_max": 2},
-    "Bilirubin (gesamt)": {"einheit": "mg/dl", "ref_min": 0.1, "ref_max": 1.2},
-    "CRP": {"einheit": "mg/l", "ref_min": 0, "ref_max": 5},
-    "Calcium (ionisiert)": {"einheit": "mmol/l", "ref_min": 1.15, "ref_max": 1.30},
-    "Chlorid": {"einheit": "mmol/l", "ref_min": 98, "ref_max": 106},
-    "Fibrinogen": {"einheit": "mg/dl", "ref_min": 200, "ref_max": 400},
-    "Glukose (nüchtern)": {"einheit": "mg/dl", "ref_min": 70, "ref_max": 100},
-    "HBA1c": {"einheit": "%", "ref_min": 4.0, "ref_max": 6.0},
-    "HCO₃⁻": {"einheit": "mmol/l", "ref_min": 22, "ref_max": 26},
-    "Harnstoff (BUN)": {"einheit": "mg/dl", "ref_min": 7, "ref_max": 20},
-    "Hämatokrit (Frauen)": {"einheit": "%", "ref_min": 36, "ref_max": 46},
-    "Hämatokrit (Männer)": {"einheit": "%", "ref_min": 40, "ref_max": 50},
-    "Hämoglobin (Frauen)": {"einheit": "g/dl", "ref_min": 12.0, "ref_max": 16.0},
-    "Hämoglobin (Männer)": {"einheit": "g/dl", "ref_min": 13.5, "ref_max": 17.5},
-    "INR": {"einheit": "-", "ref_min": 0.8, "ref_max": 1.2},
-    "Kalium": {"einheit": "mmol/l", "ref_min": 3.5, "ref_max": 5.0},
-    "Kreatinin": {"einheit": "mg/dl", "ref_min": 0.6, "ref_max": 1.2},
-    "Laktat": {"einheit": "mmol/l", "ref_min": 0, "ref_max": 1.5},
-    "Leukozyten": {"einheit": "/µl", "ref_min": 4000, "ref_max": 10000},
-    "Magnesium": {"einheit": "mmol/l", "ref_min": 0.7, "ref_max": 1.0},
-    "Natrium": {"einheit": "mmol/l", "ref_min": 135, "ref_max": 145},
-    "PTT (APTT)": {"einheit": "s", "ref_min": 25, "ref_max": 35},
-    "Procalcitonin": {"einheit": "ng/ml", "ref_min": 0, "ref_max": 0.5},
-    "TSH": {"einheit": "mIU/L", "ref_min": 0.4, "ref_max": 4.0},
-    "Thrombozyten": {"einheit": "/µl", "ref_min": 150000, "ref_max": 400000},
-    "Troponin T/I": {"einheit": "ng/ml", "ref_min": 0, "ref_max": 0.04},
-    "pCO₂": {"einheit": "mmHg", "ref_min": 35, "ref_max": 45},
-    "pH (arteriell)": {"einheit": "", "ref_min": 7.35, "ref_max": 7.45}
+# === Referenzwerte inkl. Kinder, Frauen, Männer, Schwangere ===
+referenzwerte = {
+    "Albumin": {"Männer": "3.5 – 5.0 g/dl", "Frauen": "3.5 – 5.0 g/dl", "Schwanger": "3.0 – 4.5 g/dl", "Kinder": "3.8 – 5.4 g/dl"},
+    "Anionenlücke": {"Männer": "8 – 16 mmol/l", "Frauen": "8 – 16 mmol/l", "Schwanger": "8 – 16 mmol/l", "Kinder": "10 – 18 mmol/l"},
+    "Base Excess": {"Männer": "-2 – 2 mmol/l", "Frauen": "-2 – 2 mmol/l", "Schwanger": "-2 – 2 mmol/l", "Kinder": "-3 – 3 mmol/l"},
+    "Bilirubin (gesamt)": {"Männer": "0.1 – 1.2 mg/dl", "Frauen": "0.1 – 1.2 mg/dl", "Schwanger": "0.1 – 1.0 mg/dl", "Kinder": "0.2 – 1.0 mg/dl"},
+    "CRP": {"Männer": "0 – 5 mg/l", "Frauen": "0 – 5 mg/l", "Schwanger": "0 – 5 mg/l", "Kinder": "0 – 5 mg/l"},
+    "Calcium (ionisiert)": {"Männer": "1.15 – 1.30 mmol/l", "Frauen": "1.15 – 1.30 mmol/l", "Schwanger": "1.10 – 1.25 mmol/l", "Kinder": "1.00 – 1.30 mmol/l"},
+    "Chlorid": {"Männer": "98 – 106 mmol/l", "Frauen": "98 – 106 mmol/l", "Schwanger": "98 – 106 mmol/l", "Kinder": "98 – 106 mmol/l"},
+    "Fibrinogen": {"Männer": "200 – 400 mg/dl", "Frauen": "200 – 400 mg/dl", "Schwanger": "400 – 650 mg/dl", "Kinder": "150 – 400 mg/dl"},
+    "Glukose (nüchtern)": {"Männer": "70 – 100 mg/dl", "Frauen": "70 – 100 mg/dl", "Schwanger": "60 – 90 mg/dl", "Kinder": "70 – 110 mg/dl"},
+    "Hämoglobin": {"Männer": "13.5 – 17.5 g/dl", "Frauen": "12.0 – 16.0 g/dl", "Schwanger": "≥11.0 g/dl", "Kinder": "11.5 – 14.5 g/dl"},
+    "Hämatokrit": {"Männer": "40 – 50 %", "Frauen": "36 – 46 %", "Schwanger": "33 – 43 %", "Kinder": "34 – 40 %"},
+    "Harnstoff (BUN)": {"Männer": "8 – 24 mg/dl", "Frauen": "7 – 20 mg/dl", "Schwanger": "3 – 13 mg/dl", "Kinder": "5 – 18 mg/dl"},
+    "HCO₃⁻": {"Männer": "22 – 26 mmol/l", "Frauen": "22 – 26 mmol/l", "Schwanger": "18 – 22 mmol/l", "Kinder": "20 – 28 mmol/l"},
+    "INR": {"Männer": "0.8 – 1.2", "Frauen": "0.8 – 1.2", "Schwanger": "0.8 – 1.2", "Kinder": "0.8 – 1.2"},
+    "Kalium": {"Männer": "3.5 – 5.1 mmol/l", "Frauen": "3.5 – 5.1 mmol/l", "Schwanger": "3.3 – 5.1 mmol/l", "Kinder": "3.5 – 5.0 mmol/l"},
+    "Kreatinin": {"Männer": "0.7 – 1.2 mg/dl", "Frauen": "0.6 – 1.1 mg/dl", "Schwanger": "0.4 – 0.8 mg/dl", "Kinder": "0.3 – 0.7 mg/dl"},
+    "Laktat": {"Männer": "0 – 1.5 mmol/l", "Frauen": "0 – 1.5 mmol/l", "Schwanger": "0 – 1.5 mmol/l", "Kinder": "0.5 – 2.2 mmol/l"},
+    "Leukozyten": {"Männer": "4000 – 10000 /µl", "Frauen": "4000 – 10000 /µl", "Schwanger": "6000 – 16000 /µl", "Kinder": "5000 – 15000 /µl"},
+    "Magnesium": {"Männer": "0.7 – 1.0 mmol/l", "Frauen": "0.7 – 1.0 mmol/l", "Schwanger": "0.7 – 1.0 mmol/l", "Kinder": "0.70 – 1.1 mmol/l"},
+    "Natrium": {"Männer": "135 – 145 mmol/l", "Frauen": "135 – 145 mmol/l", "Schwanger": "130 – 145 mmol/l", "Kinder": "135 – 145 mmol/l"},
+    "pCO₂": {"Männer": "35 – 45 mmHg", "Frauen": "35 – 45 mmHg", "Schwanger": "27 – 32 mmHg", "Kinder": "30 – 40 mmHg"},
+    "pH (arteriell)": {"Männer": "7.35 – 7.45", "Frauen": "7.35 – 7.45", "Schwanger": "7.44 – 7.46", "Kinder": "7.36 – 7.44"},
+    "Procalcitonin": {"Männer": "0 – 0.5 ng/ml", "Frauen": "0 – 0.5 ng/ml", "Schwanger": "0 – 0.5 ng/ml", "Kinder": "0 – 0.5 ng/ml"},
+    "PTT (APTT)": {"Männer": "25 – 35 s", "Frauen": "25 – 35 s", "Schwanger": "17 – 33 s", "Kinder": "25 – 35 s"},
+    "Thrombozyten": {"Männer": "150000 – 400000 /µl", "Frauen": "150000 – 400000 /µl", "Schwanger": "100000 – 400000 /µl", "Kinder": "150000 – 450000 /µl"},
+    "Troponin T/I": {"Männer": "0 – 0.04 ng/ml", "Frauen": "0 – 0.04 ng/ml", "Schwanger": "0 – 0.04 ng/ml", "Kinder": "0 – 0.03 ng/ml"}
 }
+
+# === Profil-Auswahl ===
+st.sidebar.markdown("## Profil")
+profil = st.sidebar.selectbox("Profil wählen", ["Männer", "Frauen", "Schwanger", "Kinder"])
 
 # === Eingabe
 st.title(" 🩸 Laborwerte – Eingabe")
-ausgewählt = st.selectbox("Laborwert", sorted(laboroptionen.keys()))
-einheit = laboroptionen[ausgewählt]["einheit"]
-ref_min = laboroptionen[ausgewählt]["ref_min"]
-ref_max = laboroptionen[ausgewählt]["ref_max"]
+ausgewählt = st.selectbox("Laborwert", sorted(referenzwerte.keys()))
+einheit = referenzwerte[ausgewählt]["Männer"].split()[-1]  # Einheit aus Referenzwert nehmen
+
+# Referenzbereich für das gewählte Profil extrahieren
+ref_string = referenzwerte[ausgewählt][profil]
+ref_min, ref_max = None, None
+if "≥" in ref_string:
+    ref_min = float(ref_string.replace("≥", "").replace(einheit, "").strip().replace(",", "."))
+    ref_max = None
+elif "–" in ref_string:
+    ref_min, ref_max = [float(x.replace(einheit, "").replace(",", ".").strip()) for x in ref_string.split("–")]
+else:
+    ref_min = None
+    ref_max = None
 
 col1, col2 = st.columns(2)
 with col1:
@@ -83,20 +93,20 @@ with col1:
     datum = st.date_input("Datum", value=datetime.date.today())
 with col2:
     st.text_input("Einheit", value=einheit, disabled=True)
-    st.text_input("Referenz", value=f"{ref_min}–{ref_max} {einheit}", disabled=True)
+    st.text_input("Referenz", value=ref_string, disabled=True)
 
 if st.button("Speichern"):
     ampel = "🟢 (normal)"
-    if wert < ref_min:
+    if ref_min is not None and wert < ref_min:
         ampel = "🟡 (niedrig)"
-    elif wert > ref_max:
+    if ref_max is not None and wert > ref_max:
         ampel = "🔴 (hoch)"
     neuer_eintrag = {
         "Datum": datum.strftime("%d.%m.%Y"),
         "Laborwert": ausgewählt,
         "Wert": wert,
         "Einheit": einheit,
-        "Referenz": f"{ref_min}–{ref_max}",
+        "Referenz": ref_string,
         "Ampel": ampel
     }
     data_manager.append_record(session_state_key=session_key, record_dict=neuer_eintrag)
@@ -113,9 +123,6 @@ if pdf and pdf.name != st.session_state.get("last_pdf_name"):
     doc = fitz.open(stream=pdf.read(), filetype="pdf")
     text = "\n".join(page.get_text() for page in doc)
 
-    # Optional: Zeige den extrahierten Text zum Debuggen
-    # st.write(text)
-
     # Datum suchen (erste Zeile mit Entnahme/Befunddatum/Datum)
     extrahiertes_datum = None
     for zeile in text.split("\n"):
@@ -128,25 +135,30 @@ if pdf and pdf.name != st.session_state.get("last_pdf_name"):
     datum = extrahiertes_datum or datetime.date.today().strftime("%d.%m.%Y")
     gefunden = []
 
-    for key, info in laboroptionen.items():
-        # Suche alle Vorkommen im gesamten Text, nicht nur pro Zeile!
+    for key in referenzwerte.keys():
         pattern = rf"{re.escape(key)}\s*[:=]?\s*(-?\d+[.,]?\d*)"
         for match in re.finditer(pattern, text, re.IGNORECASE):
             try:
-                value = float(match.group(1).replace(",", "."))
-                if value < info["ref_min"]:
+                wert = float(match.group(1).replace(",", "."))
+                ref_string = referenzwerte[key][profil]
+                einheit = ref_string.split()[-1]
+                ref_min, ref_max = None, None
+                if "≥" in ref_string:
+                    ref_min = float(ref_string.replace("≥", "").replace(einheit, "").strip().replace(",", "."))
+                    ref_max = None
+                elif "–" in ref_string:
+                    ref_min, ref_max = [float(x.replace(einheit, "").replace(",", ".").strip()) for x in ref_string.split("–")]
+                ampel = "🟢 (normal)"
+                if ref_min is not None and wert < ref_min:
                     ampel = "🟡 (niedrig)"
-                elif value > info["ref_max"]:
+                if ref_max is not None and wert > ref_max:
                     ampel = "🔴 (hoch)"
-                else:
-                    ampel = "🟢 (normal)"
-
                 eintrag = {
                     "Datum": datum,
                     "Laborwert": key,
-                    "Wert": value,
-                    "Einheit": info["einheit"],
-                    "Referenz": f"{info['ref_min']}–{info['ref_max']}",
+                    "Wert": wert,
+                    "Einheit": einheit,
+                    "Referenz": ref_string,
                     "Ampel": ampel
                 }
                 data_manager.append_record(session_state_key=session_key, record_dict=eintrag)
@@ -164,7 +176,6 @@ elif pdf:
 
 # === Anzeige & Löschen
 df = st.session_state[session_key]
-# Entferne alte Hilfsspalten, falls noch vorhanden!
 df = df[[c for c in df.columns if c in ["Datum", "Laborwert", "Wert", "Einheit", "Referenz", "Ampel"]]]
 st.session_state[session_key] = df
 
@@ -189,7 +200,7 @@ if not df.empty:
             df = df[~maske].reset_index(drop=True)
             st.session_state[session_key] = df
             data_manager.save_data(session_state_key=session_key)
-            st.rerun()  # Seite neu laden, damit alles korrekt aktualisiert wird
+            st.rerun()
     else:
         st.info("Keine Einträge zum Löschen vorhanden.")
 else:
