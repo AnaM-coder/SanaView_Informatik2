@@ -147,7 +147,7 @@ if not st.session_state.profil_gespeichert or st.session_state.bearbeiten_modus:
                 data_manager.save_data(session_state_key=session_key)
                 st.session_state.profil_daten_anzeige = eintrag
                 st.session_state.profil_gespeichert = True
-                st.success("✅ Profil gespeichert!")
+                st.success("Profil gespeichert!")
 
     with col2:
         if st.button("Profil anzeigen"):
@@ -185,9 +185,8 @@ else:
                 unsafe_allow_html=True
             )
 
- 
     st.markdown("---")
-    col1, spacer, col2 = st.columns([1, 6, 1])
+    col1, col2 = st.columns(2)
     with col1:
         if st.button("Profil bearbeiten"):
             st.session_state.bearbeiten_modus = True
@@ -197,19 +196,19 @@ else:
             st.switch_page("Start.py")
 
     st.markdown("---")
-    nav1, nav2, nav3, nav4, nav5 = st.columns(5)
-    with nav1:
+    col1, col2, col3, col4, col5 = st.columns(5)
+    with col1:
         if st.button("Laborwerte – Eingabe"):
             st.switch_page("pages/3Laborwerte.py")
-    with nav2:
+    with col2:
         if st.button("Verlauf"):
             st.switch_page("pages/4Verlauf.py")
-    with nav3:
+    with col3:
         if st.button("Infoseite"):
             st.switch_page("pages/5Infoseite.py")
-    with nav4:
+    with col4:
         if st.button("Start"):
             st.switch_page("Start.py")
-    with nav5:
+    with col5:
         if st.button("Hauptmenü"):
             st.switch_page("pages/1Hauptmenü.py")
