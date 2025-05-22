@@ -78,5 +78,11 @@ st.info("Du wirst in 40 Sekunden automatisch zum Hauptmenü weitergeleitet.")
 if "redirect_time" not in st.session_state:
     st.session_state["redirect_time"] = time.time()
 
+# Streamlit muss regelmäßig neu ausgeführt werden, damit die Zeit weiterläuft.
+# Das geht mit st.experimental_rerun() und time.sleep()
 if time.time() - st.session_state["redirect_time"] > 40:
     st.switch_page("pages/1Hauptmenü.py")
+else:
+    # Alle 1 Sekunde neu ausführen, damit der Timer weiterläuft
+    time.sleep(1)
+    st.experimental_rerun()
