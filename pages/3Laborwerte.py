@@ -170,7 +170,7 @@ if not df.empty:
             with st.expander(laborwert):
                 st.dataframe(df[df["Laborwert"] == laborwert], use_container_width=True)
 
-    st.markdown("### Eintrag löschen")
+    st.markdown("### 🗑️ Eintrag löschen")
     if len(df) > 0:
         optionen = df.apply(lambda row: f"{row['Datum']} – {row['Laborwert']} ({row['Wert']:.2f} {row['Einheit']})", axis=1).tolist()
         auswahl = st.selectbox("Eintrag auswählen", optionen)

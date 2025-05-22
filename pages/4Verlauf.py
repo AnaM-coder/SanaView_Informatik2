@@ -45,7 +45,7 @@ df = st.session_state[session_key].copy()
 df["Datum"] = pd.to_datetime(df["Datum"], format="%d.%m.%Y")
 
 # === Auswahl des Laborwerts ===
-st.title("Verlauf")
+st.title(" 📊 Verlauf")
 laborwert = st.selectbox("Laborwert auswählen", df["Laborwert"].unique())
 daten = df[df["Laborwert"] == laborwert].sort_values("Datum")
 
