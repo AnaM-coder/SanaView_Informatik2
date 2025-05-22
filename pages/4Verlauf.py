@@ -146,8 +146,8 @@ with col2:
     if st.button("Laborwerte – Eingabe"):
         st.switch_page("pages/3Laborwerte.py")
 with col3:
-    if st.button("Verlauf anzeigen"):
-        st.switch_page("pages/4Verlauf.py")
+    if st.button("Zurück zum Hauptmenü"):
+        st.switch_page("pages/1Hauptmenü.py")
 with col4:
     if st.button("Infoseite"):
         st.switch_page("pages/5Infoseite.py")
