@@ -2,19 +2,40 @@ import streamlit as st
 import datetime
 import pandas as pd
 import fitz  # PyMuPDF
-import re
-import base64
 from utils.data_manager import DataManager
 from utils.login_manager import LoginManager
 
-# === Hintergrundfarbe der App (Verlauf) ===
+# === Seitenlayout definieren ===
+st.set_page_config(page_title="Laborwerte", layout="wide")
+
+# === Hintergrundfarbe für gesamte Seite via CSS ===
 st.markdown("""
-<style>
-[data-testid="stAppViewContainer"] {
-    background: linear-gradient(to bottom, #e6f7ff, #ffffff);
-}
-</style>
+    <style>
+        html, body, [data-testid="stAppViewContainer"], [data-testid="stAppViewContainer"] > .main {
+            background-color: #d9ecf2 !important;
+        }
+    </style>
 """, unsafe_allow_html=True)
+
+# === Bildbereich nur für den oberen Eingabeblock ===
+st.markdown(
+    """
+    <div style="
+        background-image: url('img/labor_bg.png');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        padding: 2rem;
+        border-radius: 1rem;
+        box-shadow: 0 0 10px rgba(0,0,0,0.2);
+        color: white;
+        margin-bottom: 2rem;">
+        <h2>🧪 Laborwert eingeben</h2>
+        <p>Trage hier deine Werte ein</p>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
 
 # === Login ===
 login_manager = LoginManager(data_manager=DataManager())
