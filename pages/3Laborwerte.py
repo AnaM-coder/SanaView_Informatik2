@@ -103,45 +103,48 @@ if st.button("Speichern"):
     data_manager.save_data(session_state_key=session_key)
     st.success("Laborwert erfolgreich gespeichert!")
 
-# === PDF Upload
+# === PDF Upload (nur einmal pro Datei)
 st.markdown("### PDF mit Laborwerten hochladen")
 pdf = st.file_uploader("PDF auswählen", type="pdf")
 
-if pdf and pdf.name != st.session_state.get("last_pdf_name"):
-    st.session_state["last_pdf_name"] = pdf.name
-    doc = fitz.open(stream=pdf.read(), filetype="pdf")
-    text = "\n".join(page.get_text() for page in doc)
+if pdf:
+    if pdf.name != st.session_state.get("last_pdf_name"):
+        st.session_state["last_pdf_name"] = pdf.name
+        doc = fitz.open(stream=pdf.read(), filetype="pdf")
+        text = "\n".join(page.get_text() for page in doc)
 
-    datum = datetime.date.today().strftime("%d.%m.%Y")
-    for zeile in text.split("\n"):
-        match = re.search(r"(\d{2}\.\d{2}\.\d{4})", zeile)
-        if match:
-            datum = match.group(1)
-            break
+        datum = datetime.date.today().strftime("%d.%m.%Y")
+        for zeile in text.split("\n"):
+            match = re.search(r"(\d{2}\.\d{2}\.\d{4})", zeile)
+            if match:
+                datum = match.group(1)
+                break
 
-    for key, info in laboroptionen.items():
-        match = re.search(rf"{re.escape(key)}\s*[:=]?\s*(-?\d+[.,]?\d*)", text, re.IGNORECASE)
-        if match:
-            try:
-                wert = float(match.group(1).replace(",", "."))
-                ampel = "🟢 (normal)"
-                if wert < info["ref_min"]:
-                    ampel = "🟡 (niedrig)"
-                elif wert > info["ref_max"]:
-                    ampel = "🔴 (hoch)"
-                eintrag = {
-                    "Datum": datum,
-                    "Laborwert": key,
-                    "Wert": wert,
-                    "Einheit": info["einheit"],
-                    "Referenz": f"{info['ref_min']}–{info['ref_max']}",
-                    "Ampel": ampel
-                }
-                data_manager.append_record(session_state_key=session_key, record_dict=eintrag)
-            except:
-                continue
-    data_manager.save_data(session_state_key=session_key)
-    st.success("PDF erfolgreich verarbeitet!")
+        for key, info in laboroptionen.items():
+            match = re.search(rf"{re.escape(key)}\s*[:=]?\s*(-?\d+[.,]?\d*)", text, re.IGNORECASE)
+            if match:
+                try:
+                    wert = float(match.group(1).replace(",", "."))
+                    ampel = "🟢 (normal)"
+                    if wert < info["ref_min"]:
+                        ampel = "🟡 (niedrig)"
+                    elif wert > info["ref_max"]:
+                        ampel = "🔴 (hoch)"
+                    eintrag = {
+                        "Datum": datum,
+                        "Laborwert": key,
+                        "Wert": wert,
+                        "Einheit": info["einheit"],
+                        "Referenz": f"{info['ref_min']}–{info['ref_max']}",
+                        "Ampel": ampel
+                    }
+                    data_manager.append_record(session_state_key=session_key, record_dict=eintrag)
+                except:
+                    continue
+        data_manager.save_data(session_state_key=session_key)
+        st.success("PDF erfolgreich verarbeitet!")
+    else:
+        st.info("PDF wurde bereits verarbeitet. Bitte eine andere Datei auswählen.")
 
 # === Anzeige & Löschen
 df = st.session_state[session_key]
@@ -158,18 +161,16 @@ if not df.empty:
                 st.dataframe(df[df["Laborwert"] == laborwert], use_container_width=True)
 
     st.markdown("### Eintrag löschen")
-    df["Index"] = df.index
-    df["Anzeige"] = (
-        df["Datum"] + " – " + df["Laborwert"] +
-        " (" + df["Wert"].map(lambda x: f'{x:.2f}') + " " + df["Einheit"] + ")"
-    )
-
-    auswahl = st.selectbox("Eintrag auswählen", df["Anzeige"])
-    if st.button("Eintrag löschen"):
-        idx = df[df["Anzeige"] == auswahl]["Index"].values[0]
-        df = df.drop(idx).reset_index(drop=True)
-        st.session_state[session_key] = df
-        data_manager.save_data(session_state_key=session_key)
-        st.success("Eintrag wurde gelöscht.")
+    if len(df) > 0:
+        optionen = df.apply(lambda row: f"{row['Datum']} – {row['Laborwert']} ({row['Wert']:.2f} {row['Einheit']})", axis=1).tolist()
+        auswahl = st.selectbox("Eintrag auswählen", optionen)
+        if st.button("Eintrag löschen"):
+            idx = df.index[df.apply(lambda row: f"{row['Datum']} – {row['Laborwert']} ({row['Wert']:.2f} {row['Einheit']})", axis=1) == auswahl][0]
+            df = df.drop(idx).reset_index(drop=True)
+            st.session_state[session_key] = df
+            data_manager.save_data(session_state_key=session_key)
+            st.success("Eintrag wurde gelöscht.")
+    else:
+        st.info("Keine Einträge zum Löschen vorhanden.")
 else:
     st.info("Noch keine Laborwerte gespeichert.")
