@@ -4,6 +4,8 @@ import pandas as pd
 from utils.data_manager import DataManager
 from utils.login_manager import LoginManager
 
+st.set_page_config(page_title="Info-Seite", layout="wide")  # <-- Muss ganz oben stehen!
+
 # === Hintergrundbild aus img-Ordner als Base64 einbinden ===
 def get_base64_of_bin_file(bin_file):
     with open(bin_file, 'rb') as f:
