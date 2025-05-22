@@ -165,8 +165,8 @@ if not df.empty:
         optionen = df.apply(lambda row: f"{row['Datum']} – {row['Laborwert']} ({row['Wert']:.2f} {row['Einheit']})", axis=1).tolist()
         auswahl = st.selectbox("Eintrag auswählen", optionen)
         if st.button("Eintrag löschen"):
-            idx = df.index[df.apply(lambda row: f"{row['Datum']} – {row['Laborwert']} ({row['Wert']:.2f} {row['Einheit']})", axis=1) == auswahl][0]
-            df = df.drop(idx).reset_index(drop=True)
+            maske = df.apply(lambda row: f"{row['Datum']} – {row['Laborwert']} ({row['Wert']:.2f} {row['Einheit']})", axis=1) == auswahl
+            df = df[~maske].reset_index(drop=True)
             st.session_state[session_key] = df
             data_manager.save_data(session_state_key=session_key)
             st.success("Eintrag wurde gelöscht.")
