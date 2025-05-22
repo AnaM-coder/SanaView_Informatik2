@@ -256,11 +256,14 @@ if not df.empty:
             with st.expander(laborwert):
                 st.dataframe(df[df["Laborwert"] == laborwert], use_container_width=True)
 
+    # Deutliche Warnung und roter Button für Löschen
     st.markdown("### 🗑️ Eintrag löschen")
+    st.warning("Achtung: Das Löschen kann nicht rückgängig gemacht werden!", icon="⚠️")
     if len(df) > 0:
         optionen = df.apply(lambda row: f"{row['Datum']} – {row['Laborwert']} ({row['Wert']:.2f} {row['Einheit']})", axis=1).tolist()
         auswahl = st.selectbox("Eintrag auswählen", optionen)
-        if st.button("Eintrag löschen"):
+        st.markdown('<div style="margin-top: 10px"></div>', unsafe_allow_html=True)
+        if st.button("❌ Eintrag unwiderruflich löschen", type="primary", key="delete_button"):
             maske = df.apply(lambda row: f"{row['Datum']} – {row['Laborwert']} ({row['Wert']:.2f} {row['Einheit']})", axis=1) == auswahl
             df = df[~maske].reset_index(drop=True)
             st.session_state[session_key] = df
@@ -268,8 +271,6 @@ if not df.empty:
             st.rerun()
     else:
         st.info("Keine Einträge zum Löschen vorhanden.")
-else:
-    st.info("Noch keine Laborwerte gespeichert.")
 
 # === Navigations-Buttons am Schluss ===
 col1, col2, col3, col4, col5 = st.columns(5)
