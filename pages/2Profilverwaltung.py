@@ -185,8 +185,9 @@ else:
                 unsafe_allow_html=True
             )
 
+ 
     st.markdown("---")
-    col1, col2 = st.columns([1, 1], gap="large")
+    col1, spacer, col2 = st.columns([1, 6, 1])
     with col1:
         if st.button("Profil bearbeiten"):
             st.session_state.bearbeiten_modus = True
