@@ -264,7 +264,7 @@ if not df.empty:
         optionen = df.apply(lambda row: f"{row['Datum']} – {row['Laborwert']} ({row['Wert']:.2f} {row['Einheit']})", axis=1).tolist()
         auswahl = st.selectbox("Eintrag auswählen", optionen)
         st.markdown('<div style="margin-top: 10px"></div>', unsafe_allow_html=True)
-        if st.button("❌ Eintrag löschen", type="primary", key="delete_button"):
+        if st.button("Eintrag löschen", type="primary", key="delete_button"):
             maske = df.apply(lambda row: f"{row['Datum']} – {row['Laborwert']} ({row['Wert']:.2f} {row['Einheit']})", axis=1) == auswahl
             df = df[~maske].reset_index(drop=True)
             st.session_state[session_key] = df

@@ -192,7 +192,7 @@ else:
             st.session_state.bearbeiten_modus = True
             st.rerun()
     with col2:
-        if st.button("Zurück zur Startseite"):
+        if st.button("Start"):
             st.switch_page("Start.py")
     with col3:
         if st.button("Hauptmenü"):
