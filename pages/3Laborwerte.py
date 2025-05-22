@@ -2,11 +2,10 @@ import streamlit as st
 import datetime
 import pandas as pd
 import fitz  # PyMuPDF
-import re
 from utils.data_manager import DataManager
 from utils.login_manager import LoginManager
+import re
 
-# === Seitenstil ===
 st.markdown("""
     <style>
         html, body, [data-testid="stAppViewContainer"], [data-testid="stAppViewContainer"] > .main {
@@ -15,18 +14,25 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# === Login ===
+# === Login initialisieren ===
 login_manager = LoginManager(data_manager=DataManager())
+
+# === Login absichern ===
 if not st.session_state.get("authentication_status", False):
     st.error("⚠️ Kein Benutzer eingeloggt! Anmeldung erforderlich.")
     st.stop()
 
+# === Logout-Button nur in der Sidebar ===
 with st.sidebar:
     login_manager.authenticator.logout("Logout", key="logout_sidebar")
 
+# === Nutzername prüfen ===
 username = st.session_state.get("username")
+
+# === DataManager initialisieren ===
 data_manager = DataManager()
 
+# === Session Key & Datei
 session_key = f"user_data_{username}"
 file_name = f"{username}_daten.csv"
 
@@ -36,7 +42,7 @@ data_manager.load_user_data(
     initial_value=pd.DataFrame(columns=["Datum", "Laborwert", "Wert", "Einheit", "Referenz", "Ampel"])
 )
 
-# === Laboroptionen ===
+# === Laboroptionen
 laboroptionen = {
     "Albumin": {"einheit": "g/dl", "ref_min": 3.5, "ref_max": 5.0},
     "Anionenlücke": {"einheit": "mmol/l", "ref_min": 8, "ref_max": 16},
@@ -70,7 +76,7 @@ laboroptionen = {
     "pH (arteriell)": {"einheit": "", "ref_min": 7.35, "ref_max": 7.45}
 }
 
-# === Eingabe ===
+# === Manuelle Eingabe
 st.title("Laborwerte – Eingabe")
 ausgewählt = st.selectbox("Laborwert", sorted(laboroptionen.keys()))
 einheit = laboroptionen[ausgewählt]["einheit"]
@@ -91,6 +97,7 @@ if st.button("Speichern"):
         ampel = "🟡 (niedrig)"
     elif wert > ref_max:
         ampel = "🔴 (hoch)"
+
     neuer_eintrag = {
         "Datum": datum.strftime("%d.%m.%Y"),
         "Laborwert": ausgewählt,
@@ -100,74 +107,103 @@ if st.button("Speichern"):
         "Ampel": ampel
     }
     data_manager.append_record(session_state_key=session_key, record_dict=neuer_eintrag)
-    st.success("Laborwert gespeichert!")
+    st.success("Laborwert erfolgreich gespeichert!")
 
-# === PDF Upload ===
+# === PDF Upload
 st.markdown("### PDF mit Laborwerten hochladen")
 pdf = st.file_uploader("PDF auswählen", type="pdf")
 
 if pdf and pdf.name != st.session_state.get("last_pdf_name"):
     st.session_state["last_pdf_name"] = pdf.name
+
     doc = fitz.open(stream=pdf.read(), filetype="pdf")
     text = "\n".join(page.get_text() for page in doc)
 
-    datum = datetime.date.today().strftime("%d.%m.%Y")
+    extrahiertes_datum = None
     for zeile in text.split("\n"):
-        match = re.search(r"(\d{2}\.\d{2}\.\d{4})", zeile)
-        if match:
-            datum = match.group(1)
-            break
+        if any(x in zeile.lower() for x in ["entnahme", "befunddatum", "datum"]):
+            match = re.search(r"\b(\d{2}\.\d{2}\.\d{4})\b", zeile)
+            if match:
+                extrahiertes_datum = match.group(1)
+                break
+
+    datum = extrahiertes_datum or datetime.date.today().strftime("%d.%m.%Y")
+    gefunden = []
 
     for key, info in laboroptionen.items():
-        match = re.search(rf"{re.escape(key)}\s*[:=]?\s*(-?\d+[.,]?\d*)", text, re.IGNORECASE)
+        pattern = rf"{re.escape(key)}\s*[:=]?\s*(-?\d+[.,]?\d*)"
+        match = re.search(pattern, text, re.IGNORECASE)
         if match:
             try:
-                wert = float(match.group(1).replace(",", "."))
-                ampel = "🟢 (normal)"
-                if wert < info["ref_min"]:
+                value = float(match.group(1).replace(",", "."))
+                if value < info["ref_min"]:
                     ampel = "🟡 (niedrig)"
-                elif wert > info["ref_max"]:
+                elif value > info["ref_max"]:
                     ampel = "🔴 (hoch)"
+                else:
+                    ampel = "🟢 (normal)"
+
                 eintrag = {
                     "Datum": datum,
                     "Laborwert": key,
-                    "Wert": wert,
+                    "Wert": value,
                     "Einheit": info["einheit"],
                     "Referenz": f"{info['ref_min']}–{info['ref_max']}",
                     "Ampel": ampel
                 }
                 data_manager.append_record(session_state_key=session_key, record_dict=eintrag)
+                gefunden.append(key)
             except:
                 continue
-    st.success("PDF erfolgreich verarbeitet!")
 
-# === Anzeige & Löschen ===
+    if gefunden:
+        st.success(f"Erkannte und gespeicherte Laborwerte: {', '.join(gefunden)}")
+    else:
+        st.warning("Keine bekannten Laborwerte im PDF erkannt.")
+
+# === Tabelle anzeigen
 df = st.session_state[session_key]
 if not df.empty:
     st.markdown("---")
-    st.subheader("Gespeicherte Laborwerte")
+    st.subheader("Ihre gespeicherten Laborwerte")
+
     ansicht = st.radio("Ansicht wählen", ["Gesamttabelle", "Nach Laborwert gruppiert"])
 
     if ansicht == "Gesamttabelle":
         st.dataframe(df, use_container_width=True)
     else:
+        st.markdown("### Laborwerte je Typ anzeigen")
         for laborwert in sorted(df["Laborwert"].unique()):
-            with st.expander(laborwert):
-                st.dataframe(df[df["Laborwert"] == laborwert], use_container_width=True)
+            with st.expander(f"{laborwert}"):
+                st.dataframe(df[df["Laborwert"] == laborwert].reset_index(drop=True), use_container_width=True)
 
+    # === Löschfunktion ===
     st.markdown("### Eintrag löschen")
-    df["Index"] = df.index
-    df["Anzeige"] = (
-        df["Datum"] + " – " + df["Laborwert"] +
-        " (" + df["Wert"].map(lambda x: f"{x:.2f}") + " " + df["Einheit"] + ")"
+
+    anzeige_df = df.copy()
+    anzeige_df["Index"] = anzeige_df.index
+    anzeige_df["Anzeige"] = (
+        anzeige_df["Datum"] + " – " + anzeige_df["Laborwert"] +
+        " (" + anzeige_df["Wert"].map(lambda x: f"{x:.1f}") + " " + anzeige_df["Einheit"] + ")"
     )
 
-    auswahl = st.selectbox("Eintrag auswählen", df["Anzeige"])
-    if st.button("Eintrag löschen"):
-        idx = df[df["Anzeige"] == auswahl]["Index"].values[0]
-        df = df.drop(idx).reset_index(drop=True)
-        st.session_state[session_key] = df
-        data_manager.save_data(session_state_key=session_key, file_name=file_name)
-        st.success("Eintrag gelöscht.")
+    if not anzeige_df.empty:
+        auswahl = st.selectbox("Eintrag auswählen", anzeige_df["Anzeige"].tolist())
+        if st.button("Eintrag löschen"):
+            try:
+                index_to_delete = anzeige_df[anzeige_df["Anzeige"] == auswahl]["Index"].values[0]
+                df = df.drop(index_to_delete).reset_index(drop=True)
+                st.session_state[session_key] = df
+                data_manager.save_data(session_state_key=session_key, file_name=file_name)
+                st.session_state["loesch_erfolg"] = True
+                st.rerun()
+            except Exception as e:
+                st.error(f"Fehler beim Löschen: {e}")
+    else:
+        st.info("Keine Einträge zum Löschen vorhanden.")
+
+    if st.session_state.get("loesch_erfolg", False):
+        st.success("Eintrag wurde gelöscht.")
+        st.session_state["loesch_erfolg"] = False
 else:
     st.info("Noch keine Laborwerte gespeichert.")
