@@ -136,3 +136,18 @@ st.markdown("""
 🟡 Wert leicht ausserhalb des Referenzbereichs  
 🔴 Wert stark abweichend vom Referenzbereich
 """)
+
+# === Navigations-Buttons am Schluss ===
+col1, col2, col3, col4 = st.columns(4)
+with col1:
+    if st.button("Profil verwalten"):
+        st.switch_page("pages/2Profilverwaltung.py")
+with col2:
+    if st.button("Laborwerte – Eingabe"):
+        st.switch_page("pages/3Laborwerte.py")
+with col3:
+    if st.button("Verlauf anzeigen"):
+        st.switch_page("pages/4Verlauf.py")
+with col4:
+    if st.button("Infoseite"):
+        st.switch_page("pages/5Infoseite.py")
