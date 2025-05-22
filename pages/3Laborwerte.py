@@ -3,16 +3,17 @@ import datetime
 import pandas as pd
 import fitz  # PyMuPDF
 import re
+import base64
 from utils.data_manager import DataManager
 from utils.login_manager import LoginManager
 
-# === Seitenstil ===
+# === Hintergrundfarbe der App (Verlauf) ===
 st.markdown("""
-    <style>
-        html, body, [data-testid="stAppViewContainer"], [data-testid="stAppViewContainer"] > .main {
-            background-color: #d9ecf2 !important;
-        }
-    </style>
+<style>
+[data-testid="stAppViewContainer"] {
+    background: linear-gradient(to bottom, #e6f7ff, #ffffff);
+}
+</style>
 """, unsafe_allow_html=True)
 
 # === Login ===
