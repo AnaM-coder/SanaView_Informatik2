@@ -71,7 +71,7 @@ laboroptionen = {
 }
 
 # === Eingabe
-st.title("Laborwerte – Eingabe")
+st.title(" 🩸 Laborwerte – Eingabe")
 ausgewählt = st.selectbox("Laborwert", sorted(laboroptionen.keys()))
 einheit = laboroptionen[ausgewählt]["einheit"]
 ref_min = laboroptionen[ausgewählt]["ref_min"]

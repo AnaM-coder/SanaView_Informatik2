@@ -26,7 +26,7 @@ with st.sidebar:
     login_manager.authenticator.logout("Logout", key="logout_sidebar")
 
 # === Titel & Einleitung ===
-st.title("Infoseite")
+st.title("ℹ️ Infoseite")
 st.markdown("""
 Hier finden Sie Erklärungen und die Referenzwerte zu Ihren Laborwerten.
 """)
