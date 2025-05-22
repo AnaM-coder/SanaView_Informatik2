@@ -42,8 +42,7 @@ st.markdown("""
 <ul style='font-size:18px; line-height: 1.8;'>
     <li>Laborwerte erfassen</li>
     <li>Verlauf grafisch anzeigen</li>
-    <li>Ampelfarben zur Bewertung nutzen</li>
-    <li>Referenzwerte individuell einsehen</li>
+    <li>Ampelsystem zur Bewertung nutzen</li>
     <li>Laborwerte verstehen – mit Erklärungen und Referenzwerten</li>
     <li>Ihr Gesundheitsprofil verwalten</li>
     <li>Laborberichte als PDF hochladen</li>
