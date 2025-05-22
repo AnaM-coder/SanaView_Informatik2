@@ -256,9 +256,10 @@ if not df.empty:
             with st.expander(laborwert):
                 st.dataframe(df[df["Laborwert"] == laborwert], use_container_width=True)
 
+# ...existing code...
+
     # Deutliche Warnung und roter Button für Löschen
     st.markdown("### 🗑️ Eintrag löschen")
-    st.warning("Achtung: Das Löschen kann nicht rückgängig gemacht werden!", icon="⚠️")
     if len(df) > 0:
         optionen = df.apply(lambda row: f"{row['Datum']} – {row['Laborwert']} ({row['Wert']:.2f} {row['Einheit']})", axis=1).tolist()
         auswahl = st.selectbox("Eintrag auswählen", optionen)
