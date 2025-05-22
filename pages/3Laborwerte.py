@@ -2,13 +2,11 @@ import streamlit as st
 import datetime
 import pandas as pd
 import fitz  # PyMuPDF
+import re
 from utils.data_manager import DataManager
 from utils.login_manager import LoginManager
 
-# === Seitenlayout definieren ===
-st.set_page_config(page_title="Laborwerte", layout="wide")
-
-# === Hintergrundfarbe für gesamte Seite via CSS ===
+# === Seitenstil ===
 st.markdown("""
     <style>
         html, body, [data-testid="stAppViewContainer"], [data-testid="stAppViewContainer"] > .main {
@@ -16,26 +14,6 @@ st.markdown("""
         }
     </style>
 """, unsafe_allow_html=True)
-
-# === Bildbereich nur für den oberen Eingabeblock ===
-st.markdown(
-    """
-    <div style="
-        background-image: url('img/labor_bg.png');
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-position: center;
-        padding: 2rem;
-        border-radius: 1rem;
-        box-shadow: 0 0 10px rgba(0,0,0,0.2);
-        color: white;
-        margin-bottom: 2rem;">
-        <h2>🧪 Laborwert eingeben</h2>
-        <p>Trage hier deine Werte ein</p>
-    </div>
-    """,
-    unsafe_allow_html=True
-)
 
 # === Login ===
 login_manager = LoginManager(data_manager=DataManager())
@@ -88,42 +66,17 @@ referenzwerte = {
     "Troponin T/I": {"Männer": "0 – 0.04 ng/ml", "Frauen": "0 – 0.04 ng/ml", "Schwanger": "0 – 0.04 ng/ml", "Kinder": "0 – 0.03 ng/ml"}
 }
 
-# === Profildaten aus Profilverwaltung laden ===
-profil_key = f"profil_daten_{username}"
-profil_df = st.session_state.get(profil_key)
-profil_daten = {}
-if profil_df is not None and not profil_df.empty:
-    eintrag = profil_df[profil_df["Benutzername"] == username]
-    if not eintrag.empty:
-        profil_daten = eintrag.iloc[-1].to_dict()
+# === Profil-Auswahl ===
+st.sidebar.markdown("## Profil")
+profil = st.sidebar.selectbox("Profil wählen", ["Männer", "Frauen", "Schwanger", "Kinder"])
 
-geschlecht = profil_daten.get("Geschlecht", "Männlich")
-geburtsdatum = profil_daten.get("Geburtsdatum", "01.01.1980")
-schwanger = profil_daten.get("Schwanger", "Nein")
-
-try:
-    geburtsdatum_dt = datetime.datetime.strptime(geburtsdatum, "%d.%m.%Y").date()
-    alter = (datetime.date.today() - geburtsdatum_dt).days // 365
-except:
-    alter = 30  # Fallback
-
-if alter < 18:
-    profil = "Kinder"
-elif geschlecht.lower() == "weiblich" and schwanger.lower() == "ja":
-    profil = "Schwanger"
-elif geschlecht.lower() == "weiblich":
-    profil = "Frauen"
-else:
-    profil = "Männer"
-
-# === Eingabe (ohne sichtbare Profilfelder) ===
+# === Eingabe
 st.title(" 🩸 Laborwerte – Eingabe")
-
 ausgewählt = st.selectbox("Laborwert", sorted(referenzwerte.keys()))
-ref_string = referenzwerte[ausgewählt][profil]
-einheit = ref_string.split()[-1]
+einheit = referenzwerte[ausgewählt]["Männer"].split()[-1]  # Einheit aus Referenzwert nehmen
 
 # Referenzbereich für das gewählte Profil extrahieren
+ref_string = referenzwerte[ausgewählt][profil]
 ref_min, ref_max = None, None
 if "≥" in ref_string:
     ref_min = float(ref_string.replace("≥", "").replace(einheit, "").strip().replace(",", "."))
@@ -160,19 +113,7 @@ if st.button("Speichern"):
     data_manager.save_data(session_state_key=session_key)
     st.success("Laborwert erfolgreich gespeichert!")
 
-# === Automatische Profilerkennung aus PDF ===
-def bestimme_profil(text):
-    if re.search(r'\bkind(er)?\b', text, re.IGNORECASE) or re.search(r'\balter\s*[:=]?\s*\d{1,2}\s*(Jahre|J\.|Jahre alt)', text, re.IGNORECASE):
-        return "Kinder"
-    if re.search(r'\bschwanger\b', text, re.IGNORECASE):
-        return "Schwanger"
-    if re.search(r'\bweiblich\b', text, re.IGNORECASE) or re.search(r'\bfrau\b', text, re.IGNORECASE):
-        return "Frauen"
-    if re.search(r'\bmännlich\b', text, re.IGNORECASE) or re.search(r'\bmann\b', text, re.IGNORECASE):
-        return "Männer"
-    return "Männer"  # Standard
-
-# === PDF Upload (Datum aus PDF suchen, alle Werte erkennen, Profil automatisch) ===
+# === PDF Upload (Datum aus PDF suchen, alle Werte erkennen) ===
 st.markdown("### PDF mit Laborwerten hochladen")
 pdf = st.file_uploader("PDF auswählen", type="pdf")
 
@@ -181,10 +122,6 @@ if pdf and pdf.name != st.session_state.get("last_pdf_name"):
 
     doc = fitz.open(stream=pdf.read(), filetype="pdf")
     text = "\n".join(page.get_text() for page in doc)
-
-    # Profil automatisch bestimmen
-    auto_profil = bestimme_profil(text)
-    st.info(f"Automatisch erkanntes Profil: {auto_profil}")
 
     # Datum suchen (erste Zeile mit Entnahme/Befunddatum/Datum)
     extrahiertes_datum = None
@@ -203,7 +140,7 @@ if pdf and pdf.name != st.session_state.get("last_pdf_name"):
         for match in re.finditer(pattern, text, re.IGNORECASE):
             try:
                 wert = float(match.group(1).replace(",", "."))
-                ref_string = referenzwerte[key][auto_profil]
+                ref_string = referenzwerte[key][profil]
                 einheit = ref_string.split()[-1]
                 ref_min, ref_max = None, None
                 if "≥" in ref_string:
