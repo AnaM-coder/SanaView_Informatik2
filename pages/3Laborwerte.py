@@ -109,11 +109,13 @@ if st.button("Speichern"):
     data_manager.append_record(session_state_key=session_key, record_dict=neuer_eintrag)
     st.success("Laborwert erfolgreich gespeichert!")
 
-# === PDF Upload
+# === PDF Upload (verhindert Doppelverarbeitung)
 st.markdown("### PDF mit Laborwerten hochladen")
 pdf = st.file_uploader("PDF auswählen", type="pdf")
 
-if pdf:
+if pdf is not None and st.session_state.get("processed_pdf_name") != pdf.name:
+    st.session_state["processed_pdf_name"] = pdf.name
+
     doc = fitz.open(stream=pdf.read(), filetype="pdf")
     text = "\n".join(page.get_text() for page in doc)
 
@@ -151,7 +153,8 @@ if pdf:
                 }
                 data_manager.append_record(session_state_key=session_key, record_dict=eintrag)
                 gefunden.append(key)
-            except:
+            except Exception as e:
+                st.warning(f"Fehler bei {key}: {e}")
                 continue
 
     if gefunden:
@@ -170,32 +173,27 @@ if not df.empty:
     if ansicht == "Gesamttabelle":
         st.dataframe(df, use_container_width=True)
     else:
-        st.markdown("### Laborwerte je Typ anzeigen")
         for laborwert in sorted(df["Laborwert"].unique()):
             with st.expander(f"{laborwert}"):
                 st.dataframe(df[df["Laborwert"] == laborwert].reset_index(drop=True), use_container_width=True)
 
-    # === Löschfunktion ===
+    # === Löschfunktion (robust)
     st.markdown("### Eintrag löschen")
-
     anzeige_df = df.copy()
-    anzeige_df["Eintrag"] = (
+    anzeige_df["Index"] = anzeige_df.index
+    anzeige_df["Anzeige"] = (
         anzeige_df["Datum"] + " – " + anzeige_df["Laborwert"] +
-        " (" + anzeige_df["Wert"].astype(str) + " " + anzeige_df["Einheit"] + ")"
+        " (" + anzeige_df["Wert"].map(lambda x: f"{x:.2f}") + " " + anzeige_df["Einheit"] + ")"
     )
 
     if not anzeige_df.empty:
-        auswahl = st.selectbox("Eintrag auswählen", anzeige_df["Eintrag"].tolist())
+        auswahl = st.selectbox("Eintrag auswählen", anzeige_df["Anzeige"].tolist())
         if st.button("Eintrag löschen"):
             try:
-                index_to_delete = anzeige_df[anzeige_df["Eintrag"] == auswahl].index[0]
+                index_to_delete = anzeige_df[anzeige_df["Anzeige"] == auswahl]["Index"].values[0]
                 df = df.drop(index_to_delete).reset_index(drop=True)
                 st.session_state[session_key] = df
-
-                # Speichern mit DataManager
-                data_manager.save_data(session_state_key=session_key)
-
-                # Erfolgsmeldung im Session-State merken
+                data_manager.save_data(session_state_key=session_key, file_name=file_name)
                 st.session_state["loesch_erfolg"] = True
                 st.rerun()
             except Exception as e:
@@ -203,7 +201,6 @@ if not df.empty:
     else:
         st.info("Keine Einträge zum Löschen vorhanden.")
 
-    # Erfolgsmeldung nach dem Reload anzeigen
     if st.session_state.get("loesch_erfolg", False):
         st.success("Eintrag wurde gelöscht.")
         st.session_state["loesch_erfolg"] = False
