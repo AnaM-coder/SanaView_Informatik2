@@ -148,6 +148,10 @@ if pdf:
 
 # === Anzeige & Löschen
 df = st.session_state[session_key]
+# Entferne alte Hilfsspalten, falls noch vorhanden!
+df = df[[c for c in df.columns if c in ["Datum", "Laborwert", "Wert", "Einheit", "Referenz", "Ampel"]]]
+st.session_state[session_key] = df
+
 if not df.empty:
     st.markdown("---")
     st.subheader("Gespeicherte Laborwerte")
