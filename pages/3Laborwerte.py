@@ -1,4 +1,5 @@
 import streamlit as st
+import base64
 import datetime
 import pandas as pd
 import fitz  # PyMuPDF
@@ -6,17 +7,24 @@ import re
 from utils.data_manager import DataManager
 from utils.login_manager import LoginManager
 
-# === Seitenstil (optional: Hintergrundbild, falls gewünscht) ===
-# Beispiel für Hintergrundbild aus public-Ordner:
+# === Hintergrundbild aus img-Ordner als Base64 einbinden ===
+def get_base64_of_bin_file(bin_file):
+    with open(bin_file, 'rb') as f:
+        data = f.read()
+    return base64.b64encode(data).decode()
+
+img_path = "img/labor_bg.png"
+img_base64 = get_base64_of_bin_file(img_path)
+
 st.markdown(
-    """
+    f"""
     <style>
-    [data-testid="stAppViewContainer"] {
-        background-image: url('/public/labor_bg.png');
+    [data-testid="stAppViewContainer"] {{
+        background-image: url("data:image/png;base64,{img_base64}");
         background-size: cover;
         background-repeat: no-repeat;
         background-attachment: fixed;
-    }
+    }}
     </style>
     """,
     unsafe_allow_html=True
