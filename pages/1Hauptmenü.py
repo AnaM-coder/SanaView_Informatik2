@@ -56,15 +56,15 @@ cols = st.columns(10)
 with cols[2]:
     if st.button("Profil verwalten"):
         st.switch_page("pages/2Profilverwaltung.py")
-with cols[3.5]:
+with cols[4]:
     if st.button("Laborwerte – Eingabe"):
         st.switch_page("pages/3Laborwerte.py")
-with cols[5]:
+with cols[6]:
     if st.button("Verlauf anzeigen"):
         st.switch_page("pages/4Verlauf.py")
-with cols[6.5]:
+with cols[8]:
     if st.button("Infoseite"):
         st.switch_page("pages/5Infoseite.py")
-with cols[8]:
+with cols[10]:
     if st.button("Start"):
         st.switch_page("Start.py")
