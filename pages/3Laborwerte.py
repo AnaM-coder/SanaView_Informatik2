@@ -262,41 +262,38 @@ if not df.empty:
         optionen = df.apply(lambda row: f"{row['Datum']} – {row['Laborwert']} ({row['Wert']:.2f} {row['Einheit']})", axis=1).tolist()
         auswahl = st.selectbox("Eintrag auswählen", optionen)
         st.markdown('<div style="margin-top: 10px"></div>', unsafe_allow_html=True)
+if "delete_confirm" not in st.session_state:
+    st.session_state["delete_confirm"] = False
+if "delete_result" not in st.session_state:
+    st.session_state["delete_result"] = None
 
-        if "delete_confirm" not in st.session_state:
-            st.session_state["delete_confirm"] = False
-        if "delete_result" not in st.session_state:
-            st.session_state["delete_result"] = None
+if st.button("Eintrag löschen", type="primary", key="delete_button"):
+    st.session_state["delete_confirm"] = True
+    st.session_state["delete_result"] = None
 
-        if st.button("Eintrag löschen", type="primary", key="delete_button"):
-            st.session_state["delete_confirm"] = True
-            st.session_state["delete_result"] = None
+if st.session_state["delete_confirm"]:
+    st.warning("Sind Sie sicher, dass Sie diesen Eintrag löschen möchten?")
+    aktion = st.selectbox("Aktion wählen", ["Bitte wählen", "Ja", "Nein"], key="delete_action")
+    if aktion == "Ja":
+        maske = df.apply(lambda row: f"{row['Datum']} – {row['Laborwert']} ({row['Wert']:.2f} {row['Einheit']})", axis=1) == auswahl
+        df = df[~maske].reset_index(drop=True)
+        st.session_state[session_key] = df
+        data_manager.save_data(session_state_key=session_key)
+        st.session_state["delete_confirm"] = False
+        st.session_state["delete_result"] = "success"
+        st.experimental_rerun()
+    elif aktion == "Nein":
+        st.session_state["delete_confirm"] = False
+        st.session_state["delete_result"] = "cancel"
+        st.experimental_rerun()
 
-        if st.session_state["delete_confirm"]:
-            st.warning("Sind Sie sicher, dass Sie diesen Eintrag löschen möchten?")
-            col_j, col_n = st.columns(2)
-            with col_j:
-                if st.button("Ja, löschen", key="confirm_delete"):
-                    maske = df.apply(lambda row: f"{row['Datum']} – {row['Laborwert']} ({row['Wert']:.2f} {row['Einheit']})", axis=1) == auswahl
-                    df = df[~maske].reset_index(drop=True)
-                    st.session_state[session_key] = df
-                    data_manager.save_data(session_state_key=session_key)
-                    st.session_state["delete_confirm"] = False
-                    st.session_state["delete_result"] = "success"
-                    st.experimental_rerun()
-            with col_n:
-                if st.button("Nein, nicht löschen", key="cancel_delete"):
-                    st.session_state["delete_confirm"] = False
-                    st.session_state["delete_result"] = "cancel"
-
-        if st.session_state["delete_result"] == "success":
-            st.success("Eintrag erfolgreich gelöscht!")
-            st.session_state["delete_result"] = None
-        elif st.session_state["delete_result"] == "cancel":
-            st.info("Eintrag nicht gelöscht.")
-            st.session_state["delete_result"] = None
-    else:
-        st.info("Keine Einträge zum Löschen vorhanden.")
+if st.session_state.get("delete_result") == "success":
+    st.success("Eintrag erfolgreich gelöscht!")
+    st.session_state["delete_result"] = None
+elif st.session_state.get("delete_result") == "cancel":
+    st.info("Eintrag nicht gelöscht.")
+    st.session_state["delete_result"] = None
+    
 # === Navigations-Buttons am Schluss ===
 col1, col2, col3, col4, col5 = st.columns(5)
 with col1:
