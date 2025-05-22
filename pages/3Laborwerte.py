@@ -256,8 +256,6 @@ if not df.empty:
             with st.expander(laborwert):
                 st.dataframe(df[df["Laborwert"] == laborwert], use_container_width=True)
 
-# ...existing code...
-
     # Deutliche Warnung und roter Button für Löschen
     st.markdown("### 🗑️ Eintrag löschen")
     if len(df) > 0:
@@ -269,7 +267,8 @@ if not df.empty:
             df = df[~maske].reset_index(drop=True)
             st.session_state[session_key] = df
             data_manager.save_data(session_state_key=session_key)
-            st.rerun()
+            st.success("Eintrag erfolgreich gelöscht!")
+            st.experimental_rerun()
     else:
         st.info("Keine Einträge zum Löschen vorhanden.")
 
