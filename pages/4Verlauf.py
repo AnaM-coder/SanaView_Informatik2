@@ -1,4 +1,5 @@
 import streamlit as st
+import base64
 import pandas as pd
 import datetime
 import re
@@ -6,7 +7,28 @@ import matplotlib.pyplot as plt
 from utils.data_manager import DataManager
 from utils.login_manager import LoginManager
 
-import streamlit as st
+# === Hintergrundbild aus img-Ordner als Base64 einbinden ===
+def get_base64_of_bin_file(bin_file):
+    with open(bin_file, 'rb') as f:
+        data = f.read()
+    return base64.b64encode(data).decode()
+
+img_path = "img/verlauf_bg.png"
+img_base64 = get_base64_of_bin_file(img_path)
+
+st.markdown(
+    f"""
+    <style>
+    [data-testid="stAppViewContainer"] {{
+        background-image: url("data:image/png;base64,{img_base64}");
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+    }}
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 
 st.markdown("""
     <style>
@@ -106,8 +128,6 @@ with col3:
         zeige_histogramm(rot, "red", "Stark abweichend", y_max)
     else:
         st.info("Keine roten Werte.")
-
-
 
 # === Legende ===
 st.markdown("### Ampelfarben-Legende")
