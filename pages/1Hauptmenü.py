@@ -54,7 +54,7 @@ st.markdown("<p style='margin-top: 25px; font-size:18px;'><strong>Behalten Sie I
 
 col1, col2, col3 = st.columns(3)
 with col1:
-    if st.button("Laborwerte erfassen"):
+    if st.button("Laborwerte – Eingabe"):
         st.switch_page("pages/3Laborwerte.py")
     if st.button("Verlauf anzeigen"):
         st.switch_page("pages/4Verlauf.py")
