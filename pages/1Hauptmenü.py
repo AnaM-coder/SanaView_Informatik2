@@ -49,5 +49,23 @@ st.markdown("""
 </ul>
 """, unsafe_allow_html=True)
 
+# === Schnellzugriff-Buttons ===
+st.markdown("### Schnellzugriff:")
+
+col1, col2, col3 = st.columns(3)
+with col1:
+    if st.button("Laborwerte erfassen"):
+        st.switch_page("pages/3Laborwerte.py")
+    if st.button("Verlauf anzeigen"):
+        st.switch_page("pages/4Verlauf.py")
+with col2:
+    if st.button("Profil verwalten"):
+        st.switch_page("pages/2Profilverwaltung.py")
+    if st.button("Infoseite"):
+        st.switch_page("pages/5Infoseite.py")
+with col3:
+    if st.button("Laborbericht (PDF) hochladen"):
+        st.switch_page("pages/3Laborwerte.py")  # oder eigene Upload-Seite
+
 # === Abschluss ===
 st.markdown("<p style='margin-top: 25px; font-size:18px;'><strong>Behalten Sie Ihre Gesundheit im Blick – einfach, sicher und übersichtlich ✨.</strong></p>", unsafe_allow_html=True)
