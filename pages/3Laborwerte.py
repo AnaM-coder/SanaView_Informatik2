@@ -66,26 +66,36 @@ referenzwerte = {
     "Troponin T/I": {"Männer": "0 – 0.04 ng/ml", "Frauen": "0 – 0.04 ng/ml", "Schwanger": "0 – 0.04 ng/ml", "Kinder": "0 – 0.03 ng/ml"}
 }
 
-# === Automatische Profilerkennung für manuelle Eingabe ===
-st.title(" 🩸 Laborwerte – Eingabe")
+# === Profildaten aus Profilverwaltung laden ===
+profil_key = f"profil_daten_{username}"
+profil_df = st.session_state.get(profil_key)
+profil_daten = {}
+if profil_df is not None and not profil_df.empty:
+    eintrag = profil_df[profil_df["Benutzername"] == username]
+    if not eintrag.empty:
+        profil_daten = eintrag.iloc[-1].to_dict()
 
-geschlecht = st.selectbox("Geschlecht", ["Männlich", "Weiblich"])
-alter = st.number_input("Alter (Jahre)", min_value=0, max_value=120, value=30)
-schwanger = False
-if geschlecht == "Weiblich" and 10 <= alter <= 60:
-    schwanger = st.checkbox("Schwanger?", value=False)
+geschlecht = profil_daten.get("Geschlecht", "Männlich")
+geburtsdatum = profil_daten.get("Geburtsdatum", "01.01.1980")
+schwanger = profil_daten.get("Schwanger", "Nein")
 
-# Profil automatisch bestimmen
+try:
+    geburtsdatum_dt = datetime.datetime.strptime(geburtsdatum, "%d.%m.%Y").date()
+    alter = (datetime.date.today() - geburtsdatum_dt).days // 365
+except:
+    alter = 30  # Fallback
+
 if alter < 18:
     profil = "Kinder"
-elif geschlecht == "Weiblich" and schwanger:
+elif geschlecht.lower() == "weiblich" and schwanger.lower() == "ja":
     profil = "Schwanger"
-elif geschlecht == "Weiblich":
+elif geschlecht.lower() == "weiblich":
     profil = "Frauen"
 else:
     profil = "Männer"
 
-st.info(f"Automatisch erkanntes Profil: {profil}")
+# === Eingabe (ohne sichtbare Profilfelder) ===
+st.title(" 🩸 Laborwerte – Eingabe")
 
 ausgewählt = st.selectbox("Laborwert", sorted(referenzwerte.keys()))
 ref_string = referenzwerte[ausgewählt][profil]
