@@ -52,6 +52,16 @@ st.markdown("""
 # === Abschluss ===
 st.markdown("<p style='margin-top: 25px; font-size:18px;'><strong>Behalten Sie Ihre Gesundheit im Blick – einfach, sicher und übersichtlich ✨.</strong></p>", unsafe_allow_html=True)
 
+st.markdown("""
+    <style>
+    div.stButton > button {
+        width: 200px;
+        height: 60px;
+        font-size: 20px;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
 cols = st.columns(7)
 with cols[1]:
     if st.button("Profil verwalten"):
