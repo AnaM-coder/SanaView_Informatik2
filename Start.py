@@ -76,16 +76,18 @@ col1, col2, col3 = st.columns([2,1,2])
 with col2:
     st.markdown("""
         <style>
-        div.stButton > button {
-            font-size: 80px !important;
-            height: 110px !important;
-            width: 110px !important;
-            border-radius: 20px;
+        div[data-testid="arrow-button"] button {
+            font-size: 130px !important;
+            height: 170px !important;
+            width: 170px !important;
+            border-radius: 30px;
             padding: 0;
             background: none;
             border: none;
         }
         </style>
+        <div data-testid="arrow-button">
     """, unsafe_allow_html=True)
     if st.button("➡️", key="goto_mainmenu", help="Weiter zum Hauptmenü"):
         st.switch_page("pages/1Hauptmenü.py")
+    st.markdown("</div>", unsafe_allow_html=True)
