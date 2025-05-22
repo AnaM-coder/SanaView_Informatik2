@@ -78,12 +78,9 @@ def bestimme_profil(text):
         return "Männer"
     return "Männer"  # Standard
 
-# === Profil-Auswahl für manuelle Eingabe ===
-st.sidebar.markdown("## Profil")
-profil = st.sidebar.selectbox("Profil wählen", ["Männer", "Frauen", "Schwanger", "Kinder"])
-
-# === Eingabe
+# === Eingabe (ohne Profil-Auswahl im Sidebar) ===
 st.title(" 🩸 Laborwerte – Eingabe")
+profil = "Männer"  # Standardprofil für manuelle Eingabe
 ausgewählt = st.selectbox("Laborwert", sorted(referenzwerte.keys()))
 ref_string = referenzwerte[ausgewählt][profil]
 einheit = ref_string.split()[-1]  # Einheit aus Referenzwert für das Profil nehmen
