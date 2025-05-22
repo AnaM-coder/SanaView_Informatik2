@@ -138,7 +138,7 @@ st.markdown("""
 """)
 
 # === Navigations-Buttons am Schluss ===
-col1, col2, col3, col4 = st.columns(4)
+col1, col2, col3, col4, col5 = st.columns(5)
 with col1:
     if st.button("Profil verwalten"):
         st.switch_page("pages/2Profilverwaltung.py")
@@ -151,3 +151,6 @@ with col3:
 with col4:
     if st.button("Infoseite"):
         st.switch_page("pages/5Infoseite.py")
+with col5:
+    if st.button("Startseite"):
+        st.switch_page("pages/0_Startseite.py")
