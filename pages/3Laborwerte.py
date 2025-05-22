@@ -101,6 +101,7 @@ if st.button("Speichern"):
     }
     data_manager.append_record(session_state_key=session_key, record_dict=neuer_eintrag)
     data_manager.save_data(session_state_key=session_key)
+    st.success("Laborwert erfolgreich gespeichert!")
 
 # === PDF Upload
 st.markdown("### PDF mit Laborwerten hochladen")
@@ -169,12 +170,6 @@ if not df.empty:
         df = df.drop(idx).reset_index(drop=True)
         st.session_state[session_key] = df
         data_manager.save_data(session_state_key=session_key)
-        st.session_state["loesch_erfolg"] = True
-        st.rerun()
-
-    # Erfolgsmeldung nach dem Reload anzeigen
-    if st.session_state.get("loesch_erfolg", False):
-        st.success("Eintrag wurde gelöscht. Änderungen werden beim nächsten Seitenaufruf sichtbar.")
-        st.session_state["loesch_erfolg"] = False
+        st.success("Eintrag wurde gelöscht.")
 else:
     st.info("Noch keine Laborwerte gespeichert.")
