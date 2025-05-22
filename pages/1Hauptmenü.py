@@ -60,7 +60,7 @@ with col2:
     if st.button("Laborwerte – Eingabe"):
         st.switch_page("pages/3Laborwerte.py")
 with col3:
-    if st.button("Verlauf anzeigen"):
+    if st.button("Verlauf"):
         st.switch_page("pages/4Verlauf.py")
 with col4:
     if st.button("Infoseite"):
