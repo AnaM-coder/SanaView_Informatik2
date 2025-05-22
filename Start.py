@@ -74,17 +74,22 @@ Diese App wurde im Rahmen des Moduls *Informatik 2* an der **ZHAW** entwickelt v
 
 col1, col2, col3 = st.columns([2,1,2])
 with col2:
-    # Großer Pfeil als Button
-    st.markdown("""
-        <style>
-        div.stButton > button {
-            font-size: 70px !important;
-            height: 100px !important;
-            width: 100px !important;
-            border-radius: 20px;
-            padding: 0;
-        }
-        </style>
-    """, unsafe_allow_html=True)
-    if st.button("➡️", key="goto_mainmenu", help="Weiter zum Hauptmenü"):
-        st.switch_page("pages/1Hauptmenü.py")
+    # Nur ein großes Pfeil-Emoji als Button, ohne weißen Button-Hintergrund
+    st.markdown(
+        """
+        <div style="display: flex; justify-content: center;">
+            <form action="?page=pages/1Hauptmenü.py" method="get">
+                <button type="submit" style="
+                    background: none;
+                    border: none;
+                    padding: 0;
+                    cursor: pointer;
+                    outline: inherit;
+                ">
+                    <span style="font-size: 100px; line-height: 1;">➡️</span>
+                </button>
+            </form>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
