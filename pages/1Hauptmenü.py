@@ -63,6 +63,3 @@ with col2:
         st.switch_page("pages/2Profilverwaltung.py")
     if st.button("Infoseite"):
         st.switch_page("pages/5Infoseite.py")
-with col3:
-    if st.button("Laborbericht (PDF) hochladen"):
-        st.switch_page("pages/3Laborwerte.py")  # oder eigene Upload-Seite
