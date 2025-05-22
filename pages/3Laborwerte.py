@@ -239,8 +239,6 @@ if pdf and pdf.name != st.session_state.get("last_pdf_name"):
 elif pdf:
     st.info("PDF wurde bereits verarbeitet. Bitte eine andere Datei auswählen.")
 
-# ...vorheriger Code...
-
 # === Anzeige & Löschen
 df = st.session_state[session_key]
 df = df[[c for c in df.columns if c in ["Datum", "Laborwert", "Wert", "Einheit", "Referenz", "Ampel"]]]
@@ -258,7 +256,6 @@ if not df.empty:
             with st.expander(laborwert):
                 st.dataframe(df[df["Laborwert"] == laborwert], use_container_width=True)
 
-    # Deutliche Warnung und roter Button für Löschen
    # === Eintrag löschen
 st.markdown("### 🗑️ Eintrag löschen")
 if len(df) > 0:
@@ -274,32 +271,35 @@ if len(df) > 0:
         st.session_state["delete_confirm"] = True
         st.session_state["delete_result"] = None
 
+    # Bestätigung anzeigen
     if st.session_state.get("delete_confirm"):
         st.warning("Sind Sie sicher, dass Sie diesen Eintrag löschen möchten?")
         col_ja, col_nein = st.columns([1, 1])
         with col_ja:
-            if st.button("Ja", key="delete_yes"):
+            if st.button("Ja löschen", key="delete_yes"):
                 maske = df.apply(lambda row: f"{row['Datum']} – {row['Laborwert']} ({row['Wert']:.2f} {row['Einheit']})", axis=1) == auswahl
                 df = df[~maske].reset_index(drop=True)
                 st.session_state[session_key] = df
                 data_manager.save_data(session_state_key=session_key)
                 st.session_state["delete_result"] = "success"
+                st.session_state["delete_confirm"] = False
                 st.rerun()
         with col_nein:
-            if st.button("Nein", key="delete_no"):
+            if st.button("bbrechen", key="delete_no"):
                 st.session_state["delete_result"] = "cancel"
+                st.session_state["delete_confirm"] = False
                 st.rerun()
 
+    # Ergebnisanzeige nach Rerun
     if st.session_state.get("delete_result") == "success":
-        st.success("Eintrag erfolgreich gelöscht!")
+        st.success("Eintrag erfolgreich gelöscht.")
         st.session_state["delete_result"] = None
-        st.session_state["delete_confirm"] = False
     elif st.session_state.get("delete_result") == "cancel":
-        st.info("Eintrag nicht gelöscht.")
+        st.info("Löschvorgang abgebrochen.")
         st.session_state["delete_result"] = None
-        st.session_state["delete_confirm"] = False
 else:
     st.info("Keine Einträge zum Löschen vorhanden.")
+
 
 
 # === Navigations-Buttons am Schluss ===
