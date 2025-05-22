@@ -54,7 +54,7 @@ st.markdown("<p style='margin-top: 25px; font-size:18px;'><strong>Behalten Sie I
 
 col1, col2, col3, col4, col5 = st.columns(5)
 with col1:
-    if st.button("Profil verwalten"):
+    if st.button("Profil"):
         st.switch_page("pages/2Profilverwaltung.py")
 with col2:
     if st.button("Laborwerte – Eingabe"):

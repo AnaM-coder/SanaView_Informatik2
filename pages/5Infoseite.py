@@ -138,7 +138,7 @@ with col2:
     if st.button("Hauptmenü"):
         st.switch_page("pages/1Hauptmenü.py")
 with col3:
-    if st.button("Profil verwalten"):
+    if st.button("Profil"):
         st.switch_page("pages/2Profilverwaltung.py")
 with col4:
     if st.button("Laborwerte – Eingabe"):
