@@ -103,56 +103,64 @@ if st.button("Speichern"):
     data_manager.save_data(session_state_key=session_key)
     st.success("Laborwert erfolgreich gespeichert!")
 
-# === PDF Upload (nur einmal pro Datei, Datum aus Laborwert-Zeile)
+# === PDF Upload (Datum aus PDF suchen, alle Werte erkennen) ===
 st.markdown("### PDF mit Laborwerten hochladen")
 pdf = st.file_uploader("PDF auswählen", type="pdf")
 
-if pdf:
-    if pdf.name != st.session_state.get("last_pdf_name"):
-        st.session_state["last_pdf_name"] = pdf.name
-        doc = fitz.open(stream=pdf.read(), filetype="pdf")
-        text = "\n".join(page.get_text() for page in doc)
+if pdf and pdf.name != st.session_state.get("last_pdf_name"):
+    st.session_state["last_pdf_name"] = pdf.name
 
-        gefunden = []
-        for key, info in laboroptionen.items():
-            for zeile in text.split("\n"):
-                # Flexiblere Suche: ignoriere Groß-/Kleinschreibung und Leerzeichen
-                if re.search(rf"\b{re.escape(key)}\b", zeile, re.IGNORECASE):
-                    # Datum aus der gleichen Zeile wie der Laborwert suchen
-                    match_datum = re.search(r"(\d{2}\.\d{2}\.\d{4})", zeile)
-                    if match_datum:
-                        datum = match_datum.group(1)
-                    else:
-                        datum = datetime.date.today().strftime("%d.%m.%Y")
-                    # Wert suchen (nach Doppelpunkt, Gleichheitszeichen oder Leerzeichen)
-                    match_wert = re.search(rf"{re.escape(key)}[^\d\-]*(-?\d+[.,]?\d*)", zeile, re.IGNORECASE)
-                    if match_wert:
-                        try:
-                            wert = float(match_wert.group(1).replace(",", "."))
-                            ampel = "🟢 (normal)"
-                            if wert < info["ref_min"]:
-                                ampel = "🟡 (niedrig)"
-                            elif wert > info["ref_max"]:
-                                ampel = "🔴 (hoch)"
-                            eintrag = {
-                                "Datum": datum,
-                                "Laborwert": key,
-                                "Wert": wert,
-                                "Einheit": info["einheit"],
-                                "Referenz": f"{info['ref_min']}–{info['ref_max']}",
-                                "Ampel": ampel
-                            }
-                            data_manager.append_record(session_state_key=session_key, record_dict=eintrag)
-                            gefunden.append(key)
-                        except:
-                            continue
-        data_manager.save_data(session_state_key=session_key)
-        if gefunden:
-            st.success(f"PDF verarbeitet: {', '.join(gefunden)}")
-        else:
-            st.info("Keine bekannten Laborwerte im PDF erkannt.")
+    doc = fitz.open(stream=pdf.read(), filetype="pdf")
+    text = "\n".join(page.get_text() for page in doc)
+
+    # Optional: Zeige den extrahierten Text zum Debuggen
+    # st.write(text)
+
+    # Datum suchen (erste Zeile mit Entnahme/Befunddatum/Datum)
+    extrahiertes_datum = None
+    for zeile in text.split("\n"):
+        if any(x in zeile.lower() for x in ["entnahme", "befunddatum", "datum"]):
+            match = re.search(r"\b(\d{2}\.\d{2}\.\d{4})\b", zeile)
+            if match:
+                extrahiertes_datum = match.group(1)
+                break
+
+    datum = extrahiertes_datum or datetime.date.today().strftime("%d.%m.%Y")
+    gefunden = []
+
+    for key, info in laboroptionen.items():
+        # Suche alle Vorkommen im gesamten Text, nicht nur pro Zeile!
+        pattern = rf"{re.escape(key)}\s*[:=]?\s*(-?\d+[.,]?\d*)"
+        for match in re.finditer(pattern, text, re.IGNORECASE):
+            try:
+                value = float(match.group(1).replace(",", "."))
+                if value < info["ref_min"]:
+                    ampel = "🟡 (niedrig)"
+                elif value > info["ref_max"]:
+                    ampel = "🔴 (hoch)"
+                else:
+                    ampel = "🟢 (normal)"
+
+                eintrag = {
+                    "Datum": datum,
+                    "Laborwert": key,
+                    "Wert": value,
+                    "Einheit": info["einheit"],
+                    "Referenz": f"{info['ref_min']}–{info['ref_max']}",
+                    "Ampel": ampel
+                }
+                data_manager.append_record(session_state_key=session_key, record_dict=eintrag)
+                gefunden.append(key)
+            except:
+                continue
+
+    data_manager.save_data(session_state_key=session_key)
+    if gefunden:
+        st.success(f"Erkannte und gespeicherte Laborwerte: {', '.join(gefunden)}")
     else:
-        st.info("PDF wurde bereits verarbeitet. Bitte eine andere Datei auswählen.")
+        st.warning("Keine bekannten Laborwerte im PDF erkannt.")
+elif pdf:
+    st.info("PDF wurde bereits verarbeitet. Bitte eine andere Datei auswählen.")
 
 # === Anzeige & Löschen
 df = st.session_state[session_key]
