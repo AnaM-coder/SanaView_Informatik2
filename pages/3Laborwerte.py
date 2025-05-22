@@ -7,13 +7,14 @@ import base64
 from utils.data_manager import DataManager
 from utils.login_manager import LoginManager
 
-# === Seitenstil: Hintergrundbild nur für Laborwerte-Seite ===
+import base64
+
 def get_base64_of_bin_file(bin_file):
     with open(bin_file, 'rb') as f:
         data = f.read()
     return base64.b64encode(data).decode()
 
-img_path = "img/labor_bg.png"  # Passe ggf. den Pfad an
+img_path = "img/labor_bg.png"  # Passe ggf. den Pfad und Namen an
 try:
     img_base64 = get_base64_of_bin_file(img_path)
     st.markdown(
@@ -30,8 +31,7 @@ try:
         unsafe_allow_html=True
     )
 except Exception as e:
-    pass  # Falls das Bild fehlt, einfach ignorieren
-
+    st.warning(f"Fehler beim Laden des Hintergrundbilds: {e}")
 # === Login ===
 login_manager = LoginManager(data_manager=DataManager())
 if not st.session_state.get("authentication_status", False):
