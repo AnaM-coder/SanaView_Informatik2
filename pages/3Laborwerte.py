@@ -116,14 +116,16 @@ if pdf:
         gefunden = []
         for key, info in laboroptionen.items():
             for zeile in text.split("\n"):
-                if key in zeile:
+                # Flexiblere Suche: ignoriere Groß-/Kleinschreibung und Leerzeichen
+                if re.search(rf"\b{re.escape(key)}\b", zeile, re.IGNORECASE):
                     # Datum aus der gleichen Zeile wie der Laborwert suchen
                     match_datum = re.search(r"(\d{2}\.\d{2}\.\d{4})", zeile)
                     if match_datum:
                         datum = match_datum.group(1)
                     else:
                         datum = datetime.date.today().strftime("%d.%m.%Y")
-                    match_wert = re.search(rf"{re.escape(key)}\s*[:=]?\s*(-?\d+[.,]?\d*)", zeile, re.IGNORECASE)
+                    # Wert suchen (nach Doppelpunkt, Gleichheitszeichen oder Leerzeichen)
+                    match_wert = re.search(rf"{re.escape(key)}[^\d\-]*(-?\d+[.,]?\d*)", zeile, re.IGNORECASE)
                     if match_wert:
                         try:
                             wert = float(match_wert.group(1).replace(",", "."))
