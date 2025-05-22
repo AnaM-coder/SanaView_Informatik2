@@ -82,6 +82,24 @@ st.markdown(
 
 col1, col2, col3 = st.columns([2,1,2])
 with col2:
-    # Großer Pfeil als Button
+    # Großer Pfeil als Button mit CSS
+    st.markdown("""
+        <style>
+        div.stButton > button {
+            font-size: 60px !important;
+            height: 90px !important;
+            width: 120px !important;
+            color: #1976d2 !important;
+            border-radius: 16px;
+            border: 2px solid #1976d2;
+            background: #e3f2fd;
+        }
+        div.stButton > button:hover {
+            background: #bbdefb;
+            color: #0d47a1 !important;
+            border: 2px solid #0d47a1;
+        }
+        </style>
+    """, unsafe_allow_html=True)
     if st.button("➡️", key="goto_mainmenu", help="Zum Hauptmenü"):
         st.switch_page("pages/1Hauptmenü.py")
