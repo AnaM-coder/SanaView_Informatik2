@@ -66,24 +66,30 @@ referenzwerte = {
     "Troponin T/I": {"Männer": "0 – 0.04 ng/ml", "Frauen": "0 – 0.04 ng/ml", "Schwanger": "0 – 0.04 ng/ml", "Kinder": "0 – 0.03 ng/ml"}
 }
 
-# === Automatische Profilerkennung aus PDF ===
-def bestimme_profil(text):
-    if re.search(r'\bkind(er)?\b', text, re.IGNORECASE) or re.search(r'\balter\s*[:=]?\s*\d{1,2}\s*(Jahre|J\.|Jahre alt)', text, re.IGNORECASE):
-        return "Kinder"
-    if re.search(r'\bschwanger\b', text, re.IGNORECASE):
-        return "Schwanger"
-    if re.search(r'\bweiblich\b', text, re.IGNORECASE) or re.search(r'\bfrau\b', text, re.IGNORECASE):
-        return "Frauen"
-    if re.search(r'\bmännlich\b', text, re.IGNORECASE) or re.search(r'\bmann\b', text, re.IGNORECASE):
-        return "Männer"
-    return "Männer"  # Standard
-
-# === Eingabe (ohne Profil-Auswahl im Sidebar) ===
+# === Automatische Profilerkennung für manuelle Eingabe ===
 st.title(" 🩸 Laborwerte – Eingabe")
-profil = "Männer"  # Standardprofil für manuelle Eingabe
+
+geschlecht = st.selectbox("Geschlecht", ["Männlich", "Weiblich"])
+alter = st.number_input("Alter (Jahre)", min_value=0, max_value=120, value=30)
+schwanger = False
+if geschlecht == "Weiblich" and 10 <= alter <= 60:
+    schwanger = st.checkbox("Schwanger?", value=False)
+
+# Profil automatisch bestimmen
+if alter < 18:
+    profil = "Kinder"
+elif geschlecht == "Weiblich" and schwanger:
+    profil = "Schwanger"
+elif geschlecht == "Weiblich":
+    profil = "Frauen"
+else:
+    profil = "Männer"
+
+st.info(f"Automatisch erkanntes Profil: {profil}")
+
 ausgewählt = st.selectbox("Laborwert", sorted(referenzwerte.keys()))
 ref_string = referenzwerte[ausgewählt][profil]
-einheit = ref_string.split()[-1]  # Einheit aus Referenzwert für das Profil nehmen
+einheit = ref_string.split()[-1]
 
 # Referenzbereich für das gewählte Profil extrahieren
 ref_min, ref_max = None, None
@@ -121,6 +127,18 @@ if st.button("Speichern"):
     data_manager.append_record(session_state_key=session_key, record_dict=neuer_eintrag)
     data_manager.save_data(session_state_key=session_key)
     st.success("Laborwert erfolgreich gespeichert!")
+
+# === Automatische Profilerkennung aus PDF ===
+def bestimme_profil(text):
+    if re.search(r'\bkind(er)?\b', text, re.IGNORECASE) or re.search(r'\balter\s*[:=]?\s*\d{1,2}\s*(Jahre|J\.|Jahre alt)', text, re.IGNORECASE):
+        return "Kinder"
+    if re.search(r'\bschwanger\b', text, re.IGNORECASE):
+        return "Schwanger"
+    if re.search(r'\bweiblich\b', text, re.IGNORECASE) or re.search(r'\bfrau\b', text, re.IGNORECASE):
+        return "Frauen"
+    if re.search(r'\bmännlich\b', text, re.IGNORECASE) or re.search(r'\bmann\b', text, re.IGNORECASE):
+        return "Männer"
+    return "Männer"  # Standard
 
 # === PDF Upload (Datum aus PDF suchen, alle Werte erkennen, Profil automatisch) ===
 st.markdown("### PDF mit Laborwerten hochladen")
