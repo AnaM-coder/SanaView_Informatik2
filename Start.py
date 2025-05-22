@@ -82,11 +82,6 @@ st.markdown(
 
 col1, col2, col3 = st.columns([2,1,2])
 with col2:
-    st.markdown(
-        "<div style='display:flex; justify-content:center;'>"
-        "<span style='font-size:70px;'>➡️</span>"
-        "</div>",
-        unsafe_allow_html=True
-    )
-    if st.button("Zum Hauptmenü", key="goto_mainmenu"):
+    # Großer Pfeil als Button
+    if st.button("➡️", key="goto_mainmenu", help="Zum Hauptmenü"):
         st.switch_page("pages/1Hauptmenü.py")
