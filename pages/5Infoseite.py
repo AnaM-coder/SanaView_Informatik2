@@ -29,9 +29,6 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# === Seitenlayout ===
-st.set_page_config(page_title="Info-Seite", layout="wide")
-
 st.markdown("""
     <style>
         html, body, [data-testid="stAppViewContainer"], [data-testid="stAppViewContainer"] > .main {
