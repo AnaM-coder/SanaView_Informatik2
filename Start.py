@@ -77,10 +77,10 @@ with col2:
     st.markdown("""
         <style>
         div[data-testid="arrow-button"] button {
-            font-size: 130px !important;
-            height: 170px !important;
-            width: 170px !important;
-            border-radius: 30px;
+            font-size: 300px !important;
+            height: 320px !important;
+            width: 320px !important;
+            border-radius: 600px;
             padding: 0;
             background: none;
             border: none;
