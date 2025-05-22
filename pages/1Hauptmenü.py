@@ -48,11 +48,8 @@ st.markdown("""
     <li>Laborberichte als PDF hochladen</li>
 </ul>
 """, unsafe_allow_html=True)
-
 # === Abschluss ===
 st.markdown("<p style='margin-top: 25px; font-size:18px;'><strong>Behalten Sie Ihre Gesundheit im Blick – einfach, sicher und übersichtlich ✨.</strong></p>", unsafe_allow_html=True)
-
-st.markdown("### Schnellzugriff:")
 
 col1, col2 = st.columns(2)
 with col1:
