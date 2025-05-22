@@ -1,33 +1,10 @@
 import streamlit as st
-import base64
 import pandas as pd
 from utils.data_manager import DataManager
 from utils.login_manager import LoginManager
 
-st.set_page_config(page_title="Info-Seite", layout="wide")  # <-- Muss ganz oben stehen!
-
-# === Hintergrundbild aus img-Ordner als Base64 einbinden ===
-def get_base64_of_bin_file(bin_file):
-    with open(bin_file, 'rb') as f:
-        data = f.read()
-    return base64.b64encode(data).decode()
-
-img_path = "img/lab_bg.png"
-img_base64 = get_base64_of_bin_file(img_path)
-
-st.markdown(
-    f"""
-    <style>
-    [data-testid="stAppViewContainer"] {{
-        background-image: url("data:image/png;base64,{img_base64}");
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-attachment: fixed;
-    }}
-    </style>
-    """,
-    unsafe_allow_html=True
-)
+# === Seitenlayout ===
+st.set_page_config(page_title="Info-Seite", layout="wide")
 
 st.markdown("""
     <style>
@@ -53,6 +30,10 @@ st.title("ℹ️ Infoseite")
 st.markdown("""
 Hier finden Sie Erklärungen und die Referenzwerte zu Ihren Laborwerten.
 """)
+
+
+import streamlit as st
+import pandas as pd
 
 # === Laborwerte mit neuen Erklärungen ===
 labor_erklärungen = {
@@ -147,3 +128,4 @@ Die angegebenen Referenzwerte und Erklärungen basieren auf folgenden Quellen:
 
 *Hinweis: Die Werte und Texte dienen der Orientierung und ersetzen keine ärztliche Beratung.*
 """)
+
