@@ -75,19 +75,15 @@ Diese App wurde im Rahmen des Moduls *Informatik 2* an der **ZHAW** entwickelt v
 col1, col2, col3 = st.columns([2,1,2])
 with col2:
     st.markdown("""
-        <style>
-        div[data-testid="arrow-button"] button {
-            font-size: 300px !important;
-            height: 320px !important;
-            width: 320px !important;
-            border-radius: 60px;
-            padding: 0;
-            background: none;
-            border: none;
+        <div style="display: flex; justify-content: center; align-items: center;">
+            <span id="big-arrow" style="font-size: 150px; cursor: pointer; user-select: none;">➡️</span>
+        </div>
+        <script>
+        const arrow = window.parent.document.getElementById("big-arrow");
+        if(arrow){
+            arrow.onclick = function() {
+                window.parent.location.href = window.parent.location.pathname + "?page=pages/1Hauptmenü";
+            }
         }
-        </style>
-        <div data-testid="arrow-button">
+        </script>
     """, unsafe_allow_html=True)
-    if st.button("➡️", key="goto_mainmenu", help="Weiter zum Hauptmenü"):
-        st.switch_page("pages/1Hauptmenü.py")
-    st.markdown("</div>", unsafe_allow_html=True)
