@@ -7,13 +7,19 @@ from utils.data_manager import DataManager
 from utils.login_manager import LoginManager
 
 # === Seitenstil ===
-st.markdown("""
+st.markdown(
+    """
     <style>
-        html, body, [data-testid="stAppViewContainer"], [data-testid="stAppViewContainer"] > .main {
-            background-color: #d9ecf2 !important;
-        }
+    [data-testid="stAppViewContainer"] {
+        background-image: url('img/labor_bg.png');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+    }
     </style>
-""", unsafe_allow_html=True)
+    """,
+    unsafe_allow_html=True
+)
 
 # === Login ===
 login_manager = LoginManager(data_manager=DataManager())
