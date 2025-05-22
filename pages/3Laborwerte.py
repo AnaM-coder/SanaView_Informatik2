@@ -66,7 +66,19 @@ referenzwerte = {
     "Troponin T/I": {"Männer": "0 – 0.04 ng/ml", "Frauen": "0 – 0.04 ng/ml", "Schwanger": "0 – 0.04 ng/ml", "Kinder": "0 – 0.03 ng/ml"}
 }
 
-# === Profil-Auswahl ===
+# === Automatische Profilerkennung aus PDF ===
+def bestimme_profil(text):
+    if re.search(r'\bkind(er)?\b', text, re.IGNORECASE) or re.search(r'\balter\s*[:=]?\s*\d{1,2}\s*(Jahre|J\.|Jahre alt)', text, re.IGNORECASE):
+        return "Kinder"
+    if re.search(r'\bschwanger\b', text, re.IGNORECASE):
+        return "Schwanger"
+    if re.search(r'\bweiblich\b', text, re.IGNORECASE) or re.search(r'\bfrau\b', text, re.IGNORECASE):
+        return "Frauen"
+    if re.search(r'\bmännlich\b', text, re.IGNORECASE) or re.search(r'\bmann\b', text, re.IGNORECASE):
+        return "Männer"
+    return "Männer"  # Standard
+
+# === Profil-Auswahl für manuelle Eingabe ===
 st.sidebar.markdown("## Profil")
 profil = st.sidebar.selectbox("Profil wählen", ["Männer", "Frauen", "Schwanger", "Kinder"])
 
@@ -113,7 +125,7 @@ if st.button("Speichern"):
     data_manager.save_data(session_state_key=session_key)
     st.success("Laborwert erfolgreich gespeichert!")
 
-# === PDF Upload (Datum aus PDF suchen, alle Werte erkennen) ===
+# === PDF Upload (Datum aus PDF suchen, alle Werte erkennen, Profil automatisch) ===
 st.markdown("### PDF mit Laborwerten hochladen")
 pdf = st.file_uploader("PDF auswählen", type="pdf")
 
@@ -122,6 +134,10 @@ if pdf and pdf.name != st.session_state.get("last_pdf_name"):
 
     doc = fitz.open(stream=pdf.read(), filetype="pdf")
     text = "\n".join(page.get_text() for page in doc)
+
+    # Profil automatisch bestimmen
+    auto_profil = bestimme_profil(text)
+    st.info(f"Automatisch erkanntes Profil: {auto_profil}")
 
     # Datum suchen (erste Zeile mit Entnahme/Befunddatum/Datum)
     extrahiertes_datum = None
@@ -140,7 +156,7 @@ if pdf and pdf.name != st.session_state.get("last_pdf_name"):
         for match in re.finditer(pattern, text, re.IGNORECASE):
             try:
                 wert = float(match.group(1).replace(",", "."))
-                ref_string = referenzwerte[key][profil]
+                ref_string = referenzwerte[key][auto_profil]
                 einheit = ref_string.split()[-1]
                 ref_min, ref_max = None, None
                 if "≥" in ref_string:
