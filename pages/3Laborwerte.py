@@ -329,6 +329,7 @@ else:
     st.info("Keine Einträge zum Löschen vorhanden.")
 
 
+
 # === Navigations-Buttons am Schluss ===
 col1, col2, col3, col4, col5 = st.columns(5)
 with col1:
