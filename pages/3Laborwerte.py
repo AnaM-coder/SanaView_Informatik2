@@ -184,9 +184,8 @@ if pdf and pdf.name != st.session_state.get("last_pdf_name"):
     doc = fitz.open(stream=pdf.read(), filetype="pdf")
     text = "\n".join(page.get_text() for page in doc)
 
-    # Profil automatisch bestimmen
+    # Profil automatisch bestimmen (aber NICHT anzeigen)
     auto_profil = bestimme_profil(text)
-    st.info(f"Automatisch erkanntes Profil: {auto_profil}")
 
     # Datum suchen (erste Zeile mit Entnahme/Befunddatum/Datum)
     extrahiertes_datum = None
