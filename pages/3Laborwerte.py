@@ -263,17 +263,17 @@ if len(df) > 0:
     optionen = df.apply(lambda row: f"{row['Datum']} – {row['Laborwert']} ({row['Wert']:.2f} {row['Einheit']})", axis=1).tolist()
     auswahl = st.selectbox("Eintrag auswählen", optionen)
 
-    # Roter Stil nur für diesen Button
+    # Nur diesen Button vollständig rot machen
     st.markdown("""
         <style>
         .eintrag-loeschen button {
             background-color: #dc3545 !important;
             color: white !important;
             font-weight: bold;
-            border-radius: 8px;
+            border-radius: 6px;
             font-size: 1.05em;
-            height: 3em;
-            width: 100%;
+            height: 2.8em;
+            padding: 0 1.2em;
             border: none;
         }
         </style>
@@ -286,25 +286,45 @@ if len(df) > 0:
     if st.button("🗑️ Eintrag löschen", key="delete_button"):
         st.session_state["delete_confirm"] = True
 
-    st.markdown("</div>", unsafe_allow_html=True)  # schließt den roten Button-Stilbereich
+    st.markdown("</div>", unsafe_allow_html=True)  # schließt Button-Stilbereich
 
-    if st.session_state.get("delete_confirm"):
-        st.warning("Sind Sie sicher, dass Sie diesen Eintrag löschen möchten?")
-        col1, col2 = st.columns(2)
-        with col1:
-            if st.button("Ja", key="delete_yes"):
-                maske = df.apply(lambda row: f"{row['Datum']} – {row['Laborwert']} ({row['Wert']:.2f} {row['Einheit']})", axis=1) == auswahl
-                df = df[~maske].reset_index(drop=True)
-                st.session_state[session_key] = df
-                data_manager.save_data(session_state_key=session_key)
-                st.session_state["delete_confirm"] = False
-                st.toast("Eintrag erfolgreich gelöscht.")
-                st.rerun()
-        with col2:
-            if st.button("Nein", key="delete_no"):
-                st.session_state["delete_confirm"] = False
-                st.toast("Löschvorgang abgebrochen.")
-                st.rerun()
+    # Ja/Nein neben Text in einer Zeile
+    if st.session_state["delete_confirm"]:
+        st.markdown("""
+            <div style='background-color: #fdf5d4; border-radius: 8px; padding: 1em; margin-top: 1em; display: flex; align-items: center; justify-content: space-between;'>
+                <span style='color: #665c00; font-weight: bold;'>Sind Sie sicher, dass Sie diesen Eintrag löschen möchten?</span>
+                <div style='display: flex; gap: 1em;'>
+                    <form action="" method="post">
+                        <button name="confirm_delete" value="yes" style='background-color: #28a745; color: white; border: none; padding: 0.4em 1em; border-radius: 6px; font-weight: bold;'>Ja</button>
+                    </form>
+                    <form action="" method="post">
+                        <button name="confirm_delete" value="no" style='background-color: #6c757d; color: white; border: none; padding: 0.4em 1em; border-radius: 6px; font-weight: bold;'>Nein</button>
+                    </form>
+                </div>
+            </div>
+        """, unsafe_allow_html=True)
+
+        # Abfrage der Buttonaktion
+        import streamlit as stlit
+        import streamlit.runtime.scriptrunner.script_run_context as src
+        ctx = src.get_script_run_ctx()
+        form_data = stlit._runtime_context.input_state._form_data_by_id.get(ctx.session_id)
+        if form_data:
+            if "confirm_delete" in form_data:
+                antwort = form_data["confirm_delete"]
+                if antwort == "yes":
+                    maske = df.apply(lambda row: f"{row['Datum']} – {row['Laborwert']} ({row['Wert']:.2f} {row['Einheit']})", axis=1) == auswahl
+                    df = df[~maske].reset_index(drop=True)
+                    st.session_state[session_key] = df
+                    data_manager.save_data(session_state_key=session_key)
+                    st.toast("Eintrag erfolgreich gelöscht.")
+                    st.session_state["delete_confirm"] = False
+                    st.rerun()
+                elif antwort == "no":
+                    st.toast("Löschvorgang abgebrochen.")
+                    st.session_state["delete_confirm"] = False
+                    st.rerun()
+
 else:
     st.info("Keine Einträge zum Löschen vorhanden.")
 
