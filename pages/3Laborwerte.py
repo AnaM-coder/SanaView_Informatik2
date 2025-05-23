@@ -289,63 +289,27 @@ if len(df) > 0:
     st.markdown("</div>", unsafe_allow_html=True)
 
     if st.session_state["delete_confirm"]:
-        # Stil für gelbe Box mit Ja/Nein nebeneinander
-        st.markdown("""
-            <style>
-            .warnbox {
-                background-color: #fff8dc;
-                border-radius: 8px;
-                padding: 1em;
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                font-weight: bold;
-                color: #665c00;
-                margin-top: 1em;
-            }
-            .warnbox-buttons button {
-                border: none;
-                padding: 0.5em 1.2em;
-                margin-left: 0.5em;
-                border-radius: 6px;
-                font-weight: bold;
-                font-size: 1em;
-                cursor: pointer;
-            }
-            .warnbox-buttons .yes {
-                background-color: #28a745;
-                color: white;
-            }
-            .warnbox-buttons .no {
-                background-color: #6c757d;
-                color: white;
-            }
-            </style>
-
-            <div class="warnbox">
-                <span>Sind Sie sicher, dass Sie diesen Eintrag löschen möchten?</span>
-                <div class="warnbox-buttons">
-                    <form action="" method="post"><button name="antwort" value="ja" class="yes">Ja</button></form>
-                    <form action="" method="post"><button name="antwort" value="nein" class="no">Nein</button></form>
+        col_text, col_ja, col_nein = st.columns([3, 1, 1])
+        with col_text:
+            st.markdown("""
+                <div style='background-color: #e0f7fa; border-radius: 8px; padding: 1em; font-weight: bold; color: #004d40; display: flex; align-items: center; justify-content: space-between;'>
+                    <span>Sind Sie sicher, dass Sie diesen Eintrag löschen möchten?</span>
                 </div>
-            </div>
-        """, unsafe_allow_html=True)
-
-        # Reaktion auf Klicks (funktioniert mit Standard-Streamlit-Buttons sicherer)
-        antwort = st.experimental_get_query_params().get("antwort", [None])[0]
-        if antwort == "ja":
-            maske = df.apply(lambda row: f"{row['Datum']} – {row['Laborwert']} ({row['Wert']:.2f} {row['Einheit']})", axis=1) == auswahl
-            df = df[~maske].reset_index(drop=True)
-            st.session_state[session_key] = df
-            data_manager.save_data(session_state_key=session_key)
-            st.toast("Eintrag erfolgreich gelöscht.")
-            st.session_state["delete_confirm"] = False
-            st.rerun()
-        elif antwort == "nein":
-            st.toast("Löschvorgang abgebrochen.")
-            st.session_state["delete_confirm"] = False
-            st.rerun()
-
+            """, unsafe_allow_html=True)
+        with col_ja:
+            if st.button("Ja", key="delete_yes"):
+                maske = df.apply(lambda row: f"{row['Datum']} – {row['Laborwert']} ({row['Wert']:.2f} {row['Einheit']})", axis=1) == auswahl
+                df = df[~maske].reset_index(drop=True)
+                st.session_state[session_key] = df
+                data_manager.save_data(session_state_key=session_key)
+                st.toast("Eintrag erfolgreich gelöscht.")
+                st.session_state["delete_confirm"] = False
+                st.rerun()
+        with col_nein:
+            if st.button("Nein", key="delete_no"):
+                st.toast("Löschvorgang abgebrochen.")
+                st.session_state["delete_confirm"] = False
+                st.rerun()
 else:
     st.info("Keine Einträge zum Löschen vorhanden.")
 
