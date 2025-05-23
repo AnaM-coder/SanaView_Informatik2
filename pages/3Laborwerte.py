@@ -263,7 +263,7 @@ if len(df) > 0:
     optionen = df.apply(lambda row: f"{row['Datum']} – {row['Laborwert']} ({row['Wert']:.2f} {row['Einheit']})", axis=1).tolist()
     auswahl = st.selectbox("Eintrag auswählen", optionen)
 
-    # Nur diesen Button vollständig rot machen
+    # Nur der Löschen-Button rot
     st.markdown("""
         <style>
         .eintrag-loeschen button {
@@ -271,9 +271,9 @@ if len(df) > 0:
             color: white !important;
             font-weight: bold;
             border-radius: 6px;
-            font-size: 1.05em;
+            font-size: 1em;
             height: 2.8em;
-            padding: 0 1.2em;
+            padding: 0 1.5em;
             border: none;
         }
         </style>
@@ -283,51 +283,71 @@ if len(df) > 0:
     if "delete_confirm" not in st.session_state:
         st.session_state["delete_confirm"] = False
 
-    if st.button("🗑️ Eintrag löschen", key="delete_button"):
+    if st.button("Eintrag löschen", key="delete_button"):
         st.session_state["delete_confirm"] = True
 
-    st.markdown("</div>", unsafe_allow_html=True)  # schließt Button-Stilbereich
+    st.markdown("</div>", unsafe_allow_html=True)
 
-    # Ja/Nein neben Text in einer Zeile
     if st.session_state["delete_confirm"]:
+        # Stil für gelbe Box mit Ja/Nein nebeneinander
         st.markdown("""
-            <div style='background-color: #fdf5d4; border-radius: 8px; padding: 1em; margin-top: 1em; display: flex; align-items: center; justify-content: space-between;'>
-                <span style='color: #665c00; font-weight: bold;'>Sind Sie sicher, dass Sie diesen Eintrag löschen möchten?</span>
-                <div style='display: flex; gap: 1em;'>
-                    <form action="" method="post">
-                        <button name="confirm_delete" value="yes" style='background-color: #28a745; color: white; border: none; padding: 0.4em 1em; border-radius: 6px; font-weight: bold;'>Ja</button>
-                    </form>
-                    <form action="" method="post">
-                        <button name="confirm_delete" value="no" style='background-color: #6c757d; color: white; border: none; padding: 0.4em 1em; border-radius: 6px; font-weight: bold;'>Nein</button>
-                    </form>
+            <style>
+            .warnbox {
+                background-color: #fff8dc;
+                border-radius: 8px;
+                padding: 1em;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                font-weight: bold;
+                color: #665c00;
+                margin-top: 1em;
+            }
+            .warnbox-buttons button {
+                border: none;
+                padding: 0.5em 1.2em;
+                margin-left: 0.5em;
+                border-radius: 6px;
+                font-weight: bold;
+                font-size: 1em;
+                cursor: pointer;
+            }
+            .warnbox-buttons .yes {
+                background-color: #28a745;
+                color: white;
+            }
+            .warnbox-buttons .no {
+                background-color: #6c757d;
+                color: white;
+            }
+            </style>
+
+            <div class="warnbox">
+                <span>Sind Sie sicher, dass Sie diesen Eintrag löschen möchten?</span>
+                <div class="warnbox-buttons">
+                    <form action="" method="post"><button name="antwort" value="ja" class="yes">Ja</button></form>
+                    <form action="" method="post"><button name="antwort" value="nein" class="no">Nein</button></form>
                 </div>
             </div>
         """, unsafe_allow_html=True)
 
-        # Abfrage der Buttonaktion
-        import streamlit as stlit
-        import streamlit.runtime.scriptrunner.script_run_context as src
-        ctx = src.get_script_run_ctx()
-        form_data = stlit._runtime_context.input_state._form_data_by_id.get(ctx.session_id)
-        if form_data:
-            if "confirm_delete" in form_data:
-                antwort = form_data["confirm_delete"]
-                if antwort == "yes":
-                    maske = df.apply(lambda row: f"{row['Datum']} – {row['Laborwert']} ({row['Wert']:.2f} {row['Einheit']})", axis=1) == auswahl
-                    df = df[~maske].reset_index(drop=True)
-                    st.session_state[session_key] = df
-                    data_manager.save_data(session_state_key=session_key)
-                    st.toast("Eintrag erfolgreich gelöscht.")
-                    st.session_state["delete_confirm"] = False
-                    st.rerun()
-                elif antwort == "no":
-                    st.toast("Löschvorgang abgebrochen.")
-                    st.session_state["delete_confirm"] = False
-                    st.rerun()
+        # Reaktion auf Klicks (funktioniert mit Standard-Streamlit-Buttons sicherer)
+        antwort = st.experimental_get_query_params().get("antwort", [None])[0]
+        if antwort == "ja":
+            maske = df.apply(lambda row: f"{row['Datum']} – {row['Laborwert']} ({row['Wert']:.2f} {row['Einheit']})", axis=1) == auswahl
+            df = df[~maske].reset_index(drop=True)
+            st.session_state[session_key] = df
+            data_manager.save_data(session_state_key=session_key)
+            st.toast("Eintrag erfolgreich gelöscht.")
+            st.session_state["delete_confirm"] = False
+            st.rerun()
+        elif antwort == "nein":
+            st.toast("Löschvorgang abgebrochen.")
+            st.session_state["delete_confirm"] = False
+            st.rerun()
 
 else:
     st.info("Keine Einträge zum Löschen vorhanden.")
-
 
 
 # === Navigations-Buttons am Schluss ===
