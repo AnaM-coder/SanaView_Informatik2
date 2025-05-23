@@ -260,10 +260,12 @@ if not df.empty:
 st.markdown("### 🗑️ Eintrag löschen")
 
 if len(df) > 0:
-    optionen = df.apply(lambda row: f"{row['Datum']} – {row['Laborwert']} ({row['Wert']:.2f} {row['Einheit']})", axis=1).tolist()
+    optionen = df.apply(
+        lambda row: f"{row['Datum']} – {row['Laborwert']} ({row['Wert']:.2f} {row['Einheit']})", axis=1
+    ).tolist()
     auswahl = st.selectbox("Eintrag auswählen", optionen)
 
-    # Nur der Eintrag-löschen-Button rot einfärben
+    # Stil für roten "Eintrag löschen"-Button
     st.markdown("""
         <style>
         div[data-testid="stButton"] > button[kind="primary"] {
@@ -280,47 +282,51 @@ if len(df) > 0:
         </style>
     """, unsafe_allow_html=True)
 
+    # Session-State init
     if "delete_confirm" not in st.session_state:
         st.session_state["delete_confirm"] = False
     if "delete_result" not in st.session_state:
         st.session_state["delete_result"] = None
 
+    # Löschbutton
     if st.button("Eintrag löschen", type="primary", key="delete_button"):
         st.session_state["delete_confirm"] = True
         st.session_state["delete_result"] = None
 
+    # Bestätigungsbox mit Ja / Nein nebeneinander
     if st.session_state["delete_confirm"]:
-        # Hellblaue Box mit Text + Ja/Nein nebeneinander
         col1, col2, col3 = st.columns([3, 1, 1])
         with col1:
             st.markdown("""
                 <div style='background-color: #e0f7fa; padding: 1em; border-radius: 10px;
-                            font-weight: bold; color: #004d40; font-size: 1.05em; margin-bottom: 1em;'>
+                            font-weight: bold; color: #004d40; font-size: 1.05em; margin-bottom: 3em;'>
                     Sind Sie sicher, dass Sie diesen Eintrag löschen möchten?
                 </div>
             """, unsafe_allow_html=True)
         with col2:
             if st.button("Ja", key="delete_yes"):
-                maske = df.apply(lambda row: f"{row['Datum']} – {row['Laborwert']} ({row['Wert']:.2f} {row['Einheit']})", axis=1) == auswahl
+                maske = df.apply(
+                    lambda row: f"{row['Datum']} – {row['Laborwert']} ({row['Wert']:.2f} {row['Einheit']})", axis=1
+                ) == auswahl
                 df = df[~maske].reset_index(drop=True)
                 st.session_state[session_key] = df
                 data_manager.save_data(session_state_key=session_key)
-                st.session_state["delete_result"] = "success"
+                st.toast("Eintrag erfolgreich gelöscht.")
                 st.session_state["delete_confirm"] = False
+                st.session_state["delete_result"] = "success"
                 st.rerun()
         with col3:
             if st.button("Nein", key="delete_no"):
-                st.session_state["delete_result"] = "cancel"
+                st.toast("Löschvorgang abgebrochen.")
                 st.session_state["delete_confirm"] = False
+                st.session_state["delete_result"] = "cancel"
                 st.rerun()
 
-    # Ergebnis anzeigen (kurz)
-    if st.session_state.get("delete_result") == "success":
-        st.toast("Eintrag erfolgreich gelöscht.")
-        st.session_state["delete_result"] = None
-    elif st.session_state.get("delete_result") == "cancel":
-        st.toast("Löschvorgang abgebrochen.")
-        st.session_state["delete_result"] = None
+    # Ergebnis anzeigen
+    if st.session_state["delete_result"] == "success":
+        st.success("Eintrag erfolgreich gelöscht.")
+    elif st.session_state["delete_result"] == "cancel":
+        st.warning("Löschvorgang abgebrochen.")
 else:
     st.info("Keine Einträge zum Löschen vorhanden.")
 
