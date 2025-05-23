@@ -337,8 +337,8 @@ with col3:
     if st.button("Profil"):
         st.switch_page("pages/2Profilverwaltung.py")
 with col4:
-    if st.button("Laborwerte"):
-        st.switch_page("pages/3Laborwerte.py")
+    if st.button("Infoseite"):
+        st.switch_page("pages/5Infoseite.py")
 with col5:
     if st.button("Verlauf"):
         st.switch_page("pages/4Verlauf.py")
