@@ -263,23 +263,17 @@ if len(df) > 0:
     optionen = df.apply(lambda row: f"{row['Datum']} – {row['Laborwert']} ({row['Wert']:.2f} {row['Einheit']})", axis=1).tolist()
     auswahl = st.selectbox("Eintrag auswählen", optionen)
 
-    # Kräftig roter, gefüllter Button für Löschen
+    # Style nur für "Eintrag löschen"
     st.markdown("""
         <style>
-        div.stButton > button#delete_button {
+        div.stButton > button[kind="secondary"] {
             background-color: #dc3545 !important;
             color: white !important;
             font-weight: bold;
             border-radius: 8px;
+            font-size: 1.1em;
             height: 3em;
             width: 100%;
-            border: none;
-            font-size: 1.2em;
-            box-shadow: 0 2px 8px rgba(220,53,69,0.15);
-            transition: background 0.2s;
-        }
-        div.stButton > button#delete_button:hover {
-            background-color: #b52a37 !important;
         }
         </style>
     """, unsafe_allow_html=True)
@@ -289,60 +283,71 @@ if len(df) > 0:
     if "delete_result" not in st.session_state:
         st.session_state["delete_result"] = None
 
-    if st.button("🗑️ Eintrag löschen", key="delete_button"):
+    if st.button("Eintrag löschen", key="delete_button"):
         st.session_state["delete_confirm"] = True
         st.session_state["delete_result"] = None
 
-    # Große, runde, rote Ja/Nein-Buttons
+    # Bestätigungsanzeige
     if st.session_state.get("delete_confirm"):
-        st.warning("Sind Sie sicher, dass Sie diesen Eintrag löschen möchten?")
         st.markdown("""
-            <style>
-            .delete-choice button {
-                background-color: #dc3545 !important;
-                color: white !important;
-                border-radius: 24px !important;
-                font-size: 1.2em !important;
-                font-weight: bold !important;
-                margin-right: 32px !important;
-                margin-top: 16px !important;
-                width: 120px !important;
-                height: 48px !important;
-                border: none !important;
-                box-shadow: 0 2px 8px rgba(220,53,69,0.15);
-            }
-            .delete-choice {
-                display: flex;
-                gap: 32px;
-            }
-            </style>
-            <div class="delete-choice"></div>
+            <div style="background-color: #fff3cd; padding: 1em; border-radius: 8px; 
+                        border: 1px solid #ffeeba; color: #856404; margin-top: 1em; font-weight: bold;">
+                Sind Sie sicher, dass Sie diesen Eintrag löschen möchten?
+            </div>
         """, unsafe_allow_html=True)
-        col_ja, col_nein, _ = st.columns([1,1,6])
-        with col_ja:
-            if st.button("Ja", key="delete_yes"):
+
+        # Getrennte Ja / Nein Buttons
+        col1, col2 = st.columns([1, 1])
+        with col1:
+            st.markdown("""
+                <style>
+                div.stButton > button#delete_yes {
+                    background-color: #28a745 !important;
+                    color: white !important;
+                    font-weight: bold;
+                    border-radius: 8px;
+                    font-size: 1em;
+                    height: 2.8em;
+                    width: 100%;
+                }
+                </style>
+            """, unsafe_allow_html=True)
+            if st.button("✅ Ja löschen", key="delete_yes"):
                 maske = df.apply(lambda row: f"{row['Datum']} – {row['Laborwert']} ({row['Wert']:.2f} {row['Einheit']})", axis=1) == auswahl
                 df = df[~maske].reset_index(drop=True)
                 st.session_state[session_key] = df
                 data_manager.save_data(session_state_key=session_key)
                 st.session_state["delete_result"] = "success"
                 st.session_state["delete_confirm"] = False
-                st.experimental_rerun()
-        with col_nein:
-            if st.button("Nein", key="delete_no"):
+                st.rerun()
+        with col2:
+            st.markdown("""
+                <style>
+                div.stButton > button#delete_no {
+                    background-color: #6c757d !important;
+                    color: white !important;
+                    font-weight: bold;
+                    border-radius: 8px;
+                    font-size: 1em;
+                    height: 2.8em;
+                    width: 100%;
+                }
+                </style>
+            """, unsafe_allow_html=True)
+            if st.button("❌ Abbrechen", key="delete_no"):
                 st.session_state["delete_result"] = "cancel"
                 st.session_state["delete_confirm"] = False
-                st.experimental_rerun()
+                st.rerun()
 
     if st.session_state.get("delete_result") == "success":
-        st.success("Eintrag erfolgreich gelöscht!")
+        st.toast("✅ Eintrag erfolgreich gelöscht.", icon="✅")
         st.session_state["delete_result"] = None
     elif st.session_state.get("delete_result") == "cancel":
-        st.info("Eintrag nicht gelöscht.")
+        st.toast("❎ Löschvorgang abgebrochen.", icon="ℹ️")
         st.session_state["delete_result"] = None
 else:
     st.info("Keine Einträge zum Löschen vorhanden.")
-    
+
 # === Navigations-Buttons am Schluss ===
 col1, col2, col3, col4, col5 = st.columns(5)
 with col1:
