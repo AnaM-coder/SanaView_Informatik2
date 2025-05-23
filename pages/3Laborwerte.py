@@ -263,30 +263,32 @@ if len(df) > 0:
     optionen = df.apply(lambda row: f"{row['Datum']} – {row['Laborwert']} ({row['Wert']:.2f} {row['Einheit']})", axis=1).tolist()
     auswahl = st.selectbox("Eintrag auswählen", optionen)
 
-    # Nur den nächsten Button rot einfärben
+    # Roter Stil nur für diesen Button
     st.markdown("""
         <style>
-        div.stButton > button {
+        .eintrag-loeschen button {
             background-color: #dc3545 !important;
             color: white !important;
             font-weight: bold;
-            border: none;
             border-radius: 8px;
-            font-size: 1em;
+            font-size: 1.05em;
             height: 3em;
             width: 100%;
+            border: none;
         }
         </style>
+        <div class="eintrag-loeschen">
     """, unsafe_allow_html=True)
 
     if "delete_confirm" not in st.session_state:
         st.session_state["delete_confirm"] = False
 
-    # Roter Button (nur dieser)
-    if st.button("Eintrag löschen", key="delete_button"):
+    if st.button("🗑️ Eintrag löschen", key="delete_button"):
         st.session_state["delete_confirm"] = True
 
-    if st.session_state["delete_confirm"]:
+    st.markdown("</div>", unsafe_allow_html=True)  # schließt den roten Button-Stilbereich
+
+    if st.session_state.get("delete_confirm"):
         st.warning("Sind Sie sicher, dass Sie diesen Eintrag löschen möchten?")
         col1, col2 = st.columns(2)
         with col1:
@@ -296,13 +298,16 @@ if len(df) > 0:
                 st.session_state[session_key] = df
                 data_manager.save_data(session_state_key=session_key)
                 st.session_state["delete_confirm"] = False
+                st.toast("Eintrag erfolgreich gelöscht.")
                 st.rerun()
         with col2:
             if st.button("Nein", key="delete_no"):
                 st.session_state["delete_confirm"] = False
+                st.toast("Löschvorgang abgebrochen.")
                 st.rerun()
 else:
     st.info("Keine Einträge zum Löschen vorhanden.")
+
 
 # === Navigations-Buttons am Schluss ===
 col1, col2, col3, col4, col5 = st.columns(5)
