@@ -304,7 +304,7 @@ if len(df) > 0:
                 </div>
             """, unsafe_allow_html=True)
         with col2:
-            if st.button("Ja", key="delete_yes"):
+            if st.button("✅ Ja", key="delete_yes"):
                 maske = df.apply(
                     lambda row: f"{row['Datum']} – {row['Laborwert']} ({row['Wert']:.2f} {row['Einheit']})", axis=1
                 ) == auswahl
@@ -316,7 +316,7 @@ if len(df) > 0:
                 st.session_state["delete_result"] = "success"
                 st.rerun()
         with col3:
-            if st.button("Nein", key="delete_no"):
+            if st.button("❌ Nein", key="delete_no"):
                 st.toast("Löschvorgang abgebrochen.")
                 st.session_state["delete_confirm"] = False
                 st.session_state["delete_result"] = "cancel"
