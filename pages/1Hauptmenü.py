@@ -57,7 +57,7 @@ with col1:
     if st.button("Profil"):
         st.switch_page("pages/2Profilverwaltung.py")
 with col2:
-    if st.button("Laborwerte – Eingabe"):
+    if st.button("Laborwerte"):
         st.switch_page("pages/3Laborwerte.py")
 with col3:
     if st.button("Verlauf"):

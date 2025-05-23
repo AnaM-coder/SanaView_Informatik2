@@ -198,7 +198,7 @@ else:
         if st.button("Hauptmenü"):
             st.switch_page("pages/1Hauptmenü.py")
     with col4:
-        if st.button("Laborwerte – Eingabe"):
+        if st.button("Laborwerte"):
             st.switch_page("pages/3Laborwerte.py")
     with col5:
         if st.button("Verlauf"):
