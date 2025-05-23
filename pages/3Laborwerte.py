@@ -256,8 +256,6 @@ if not df.empty:
             with st.expander(laborwert):
                 st.dataframe(df[df["Laborwert"] == laborwert], use_container_width=True)
 
-# ...vorheriger Code...
-
 # === Eintrag löschen ===
 st.markdown("### 🗑️ Eintrag löschen")
 
@@ -265,16 +263,18 @@ if len(df) > 0:
     optionen = df.apply(lambda row: f"{row['Datum']} – {row['Laborwert']} ({row['Wert']:.2f} {row['Einheit']})", axis=1).tolist()
     auswahl = st.selectbox("Eintrag auswählen", optionen)
 
-    # Roter Button für Löschen
+    # Roter, gefüllter Button für Löschen
     st.markdown("""
         <style>
         div.stButton > button#delete_button {
-            background-color: #dc3545;
-            color: white;
+            background-color: #dc3545 !important;
+            color: white !important;
             font-weight: bold;
             border-radius: 8px;
             height: 3em;
             width: 100%;
+            border: none;
+            font-size: 1.2em;
         }
         </style>
     """, unsafe_allow_html=True)
@@ -284,14 +284,31 @@ if len(df) > 0:
     if "delete_result" not in st.session_state:
         st.session_state["delete_result"] = None
 
-    if st.button("🗑️ Eintrag löschen", key="delete_button"):
+    if st.button("Eintrag löschen", key="delete_button"):
         st.session_state["delete_confirm"] = True
         st.session_state["delete_result"] = None
 
+    # Deutliche Ja/Nein-Buttons
     if st.session_state.get("delete_confirm"):
         st.warning("Sind Sie sicher, dass Sie diesen Eintrag löschen möchten?")
-        col1, col2 = st.columns([1, 1])
-        with col1:
+        st.markdown("""
+            <style>
+            .round-btn button {
+                background-color: #fff !important;
+                color: #dc3545 !important;
+                border-radius: 24px !important;
+                font-size: 1.1em !important;
+                font-weight: bold !important;
+                margin-right: 24px !important;
+                width: 100px !important;
+                height: 44px !important;
+                border: 2px solid #dc3545 !important;
+            }
+            </style>
+            <div class="round-btn"></div>
+        """, unsafe_allow_html=True)
+        col_ja, col_nein, _ = st.columns([1,1,6])
+        with col_ja:
             if st.button("Ja", key="delete_yes"):
                 maske = df.apply(lambda row: f"{row['Datum']} – {row['Laborwert']} ({row['Wert']:.2f} {row['Einheit']})", axis=1) == auswahl
                 df = df[~maske].reset_index(drop=True)
@@ -300,7 +317,7 @@ if len(df) > 0:
                 st.session_state["delete_result"] = "success"
                 st.session_state["delete_confirm"] = False
                 st.experimental_rerun()
-        with col2:
+        with col_nein:
             if st.button("Nein", key="delete_no"):
                 st.session_state["delete_result"] = "cancel"
                 st.session_state["delete_confirm"] = False
