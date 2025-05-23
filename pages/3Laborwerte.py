@@ -172,7 +172,7 @@ def bestimme_profil(text):
         return "Frauen"
     if re.search(r'\bmännlich\b', text, re.IGNORECASE) or re.search(r'\bmann\b', text, re.IGNORECASE):
         return "Männer"
-    return "Männer"  # Standard
+    return "Männer"  
 
 # === PDF Upload (Datum aus PDF suchen, alle Werte erkennen, Profil automatisch) ===
 st.markdown("### PDF mit Laborwerten hochladen")
