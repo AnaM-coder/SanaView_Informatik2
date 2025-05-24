@@ -316,7 +316,7 @@ if len(df) > 0:
                 st.rerun()
         with col3:
             if st.button("❌ Nein", key="delete_no"):
-                st.warning("Löschvorgang abgebrochen.")
+                st.info("Löschvorgang abgebrochen.")
                 st.session_state["delete_confirm"] = False
                 st.session_state["delete_result"] = "cancel"
                 st.rerun()
