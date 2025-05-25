@@ -21,6 +21,8 @@ login_manager = LoginManager(data_manager=DataManager())
 if not st.session_state.get("authentication_status", False):
     st.error("⚠️ Kein Benutzer eingeloggt! Anmeldung erforderlich.")
     st.stop()
+else:
+    st.switch_page("pages/Start.py")
 
 # === Logout-Button nur in der Sidebar ===
 with st.sidebar:
