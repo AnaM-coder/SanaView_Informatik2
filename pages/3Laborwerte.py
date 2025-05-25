@@ -310,14 +310,14 @@ if len(df) > 0:
                 df = df[~maske].reset_index(drop=True)
                 st.session_state[session_key] = df
                 data_manager.save_data(session_state_key=session_key)
-                st.success("Eintrag erfolgreich gelöscht.")
+                st.toast("Eintrag erfolgreich gelöscht.")
                 st.session_state["delete_confirm"] = False
                 st.session_state["delete_result"] = "success"
                 st.rerun()  # Seite neu laden, um Änderungen anzuzeigen
 
         with col3:
             if st.button("❌ Nein", key="delete_no"):
-                st.success("Löschvorgang abgebrochen.")
+                st.toast("Löschvorgang abgebrochen.")
                 st.session_state["delete_confirm"] = False
                 st.session_state["delete_result"] = "cancel"
                 st.rerun()  # Seite neu laden, um Änderungen anzuzeigen
