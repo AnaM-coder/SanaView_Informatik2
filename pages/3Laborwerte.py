@@ -313,12 +313,14 @@ if len(df) > 0:
                 st.success("Eintrag erfolgreich gelöscht.")
                 st.session_state["delete_confirm"] = False
                 st.session_state["delete_result"] = "success"
+                st.rerun()  # Seite neu laden, um Änderungen anzuzeigen
 
         with col3:
             if st.button("❌ Nein", key="delete_no"):
                 st.success("Löschvorgang abgebrochen.")
                 st.session_state["delete_confirm"] = False
                 st.session_state["delete_result"] = "cancel"
+                st.rerun()  # Seite neu laden, um Änderungen anzuzeigen
 
     # (Optional) nach dem Rerun wäre eine Ergebnisanzeige per toast schon erfolgt
 else:
