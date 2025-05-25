@@ -291,6 +291,7 @@ if len(df) > 0:
     if st.button("Eintrag löschen", type="primary", key="delete_button"):
         st.session_state["delete_confirm"] = True
         st.session_state["delete_result"] = None
+
     # Bestätigungsbox mit Ja / Nein / Zurück nebeneinander
     if st.session_state["delete_confirm"]:
         col1, col2, col3, col4 = st.columns([3, 1, 1, 1])
@@ -318,7 +319,7 @@ if len(df) > 0:
                 st.session_state["delete_confirm"] = False
                 st.session_state["delete_result"] = "cancel"
         with col4:
-            if st.button("Fertig", key="delete_close"):
+            if st.button("Zurück", key="delete_close"):
                 st.session_state["delete_confirm"] = False
                 st.session_state["delete_result"] = None
     # (Optional) nach dem Rerun wäre eine Ergebnisanzeige per toast schon erfolgt
