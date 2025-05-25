@@ -320,6 +320,10 @@ if len(df) > 0:
                 st.toast("Löschvorgang abgebrochen.")
                 st.session_state["delete_confirm"] = False
                 st.session_state["delete_result"] = "cancel"
+        with col4:
+            if st.button("↩️ Zurück", key="delete_back"):
+                st.session_state["delete_confirm"] = False
+                st.session_state["delete_result"] = None
 
     # (Optional) nach dem Rerun wäre eine Ergebnisanzeige per toast schon erfolgt
 else:
