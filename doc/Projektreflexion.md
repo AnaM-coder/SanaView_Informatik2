@@ -1,7 +1,7 @@
 # Projektreflexion
 
 
-1. Projektziel (Was war das Ziel?)
+1. Projektziel
 
 
 2. Was gut funktioniert hat
