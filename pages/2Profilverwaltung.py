@@ -160,6 +160,14 @@ else:
     st.success("Ihr Profil wurde geladen.")
     daten = st.session_state.profil_daten_anzeige
 
+    # Alter berechnen
+    try:
+        geburtsdatum_dt = datetime.strptime(daten['Geburtsdatum'], "%d.%m.%Y").date()
+        alter = (date.today() - geburtsdatum_dt).days // 365
+    except:
+        alter = "Unbekannt"
+
+
     col1, col2 = st.columns([2, 1])
     with col1:
         st.markdown(f"**Benutzername**: {daten['Benutzername']}")
