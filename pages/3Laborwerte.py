@@ -302,6 +302,7 @@ if len(df) > 0:
                     Sind Sie sicher, dass Sie diesen Eintrag löschen möchten?
                 </div>
             """, unsafe_allow_html=True)
+            st.rerun() 
         with col2:
             if st.button("✅ Ja", key="delete_yes"):
                 maske = df.apply(
@@ -313,7 +314,7 @@ if len(df) > 0:
                 st.toast("Eintrag erfolgreich gelöscht.")
                 st.session_state["delete_confirm"] = False
                 st.session_state["delete_result"] = "success"
-                st.rerun()  
+        
                 
         with col3:
             if st.button("❌ Nein", key="delete_no"):
