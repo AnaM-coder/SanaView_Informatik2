@@ -14,6 +14,7 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
+
 # === Login initialisieren & prüfen ===
 login_manager = LoginManager(data_manager=DataManager())
 
