@@ -8,12 +8,13 @@ st.set_page_config(page_title="Info-Seite", layout="wide")
 
 st.markdown("""
     <style>
-        html, body, [data-testid="stAppViewContainer"], [data-testid="stAppViewContainer"] > .main {
-            background-color: #d9ecf2 !important;
-        }
+    [data-testid="stAlert"][role="alert"] {
+        background-color: #ffdddd !important;
+        color: #a94442 !important;
+        border-left: 6px solid #f44336 !important;
+    }
     </style>
 """, unsafe_allow_html=True)
-
 
 # === Login initialisieren & prüfen ===
 login_manager = LoginManager(data_manager=DataManager())
