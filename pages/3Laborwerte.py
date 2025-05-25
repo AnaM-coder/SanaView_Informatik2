@@ -313,7 +313,7 @@ if len(df) > 0:
                 st.toast("Eintrag erfolgreich gelöscht.")
                 st.session_state["delete_confirm"] = False
                 st.session_state["delete_result"] = "success"
-
+                st.rerun()  
                 
         with col3:
             if st.button("❌ Nein", key="delete_no"):
