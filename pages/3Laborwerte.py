@@ -320,7 +320,7 @@ if len(df) > 0:
                 st.toast("Löschvorgang abgebrochen.")
                 st.session_state["delete_confirm"] = False
                 st.session_state["delete_result"] = "cancel"
-                    st.rerun() 
+                st.rerun() 
 
 else:
     st.info("Keine Einträge zum Löschen vorhanden.")
