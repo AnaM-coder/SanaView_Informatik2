@@ -292,44 +292,34 @@ if len(df) > 0:
         st.session_state["delete_confirm"] = True
         st.session_state["delete_result"] = None
 
-    # Bestätigungsbox mit Ja / Nein nebeneinander
-    if st.session_state["delete_confirm"]:
-        col1, col2, col3 = st.columns([3, 1, 1])
-        with col1:
-            st.markdown("""
-                <div style='background-color: #e0f7fa; padding: 1em; border-radius: 10px;
-                            font-weight: bold; color: #004d40; font-size: 1.05em; margin-bottom: 3em;'>
-                    Sind Sie sicher, dass Sie diesen Eintrag löschen möchten?
-                </div>
-            """, unsafe_allow_html=True)
-        with col2:
-           if st.button("✅ Ja", key="delete_yes"):
-    # Löschen
-    maske = df.apply(lambda row: f"{row['Datum']} – {row['Laborwert']} ({row['Wert']:.2f} {row['Einheit']})", axis=1) == auswahl
-    df = df[~maske].reset_index(drop=True)
-    st.session_state[session_key] = df
-    data_manager.save_data(session_state_key=session_key)
-    
-    # Merken, dass toast angezeigt werden soll
-    st.session_state["delete_toast_pending"] = "success"
-    st.session_state["delete_confirm"] = False
-    st.rerun()
+   # Bestätigungsbox mit Ja / Nein nebeneinander
+if st.session_state["delete_confirm"]:
+    col1, col2, col3 = st.columns([3, 1, 1])
+    with col1:
+        st.markdown("""
+            <div style='background-color: #e0f7fa; padding: 1em; border-radius: 10px;
+                        font-weight: bold; color: #004d40; font-size: 1.05em; margin-bottom: 3em;'>
+                Sind Sie sicher, dass Sie diesen Eintrag löschen möchten?
+            </div>
+        """, unsafe_allow_html=True)
+    with col2:
+        if st.button("✅ Ja", key="delete_yes"):
+            maske = df.apply(
+                lambda row: f"{row['Datum']} – {row['Laborwert']} ({row['Wert']:.2f} {row['Einheit']})", axis=1
+            ) == auswahl
+            df = df[~maske].reset_index(drop=True)
+            st.session_state[session_key] = df
+            data_manager.save_data(session_state_key=session_key)
+            st.session_state["delete_toast_pending"] = "success"
+            st.session_state["delete_confirm"] = False
+            st.rerun()
+    with col3:
+        if st.button("❌ Nein", key="delete_no"):
+            st.session_state["delete_toast_pending"] = "cancel"
+            st.session_state["delete_confirm"] = False
+            st.rerun()
 
-if st.button("❌ Nein", key="delete_no"):
-    st.session_state["delete_toast_pending"] = "cancel"
-    st.session_state["delete_confirm"] = False
-    st.rerun()
 
-# Nach Reload: toast anzeigen
-if st.session_state.get("delete_toast_pending") == "success":
-    st.toast("Eintrag erfolgreich gelöscht.")
-    st.session_state["delete_toast_pending"] = None
-
-elif st.session_state.get("delete_toast_pending") == "cancel":
-    st.toast("Löschvorgang abgebrochen.")
-    st.session_state["delete_toast_pending"] = None
-elif st.session_state.get("delete_toast_pending") is None:
-    st.toast("Bitte wählen Sie einen Eintrag zum Löschen aus.")         
 else:
     st.info("Keine Einträge zum Löschen vorhanden.")
 
