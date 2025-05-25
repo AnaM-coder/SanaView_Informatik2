@@ -311,15 +311,19 @@ if len(df) > 0:
                 st.session_state[session_key] = df
                 data_manager.save_data(session_state_key=session_key)
                 st.toast("Eintrag erfolgreich gelöscht.")
-                st.session_state["delete_confirm"] = False # Box wird ausgeblendet!
+                st.session_state["delete_confirm"] = False 
+                # Box wird ausgeblendet und der Löschvorgang abgeschlossen
+                st.session_state["delete_confirm"] = False
                 st.session_state["delete_result"] = "success"
                 # Ergebnisanzeige per toast
                 st.session_state["delete_result"] = "success"
         with col3:
             if st.button("❌ Nein", key="delete_no"):
                 st.toast("Löschvorgang abgebrochen.")
-                st.session_state["delete_confirm"] = False # Box wird ausgeblendet!
+                st.session_state["delete_confirm"] = False 
                 st.session_state["delete_result"] = "cancel"
+                # Box wird ausgeblendet und der Löschvorgang abgebrochen
+                st.session_state["delete_confirm"] = False
                 # Ergebnisanzeige per toast
                 st.session_state["delete_result"] = "cancel"
     # (Optional) nach dem Rerun wäre eine Ergebnisanzeige per toast schon erfolgt
