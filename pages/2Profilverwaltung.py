@@ -156,7 +156,7 @@ if not st.session_state.profil_gespeichert or st.session_state.bearbeiten_modus:
 
 # === Profilansicht
 else:
-    st.title(" 👤 Ihr Profil")
+    st.title(" 👤Profil")
     st.success("Ihr Profil wurde geladen.")
     daten = st.session_state.profil_daten_anzeige
 
