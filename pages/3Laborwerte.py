@@ -292,9 +292,9 @@ if len(df) > 0:
         st.session_state["delete_confirm"] = True
         st.session_state["delete_result"] = None
 
-    # Bestätigungsbox mit Ja / Nein nebeneinander
+       # Bestätigungsbox mit Ja / Nein / Zurück nebeneinander
     if st.session_state["delete_confirm"]:
-        col1, col2, col3 = st.columns([3, 1, 1])
+        col1, col2, col3, col4 = st.columns([3, 1, 1, 1])
         with col1:
             st.markdown("""
                 <div style='background-color: #e0f7fa; padding: 1em; border-radius: 10px;
@@ -313,8 +313,6 @@ if len(df) > 0:
                 st.toast("Eintrag erfolgreich gelöscht.")
                 st.session_state["delete_confirm"] = False
                 st.session_state["delete_result"] = "success"
-        
-                
         with col3:
             if st.button("❌ Nein", key="delete_no"):
                 st.toast("Löschvorgang abgebrochen.")
@@ -324,7 +322,7 @@ if len(df) > 0:
             if st.button("↩️ Zurück", key="delete_back"):
                 st.session_state["delete_confirm"] = False
                 st.session_state["delete_result"] = None
-
+                
     # (Optional) nach dem Rerun wäre eine Ergebnisanzeige per toast schon erfolgt
 else:
     st.info("Keine Einträge zum Löschen vorhanden.")
