@@ -3,13 +3,13 @@
 ## MVP_1(Minimum Viable Product) Version 1.0
 - Nutzerregistrierung und Multi User Login, Cloud-Speicherung
 - Eingabe von Laborwerten (Dropdown, Einheit, Datum)
-
+- Anzeige der Werte in Tabellenform
 
 ## Version 2.0
 - Ampelsystem (Normal, leicht ausserhalb, stark abweichend)
 - Verlauf (grafisch, einfach)
 - Startseite & Hauptmenü mit logo
-- Anzeige der Werte in Gesamttabelle oder gruppiert nach Laborwert
+
 
 ## Version 3.0
 - Info-Seite mit Erklärung zu Werten
@@ -18,6 +18,7 @@
 - Alle Laborwerte derselben Analyse in einer Grafik, Histogramme für Normalbereich, leichte und starke Abweichungen
 - Dropdown zur Auswahl des ethnischen Hintergrunds
 - Avatar-Bildauswahl (z. B. Tier-Symbole)
+- Anzeige der Werte gruppiert nach Laborwert
 
 
 ## Weitere geplante Funktionen
@@ -36,15 +37,15 @@
 | Funktion                         | Priorität | MVP |
 |----------------------------------|-----------|-----|
 | Registrierung & Login            | Hoch      | Ja  |
-| Laborwert-Eingabe                | Hoch      | Ja  |
+| Laborwert-Eingabe & Tabelle      | Hoch      | Ja  |
 | Startseite & Hauptmenü mit logo  | Mittel    | Nein|
-| Anzeige: Gesamttabelle oder gruppiert nach Laborwert      | Mittel    | Nein  |
 | Verlaufgrafik                    | Mittel    | Nein|
 | Ampelsystem                      | Mittel    | Nein|
 | Info-Seite mit Begriffen         | Mittel    | Nein|
 | Gesundheitsprofil verwalten      | Mittel    | Nein|
 | Jederzeitige Profilbearbeitung   | Mittel    | Nein|
 | Avatar-Bildauswahl               | Mittel    | Nein|
+| Anzeige der Werte gruppiert nach Laborwert | Mittel    | Nein|
 | Dropdown für ethnischen Hintergrund   | Mittel   | Nein|
 | Export als PDF                   | Tief      | Nein|
 | Startbutton mit Pfeil (Start → Hauptmenü) | Tief      | Nein|
