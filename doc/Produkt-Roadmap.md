@@ -35,7 +35,8 @@
 | Funktion                         | Priorität | MVP |
 |----------------------------------|-----------|-----|
 | Registrierung & Login            | Hoch      | Ja  |
-| Laborwert-Eingabe & Gesamtetabelle oder gruppiert nach Laborwert | Hoch      | Ja  |
+| Laborwert-Eingabe                | Hoch      | Ja  |
+| Anzeige: Gesamttabelle oder gruppiert nach Laborwert      | Hoch      | Ja  |
 | Startseite & Hauptmenü mit logo  | Mittel    | Nein|
 | Verlaufgrafik                    | Mittel    | Nein|
 | Ampelsystem                      | Mittel    | Nein|
