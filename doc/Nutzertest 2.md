@@ -34,7 +34,8 @@ Wir glauben, dass Nutzer\*innen mit *SanaView* ihre Laborwerte einfach eingeben,
 ## Feedback der Testperson
 
 > „...“  
-> – Testperson XY
+> –Name der Testperson Peter M.
+> alter: 56 Jahre, Beruf: Koch, wohnhaft in Zürich
 
 ---
 
