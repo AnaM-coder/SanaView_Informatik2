@@ -20,6 +20,7 @@
 
 
 
+
 ## Weitere geplante Funktionen
 - Teilen von Werten per PDF/Export
 - Startbutton mit Pfeil → führt ins Hauptmenü
@@ -27,7 +28,7 @@
 - Logout-Funktion auf allen Seiten
 - Geschlechtsspezifische Referenzwerte automatisch erkennen
 - Hintergrundfarben pro Seite: hellblau (Start, Hauptmenü, Profil, Infoseite), Hintergrundbild (Laborwerte, Verlauf)
-- Bestätigungsabfrage bei Löschvorgängen (mit "Ja" / "Nein" / Toast)
+- Löschen von Laborwerten (mit Bestätigungsabfrage Ja/Nein + Toast-Benachrichtigung)
 
 
 
@@ -51,8 +52,7 @@
 | Navigationsbuttons               | Tief      | Nein|
 | Geschlechtsspezifische Referenzwerte | Tief      | Nein|
 | Hintergrundfarben/Hintergrundbilder je Seite | Tief      | Nein|
-| Bestätigungsabfrage beim Löschen (Ja/Nein + Toast) | Tief      | Nein|
-
+| Löschen von Laborwerten (mit Bestätigungsabfrage Ja/Nein + Toast-Benachrichtigung) | Tief      | Nein|
 
 
 
