@@ -65,3 +65,4 @@ Wir glauben, dass Nutzer*innen mit *SanaView* ihre Laborwerte einfach eingeben, 
 - Löschfunktion weiter testen
 - Filteroptionen in der Verlaufsgrafik integrieren
 - Infoseite visuell überarbeiten und bei Bedarf vereinfachen
+
