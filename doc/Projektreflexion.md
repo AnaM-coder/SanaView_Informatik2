@@ -4,15 +4,26 @@
 Ziel des Projekts war die Entwicklung einer benutzerfreundlichen App, die es chronisch erkrankten Personen ermöglicht, ihre Laborwerte einfach zu erfassen, zu visualisieren und im Zeitverlauf zu überwachen. Die App sollte eine einfache Bedienung, einen Mehrbenutzer-Login sowie eine persönliche und sichere Datenspeicherung bieten.
 
 ## 2. Was gut funktioniert hat  
-Die Umsetzung des MVP 1 (Version 1.0) ist wie geplant gelungen: Registrierung, Login, Eingabe und tabellarische Anzeige der Laborwerte funktionieren stabil.  
-Die Benutzeroberfläche ist übersichtlich und intuitiv.  
-Die Werte werden benutzerspezifisch gespeichert.  
-Erste Rückmeldungen von Testpersonen bestätigten die Nützlichkeit und Verständlichkeit der App.  
-
+Die Umsetzung des MVP 1 (Version 1.0) ist wie geplant gelungen: Registrierung, Login, Eingabe und tabellarische Anzeige der Laborwerte funktionieren stabil.
+Die Benutzeroberfläche ist übersichtlich und intuitiv.
+Die Werte werden benutzerspezifisch gespeichert.
+Erste Rückmeldungen von Testpersonen bestätigten die Nützlichkeit und Verständlichkeit der App.
 In späteren Versionen wurden weitere sinnvolle Features ergänzt, z. B.:
-- Verlaufsübersicht mit gemeinsamer Grafik  
-- Histogramme zur Abweichungsanzeige  
-- Navigationsbuttons und Logout-Funktion auf allen Seiten  
+
+Verlaufsübersicht mit gemeinsamer Grafik
+Histogramme zur Abweichungsanzeige
+Navigationsbuttons und Logout-Funktion auf allen Seiten
+Info-Seite mit Begriffserklärungen
+Profilverwaltung inkl. Bearbeitung von Name, Geschlecht und Allergien
+Dropdown-Menü zur Auswahl des ethnischen Hintergrunds
+Anzeige der Werte gruppiert nach Laborwert
+Avatar-Auswahl (z. B. Tier-Symbole)
+Startseite & Hauptmenü mit Logo
+Ampelsystem zur schnellen Einschätzung von Messwerten
+Erste Integration des PDF-Imports von Laborwerten
+Neu hinzugekommen sind ausserdem Navigationsbuttons auf jeder Seite, die einen direkten Zugriff auf alle Hauptbereiche der App ermöglichen (Start, Hauptmenü, Profil, Infoseite, Verlauf). Diese Entscheidung wurde getroffen, um eine durchgehend einheitliche und intuitive Navigation sicherzustellen – besonders für Nutzer:innen, die mehrere Seiten nacheinander aufrufen möchten.
+
+Zusätzlich wurde ein modernes, visuell ansprechendes Hintergrunddesign mit Farbverläufen und Symbolik (z. B. Sternsymbol, Labor-Illustrationen) integriert, um die App ästhetisch aufzuwerten und optisch von rein funktionalen Gesundheitsanwendungen abzuheben. Ziel war ein Design, das Seriosität mit Freundlichkeit und Zugänglichkeit verbindet. 
 
 ## 3. Herausforderungen / Probleme  
 - Die grafische Darstellung vieler Laborwerte gleichzeitig stellte sowohl technisch als auch gestalterisch eine Herausforderung dar.  
