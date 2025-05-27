@@ -4,7 +4,9 @@
 
 Wir glauben, dass Nutzer\*innen mit *SanaView* ihre Laborwerte einfach eingeben, verwalten und nachvollziehen können – auch ohne medizinisches Fachwissen.
 
----
+## Testperson
+> Name: Peter M.
+> Alter: 56 Jahre
 
 ## Testaufgaben
 
