@@ -19,14 +19,12 @@
 - Avatar-Bildauswahl (z. B. Tier-Symbole)
 
 
-
-
 ## Weitere geplante Funktionen
 - Teilen von Werten per PDF/Export
 - Startbutton mit Pfeil → führt ins Hauptmenü
 - Navigationsbuttons zwischen Seiten
 - Logout-Funktion auf allen Seiten
-- Geschlechtsspezifische Referenzwerte automatisch erkennen
+- Automatische Erkennung geschlechtsspezifischer Referenzwerte (inkl. Schwangere)
 - Hintergrundfarben pro Seite: hellblau (Start, Hauptmenü, Profil, Infoseite), Hintergrundbild (Laborwerte, Verlauf)
 - Löschen von Laborwerten (mit Bestätigungsabfrage Ja/Nein + Toast-Benachrichtigung)
 
@@ -50,7 +48,7 @@
 | Startbutton mit Pfeil (Start → Hauptmenü) | Tief      | Nein|
 | Logout pro Seite                 | Tief      | Nein|
 | Navigationsbuttons               | Tief      | Nein|
-| Geschlechtsspezifische Referenzwerte | Tief      | Nein|
+| Geschlechtsspezifische Referenzwerte (inkl. Schwangere) | Tief      | Nein|
 | Hintergrundfarben/Hintergrundbilder je Seite | Tief      | Nein|
 | Löschen von Laborwerten (mit Bestätigungsabfrage Ja/Nein + Toast-Benachrichtigung) | Tief      | Nein|
 
