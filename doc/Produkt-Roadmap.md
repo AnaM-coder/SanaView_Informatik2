@@ -13,13 +13,23 @@
 ## Version 3.0
 - Info-Seite mit Erklärung zu Werten
 - Profilverwaltung (Name, Geschlecht, Allergien etc.)
+- Profil kann jederzeit bearbeitet werden
 - Alle Laborwerte derselben Analyse in einer Grafik, Histogramme für Normalbereich, leichte und starke Abweichungen
+- Dropdown zur Auswahl des ethnischen Hintergrunds
+- Avatar-Bildauswahl (z. B. Tier-Symbole)
+
 
 
 ## Weitere geplante Funktionen
 - Teilen von Werten per PDF/Export
-- Logout pro Seite
-- Navigationsbuttons
+- Startbutton mit Pfeil → führt ins Hauptmenü
+- Navigationsbuttons zwischen Seiten
+- Logout-Funktion auf allen Seiten
+- Geschlechtsspezifische Referenzwerte automatisch erkennen
+- Hintergrundfarben pro Seite: hellblau (Start, Hauptmenü, Profil, Infoseite), Hintergrundbild (Laborwerte, Verlauf)
+- Bestätigungsabfrage bei Löschvorgängen (mit "Ja" / "Nein" / Toast)
+
+
 
 
 ## Priorisierung
@@ -29,12 +39,20 @@
 | Laborwert-Eingabe & Tabelle      | Hoch      | Ja  |
 | Startseite & Hauptmenü mit logo  | Mittel    | Nein|
 | Verlaufgrafik                    | Mittel    | Nein|
-| Ampelfarben                      | Mittel    | Nein|
+| Ampelsystem                      | Mittel    | Nein|
 | Info-Seite mit Begriffen         | Mittel    | Nein|
 | Gesundheitsprofil verwalten      | Mittel    | Nein|
+| Jederzeitige Profilbearbeitung   | Mittel    | Nein|
+| Avatar-Bildauswahl               | Mittel    | Nein|
+| Dropdown für ethnischen Hintergrund   | Mittel   | Nein|
 | Export als PDF                   | Tief      | Nein|
+| Startbutton mit Pfeil (Start → Hauptmenü) | Tief      | Nein|
 | Logout pro Seite                 | Tief      | Nein|
 | Navigationsbuttons               | Tief      | Nein|
+| Bestätigungsabfrage beim Löschen (Ja/Nein + Toast) | Tief      | Nein|
+| Hintergrundfarben/Hintergrundbilder je Seite | Tief      | Nein|
+
+
 
 
 ## Projektbeschreibung als PDF
