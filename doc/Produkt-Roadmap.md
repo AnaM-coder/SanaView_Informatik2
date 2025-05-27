@@ -3,7 +3,7 @@
 ## MVP_1(Minimum Viable Product) Version 1.0
 - Nutzerregistrierung und Multi User Login, Cloud-Speicherung
 - Eingabe von Laborwerten (Dropdown, Einheit, Datum)
-- Anzeige der Werte in Tabellenform
+- Anzeige der Werte in Gesamttabelle oder gruppiert nach Laborwert
 
 ## Version 2.0
 - Ampelsystem (Normal, leicht ausserhalb, stark abweichend)
@@ -35,7 +35,7 @@
 | Funktion                         | Priorität | MVP |
 |----------------------------------|-----------|-----|
 | Registrierung & Login            | Hoch      | Ja  |
-| Laborwert-Eingabe & Tabelle      | Hoch      | Ja  |
+| Laborwert-Eingabe & Gesamtetabelle oder gruppiert nach Laborwert | Hoch      | Ja  |
 | Startseite & Hauptmenü mit logo  | Mittel    | Nein|
 | Verlaufgrafik                    | Mittel    | Nein|
 | Ampelsystem                      | Mittel    | Nein|
