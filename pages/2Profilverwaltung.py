@@ -160,7 +160,6 @@ else:
     st.success("Ihr Profil wurde geladen.")
     daten = st.session_state.profil_daten_anzeige
 
-
     col1, col2 = st.columns([2, 1])
     with col1:
         st.markdown(f"**Benutzername**: {daten['Benutzername']}")
