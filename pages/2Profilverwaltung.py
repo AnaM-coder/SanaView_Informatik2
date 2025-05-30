@@ -151,11 +151,8 @@ if not st.session_state.profil_gespeichert or st.session_state.bearbeiten_modus:
 
     with col2:
         if st.button("Profil anzeigen"):
-            if not st.session_state.profil_gespeichert:
-                st.warning("⚠️ Bitte zuerst speichern, bevor das Profil angezeigt werden kann.")
-            else:
-                st.session_state.bearbeiten_modus = False
-                st.rerun()
+            st.session_state.bearbeiten_modus = False
+            st.rerun()
 
 # === Profilansicht
 else:
@@ -165,15 +162,15 @@ else:
 
     col1, col2 = st.columns([2, 1])
     with col1:
-        st.markdown(f"*Benutzername*: {daten['Benutzername']}")
-        st.markdown(f"*Name, Vorname*: {daten['Name']} {daten['Vorname']}")
-        st.markdown(f"*Geburtsdatum*: {daten['Geburtsdatum']}")
-        st.markdown(f"*Geschlecht*: {daten['Geschlecht']}")
-        st.markdown(f"*Schwanger*: {daten['Schwanger']}")
-        st.markdown(f"*Herkunft*: {daten['Herkunft']}")
-        st.markdown(f"*Vorerkrankung*: {daten['Vorerkrankung']}")
-        st.markdown(f"*Medikamente*: {daten['Medikamente']}")
-        st.markdown(f"*Allergien*: {daten['Allergien']}")
+        st.markdown(f"**Benutzername**: {daten['Benutzername']}")
+        st.markdown(f"**Name, Vorname**: {daten['Name']} {daten['Vorname']}")
+        st.markdown(f"**Geburtsdatum**: {daten['Geburtsdatum']}")
+        st.markdown(f"**Geschlecht**: {daten['Geschlecht']}")
+        st.markdown(f"**Schwanger**: {daten['Schwanger']}")
+        st.markdown(f"**Herkunft**: {daten['Herkunft']}")
+        st.markdown(f"**Vorerkrankung**: {daten['Vorerkrankung']}")
+        st.markdown(f"**Medikamente**: {daten['Medikamente']}")
+        st.markdown(f"**Allergien**: {daten['Allergien']}")
 
     with col2:
         if "Avatar" in daten:
