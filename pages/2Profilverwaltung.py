@@ -151,8 +151,34 @@ if not st.session_state.profil_gespeichert or st.session_state.bearbeiten_modus:
 
     with col2:
         if st.button("Profil anzeigen"):
-            st.session_state.bearbeiten_modus = False
-            st.rerun()
+            gespeicherte_daten = st.session_state.get("profil_daten_anzeige", {})
+
+            def to_str_dict(d):
+                return {k: str(v) for k, v in d.items()}
+
+            aktuelle_daten = to_str_dict({
+                "Benutzername": username,
+                "Name": name,
+                "Vorname": vorname,
+                "Geburtsdatum": geburtsdatum.strftime("%d.%m.%Y"),
+                "Geschlecht": geschlecht,
+                "Schwanger": schwanger,
+                "Herkunft": herkunft,
+                "Vorerkrankung": vorerkrankung,
+                "Medikamente": medikamente,
+                "Allergien": allergien,
+                "Avatar": avatar_symbol
+            })
+
+            gespeicherte_daten = to_str_dict(gespeicherte_daten)
+
+            if aktuelle_daten != gespeicherte_daten:
+                st.warning("⚠️ Du hast Änderungen vorgenommen, aber noch nicht gespeichert.")
+                st.stop()
+            else:
+                st.session_state.bearbeiten_modus = False
+                st.rerun()
+
 
 # === Profilansicht
 else:
