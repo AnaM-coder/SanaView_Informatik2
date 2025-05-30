@@ -162,7 +162,10 @@ else:
     st.title(" 👤Profil")
     st.success("Ihr Profil wurde geladen.")
     daten = st.session_state.profil_daten_anzeige
-
+    if st.session_state.get("unsaved_warning", False):
+        st.warning("⚠️ Änderungen wurden nicht gespeichert!")
+        st.session_state["unsaved_warning"] = False
+        
     col1, col2 = st.columns([2, 1])
     with col1:
         st.markdown(f"**Benutzername**: {daten['Benutzername']}")
