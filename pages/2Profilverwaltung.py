@@ -153,6 +153,7 @@ if not st.session_state.profil_gespeichert or st.session_state.bearbeiten_modus:
         if st.button("Profil anzeigen"):
             st.session_state.bearbeiten_modus = False
             st.rerun()
+    
 
 # === Profilansicht
 else:
