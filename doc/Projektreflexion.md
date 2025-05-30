@@ -36,7 +36,7 @@ Zusätzlich wurde ein modernes, visuell ansprechendes Hintergrunddesign mit Farb
 - Eine frühe Rückmeldung von Nutzer:innen ist sehr wertvoll, um unnötige Umwege in der Entwicklung zu vermeiden.  
 - Feedback kurz vor Projektabschluss hilft, die Alltagstauglichkeit realistisch einzuschätzen und gezielte Verbesserungen vorzunehmen.  
 - Eine strukturierte Roadmap mit Versionsplanung hat uns geholfen, den Überblick zu behalten und effizient zu arbeiten.  
-- Wir haben gelernt, wie wichtig Gruppenarbeit ist: Jede Person bringt eigene Perspektiven, Ideen und Stärken ein – das führte zu regelmäßiger Reflexion und besseren Entscheidungen.  
+- Wir haben gelernt, wie wichtig Gruppenarbeit ist: Jede Person bringt eigene Perspektiven, Ideen und Stärken ein – das führte zu regelmässiger Reflexion und besseren Entscheidungen.  
 - Auch die Fähigkeit, Feedback anzunehmen und konstruktiv umzusetzen, war ein zentraler Lernprozess.
 
 ## 5. Ausblick / Was wir verbessern würden  
