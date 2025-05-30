@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-from datetime import date, datetime
+from datetime import date
 from utils.data_manager import DataManager
 from utils.login_manager import LoginManager
 
@@ -120,22 +120,6 @@ if not st.session_state.profil_gespeichert or st.session_state.bearbeiten_modus:
     medikamente = st.text_area("Medikamente", value=daten.get("Medikamente", ""))
     allergien = st.text_area("Allergien / Besonderheiten", value=daten.get("Allergien", ""))
 
-    # --- Änderungserkennung für Warnung ---
-    änderung = (
-        name != daten.get("Name", "") or
-        vorname != daten.get("Vorname", "") or
-        geburtsdatum.strftime("%d.%m.%Y") != daten.get("Geburtsdatum", "") or
-        geschlecht != daten.get("Geschlecht", "") or
-        schwanger != daten.get("Schwanger", "") or
-        herkunft != daten.get("Herkunft", "") or
-        vorerkrankung != daten.get("Vorerkrankung", "") or
-        medikamente != daten.get("Medikamente", "") or
-        allergien != daten.get("Allergien", "") or
-        avatar_symbol != daten.get("Avatar", "")
-    )
-    if änderung:
-        st.session_state.profil_gespeichert = False
-
     col1, col2 = st.columns(2)
     with col1:
         if st.button("Speichern"):
@@ -164,21 +148,15 @@ if not st.session_state.profil_gespeichert or st.session_state.bearbeiten_modus:
                 st.session_state.profil_daten_anzeige = eintrag
                 st.session_state.profil_gespeichert = True
                 st.success("Profil gespeichert!")
-    with col2:  
+
+    with col2:
         if st.button("Profil anzeigen"):
-            if not st.session_state.profil_gespeichert:
-                st.session_state["unsaved_warning"] = True
-            else:
-                st.session_state["unsaved_warning"] = False
             st.session_state.bearbeiten_modus = False
             st.rerun()
 
 # === Profilansicht
 else:
     st.title(" 👤Profil")
-    if st.session_state.get("unsaved_warning", False):
-        st.warning("⚠️ Änderungen wurden nicht gespeichert!")
-        st.session_state["unsaved_warning"] = False
     st.success("Ihr Profil wurde geladen.")
     daten = st.session_state.profil_daten_anzeige
 
@@ -187,14 +165,6 @@ else:
         st.markdown(f"**Benutzername**: {daten['Benutzername']}")
         st.markdown(f"**Name, Vorname**: {daten['Name']} {daten['Vorname']}")
         st.markdown(f"**Geburtsdatum**: {daten['Geburtsdatum']}")
-        # Alter berechnen und anzeigen
-        try:
-            geburtsdatum_dt = datetime.strptime(daten['Geburtsdatum'], "%d.%m.%Y")
-            heute = datetime.today()
-            alter = heute.year - geburtsdatum_dt.year - ((heute.month, heute.day) < (geburtsdatum_dt.month, geburtsdatum_dt.day))
-            st.markdown(f"**Alter**: {alter} Jahre")
-        except Exception:
-            st.markdown("**Alter**: -")
         st.markdown(f"**Geschlecht**: {daten['Geschlecht']}")
         st.markdown(f"**Schwanger**: {daten['Schwanger']}")
         st.markdown(f"**Herkunft**: {daten['Herkunft']}")
@@ -226,13 +196,13 @@ else:
             st.switch_page("Start.py")
     with col3:
         if st.button("Hauptmenü"):
-            st.switch_page("1Hauptmenü.py")
+            st.switch_page("pages/1Hauptmenü.py")
     with col4:
         if st.button("Laborwerte"):
-            st.switch_page("3Laborwerte.py")
+            st.switch_page("pages/3Laborwerte.py")
     with col5:
         if st.button("Verlauf"):
-            st.switch_page("4Verlauf.py")
+            st.switch_page("pages/4Verlauf.py")
     with col6:
         if st.button("Infoseite"):
-            st.switch_page("5Infoseite.py")
+            st.switch_page("pages/5Infoseite.py")
