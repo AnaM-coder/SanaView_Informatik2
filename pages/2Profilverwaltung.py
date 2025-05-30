@@ -44,12 +44,17 @@ data_manager.load_user_data(
 profil_df = st.session_state.get(session_key, pd.DataFrame())
 profil_df["Benutzername"] = profil_df.get("Benutzername", "")
 
-# Profil-Daten nur einmal laden, aber nicht als "gespeichert" markieren
-if username in profil_df["Benutzername"].values and "profil_daten_anzeige" not in st.session_state:
-    eintrag = profil_df[profil_df["Benutzername"] == username].iloc[-1].to_dict()
-    st.session_state.profil_daten_anzeige = eintrag
+if "profil_daten_anzeige" in st.session_state:
+    if st.session_state.profil_daten_anzeige.get("Benutzername") != username:
+        del st.session_state["profil_daten_anzeige"]
+        st.session_state["profil_gespeichert"] = False
 
-# Bearbeitungsmodus oder noch nicht gespeichert → Formular anzeigen
+if not st.session_state.profil_gespeichert:
+    if username in profil_df["Benutzername"].values:
+        eintrag = profil_df[profil_df["Benutzername"] == username].iloc[-1].to_dict()
+        st.session_state.profil_daten_anzeige = eintrag
+        st.session_state.profil_gespeichert = True
+
 if not st.session_state.profil_gespeichert or st.session_state.bearbeiten_modus:
     st.title("👤Profilverwaltung")
     st.subheader("Persönliche Angaben")
@@ -146,11 +151,9 @@ if not st.session_state.profil_gespeichert or st.session_state.bearbeiten_modus:
 
     with col2:
         if st.button("Profil anzeigen"):
-            if not st.session_state.profil_gespeichert:
-                st.warning("⚠️ Bitte zuerst speichern, bevor das Profil angezeigt werden kann.")
-            else:
-                st.session_state.bearbeiten_modus = False
-                st.rerun()
+            st.session_state.bearbeiten_modus = False
+            st.rerun()
+
 # === Profilansicht
 else:
     st.title(" 👤Profil")
