@@ -121,7 +121,7 @@ if not st.session_state.profil_gespeichert or st.session_state.bearbeiten_modus:
     allergien = st.text_area("Allergien / Besonderheiten", value=daten.get("Allergien", ""))
 
     # --- Änderungserkennung für Warnung ---
-    if (
+    änderung = (
         name != daten.get("Name", "") or
         vorname != daten.get("Vorname", "") or
         geburtsdatum.strftime("%d.%m.%Y") != daten.get("Geburtsdatum", "") or
@@ -132,7 +132,8 @@ if not st.session_state.profil_gespeichert or st.session_state.bearbeiten_modus:
         medikamente != daten.get("Medikamente", "") or
         allergien != daten.get("Allergien", "") or
         avatar_symbol != daten.get("Avatar", "")
-    ):
+    )
+    if änderung:
         st.session_state.profil_gespeichert = False
 
     col1, col2 = st.columns(2)
