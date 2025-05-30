@@ -151,7 +151,9 @@ if not st.session_state.profil_gespeichert or st.session_state.bearbeiten_modus:
     with col2:  
         if st.button("Profil anzeigen"):
             if not st.session_state.profil_gespeichert:
-                st.warning("⚠️ Änderungen wurden nicht gespeichert!")
+                st.session_state["unsaved_warning"] = True
+            else:
+                st.session_state["unsaved_warning"] = False
             st.session_state.bearbeiten_modus = False
             st.rerun()
 
