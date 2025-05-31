@@ -19,7 +19,7 @@ Der Nutzer konnte sich gut orientieren und fand die Eingabemaske übersichtlich.
 - Einfaches Design ohne Ablenkung  
 
 **Was war schlecht?**  
-- Begriff „TSH“ war nicht selbsterklärend  
+- Begriff „Troponin“ war nicht selbsterklärend  
 - (i)-Icon sollte bei der Einhgabe "Ethnischer Hintergrund" aufkommen
 
 **Neue Ideen?**  
